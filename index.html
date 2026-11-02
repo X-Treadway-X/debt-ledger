@@ -5,13 +5,13 @@
 <meta name="theme-color" content="#a6533d"><title>دفتر الديون</title>
 <style>
 :root{color-scheme:light;--bg:#f5ecdf;--card:#fffaf2;--terra:#a6533d;--accent:#a6533d;--ink:#49352c;--muted:#90796c;--line:#e8d7c6;--green:#27845b;--red:#c94e4e;--shadow:0 7px 24px #70472a12;
-      --btn:#a6533d;--btn-green:#27845b;--soft:#f4dfd4;--soft-ink:#91452f;--light-bg:#fff5e9;--red-bg:#f8dfdc;--red-ink:#a83e39;--sunken:#f3e9dc;--kpi:#f7eee3;--input:#fffdf8;
-      --badge-bg:#f5ded9;--badge-ink:#a34839;--badge-g-bg:#def0e5;--badge-g-ink:#23744f;--warn-bg:#fdebc8;--warn-ink:#8a5a00;--nav:#fffaf2f2;--nav-active:#f2dfd3;--scrim:#24171088;--fade:#fffaf2cc;
-      --head1:#8f402f;--head2:#bd6b51;--toast:#49352c}
+--btn:#a6533d;--btn-green:#27845b;--soft:#f4dfd4;--soft-ink:#91452f;--light-bg:#fff5e9;--red-bg:#f8dfdc;--red-ink:#a83e39;--sunken:#f3e9dc;--kpi:#f7eee3;--input:#fffdf8;
+--badge-bg:#f5ded9;--badge-ink:#a34839;--badge-g-bg:#def0e5;--badge-g-ink:#23744f;--warn-bg:#fdebc8;--warn-ink:#8a5a00;--nav:#fffaf2f2;--nav-active:#f2dfd3;--scrim:#24171088;--fade:#fffaf2cc;
+--head1:#8f402f;--head2:#bd6b51;--toast:#49352c}
 :root[data-theme=dark]{color-scheme:dark;--bg:#17110e;--card:#241c17;--terra:#d9826a;--accent:#e49279;--ink:#f1e5db;--muted:#b3a094;--line:#3a2e26;--green:#4cc38a;--red:#ef7f7f;--shadow:0 7px 24px #00000055;
-                       --btn:#b4573d;--btn-green:#2f8f65;--soft:#3a2a23;--soft-ink:#f0b49f;--light-bg:#2d231d;--red-bg:#46262a;--red-ink:#f5a09b;--sunken:#2f251f;--kpi:#2b221c;--input:#1d1612;
-                       --badge-bg:#47292a;--badge-ink:#f2a99e;--badge-g-bg:#1f3b2d;--badge-g-ink:#86d6aa;--warn-bg:#4a3a14;--warn-ink:#f0c76a;--nav:#241c17f2;--nav-active:#3a2a23;--scrim:#000000a0;--fade:#241c17cc;
-                       --head1:#4e241a;--head2:#78402e;--toast:#f1e5db}
+--btn:#b4573d;--btn-green:#2f8f65;--soft:#3a2a23;--soft-ink:#f0b49f;--light-bg:#2d231d;--red-bg:#46262a;--red-ink:#f5a09b;--sunken:#2f251f;--kpi:#2b221c;--input:#1d1612;
+--badge-bg:#47292a;--badge-ink:#f2a99e;--badge-g-bg:#1f3b2d;--badge-g-ink:#86d6aa;--warn-bg:#4a3a14;--warn-ink:#f0c76a;--nav:#241c17f2;--nav-active:#3a2a23;--scrim:#000000a0;--fade:#241c17cc;
+--head1:#4e241a;--head2:#78402e;--toast:#f1e5db}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,Arial,sans-serif;transition:background .2s,color .2s}button,input,select,textarea{font:inherit}button{cursor:pointer}
 header{background:linear-gradient(110deg,var(--head1),var(--head2));color:white;padding:17px max(16px,calc((100% - 1100px)/2));display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-size:22px;font-weight:bold}.brand small{display:block;font-size:11px;font-weight:normal;margin-top:5px;opacity:.85}
 .hright{display:flex;align-items:center;gap:8px}.hbtn{border:1px solid #ffffff55;background:#ffffff1f;color:white;border-radius:10px;padding:6px 10px;font-size:13px;font-weight:bold;min-width:38px}.hbtn:hover{background:#ffffff38}.hbtn.ok{border-color:#7ee2b0}.hbtn.err{border-color:#ff9b9b}.hbtn.busy{animation:pulse 1s infinite}
@@ -41,46 +41,46 @@ nav button{flex:1;max-width:150px;background:transparent;color:var(--muted);padd
 <div class="hright"><div id="date" style="font-size:11px"></div><button class="hbtn" id="cloudBtn" onclick="go('sync')">☁</button><button class="hbtn" id="themeBtn" onclick="toggleTheme()" aria-label="Theme"></button><button class="hbtn" id="langBtn" onclick="toggleLang()" aria-label="Language"></button></div></header>
 <main class="wrap">
 <section id="home" class="screen active">
-<div class="head"><div><h1 data-i18n="nav_home"></h1><div class="muted" data-i18n="home_sub"></div></div><button class="btn" onclick="openForm('debt')" data-i18n="add_debt"></button></div>
-<div class="grid"><div class="stat"><label data-i18n="total_balance"></label><strong id="sumDebt">0</strong></div><div class="stat green"><label data-i18n="customers_count"></label><strong id="sumCustomers">0</strong></div></div>
-<div class="actions"><button class="btn soft" onclick="openForm('person')" data-i18n="new_customer"></button><button class="btn green" onclick="openForm('payment')" data-i18n="record_payment"></button></div>
-<div class="panel"><h2 data-i18n="recent"></h2><div id="recent" class="list recent-scroll"></div></div>
+ <div class="head"><div><h1 data-i18n="nav_home"></h1><div class="muted" data-i18n="home_sub"></div></div><button class="btn" onclick="openForm('debt')" data-i18n="add_debt"></button></div>
+ <div class="grid"><div class="stat"><label data-i18n="total_balance"></label><strong id="sumDebt">0</strong></div><div class="stat green"><label data-i18n="customers_count"></label><strong id="sumCustomers">0</strong></div></div>
+ <div class="actions"><button class="btn soft" onclick="openForm('person')" data-i18n="new_customer"></button><button class="btn green" onclick="openForm('payment')" data-i18n="record_payment"></button></div>
+ <div class="panel"><h2 data-i18n="recent"></h2><div id="recent" class="list recent-scroll"></div></div>
 </section>
 <section id="customers" class="screen">
-<div class="head"><div><h1 data-i18n="nav_customers"></h1><div class="muted" data-i18n="customers_sub"></div></div><button class="btn" onclick="openForm('person')" data-i18n="add_customer"></button></div>
-<div class="toolbar"><input id="customerSearch" data-i18n-ph="search_cust_ph" oninput="renderCustomers()"></div><div id="customerList" class="list"></div>
+ <div class="head"><div><h1 data-i18n="nav_customers"></h1><div class="muted" data-i18n="customers_sub"></div></div><button class="btn" onclick="openForm('person')" data-i18n="add_customer"></button></div>
+ <div class="toolbar"><input id="customerSearch" data-i18n-ph="search_cust_ph" oninput="renderCustomers()"></div><div id="customerList" class="list"></div>
 </section>
 <section id="debts" class="screen">
-<div class="head"><div><h1 data-i18n="nav_debts"></h1><div class="muted" data-i18n="debts_sub"></div></div><button class="btn" onclick="openForm('debt')" data-i18n="add_debt"></button></div>
-<div class="toolbar"><input id="debtSearch" data-i18n-ph="search_debt_ph" oninput="renderDebts()"></div><div id="debtList" class="list"></div>
+ <div class="head"><div><h1 data-i18n="nav_debts"></h1><div class="muted" data-i18n="debts_sub"></div></div><button class="btn" onclick="openForm('debt')" data-i18n="add_debt"></button></div>
+ <div class="toolbar"><input id="debtSearch" data-i18n-ph="search_debt_ph" oninput="renderDebts()"></div><div id="debtList" class="list"></div>
 </section>
 <section id="payments" class="screen">
-<div class="head"><div><h1 data-i18n="nav_payments"></h1><div class="muted" data-i18n="payments_sub"></div></div><button class="btn green" onclick="openForm('payment')" data-i18n="add_payment"></button></div>
-<div id="paymentList" class="list"></div>
+ <div class="head"><div><h1 data-i18n="nav_payments"></h1><div class="muted" data-i18n="payments_sub"></div></div><button class="btn green" onclick="openForm('payment')" data-i18n="add_payment"></button></div>
+ <div id="paymentList" class="list"></div>
 </section>
 <section id="history" class="screen">
-<div class="head"><div><h1 data-i18n="history_title"></h1><div class="muted" data-i18n="history_sub"></div></div></div>
-<div id="historyList" class="list"></div>
+ <div class="head"><div><h1 data-i18n="history_title"></h1><div class="muted" data-i18n="history_sub"></div></div></div>
+ <div id="historyList" class="list"></div>
 </section>
 <section id="reports" class="screen">
-<div class="head"><div><h1 data-i18n="nav_reports"></h1><div class="muted" data-i18n="reports_sub"></div></div></div>
-<div class="kpis"><div class="kpi"><small data-i18n="total_debts"></small><b id="rDebt">0</b></div><div class="kpi"><small data-i18n="total_payments"></small><b id="rPaid">0</b></div><div class="kpi"><small data-i18n="remaining"></small><b id="rBalance">0</b></div></div>
-<div class="panel"><h2 data-i18n="cust_balances"></h2><div id="reportPeople" class="list"></div></div>
-<div class="actions"><button class="btn light" onclick="exportData()" data-i18n="export_backup"></button></div>
+ <div class="head"><div><h1 data-i18n="nav_reports"></h1><div class="muted" data-i18n="reports_sub"></div></div></div>
+ <div class="kpis"><div class="kpi"><small data-i18n="total_debts"></small><b id="rDebt">0</b></div><div class="kpi"><small data-i18n="total_payments"></small><b id="rPaid">0</b></div><div class="kpi"><small data-i18n="remaining"></small><b id="rBalance">0</b></div></div>
+ <div class="panel"><h2 data-i18n="cust_balances"></h2><div id="reportPeople" class="list"></div></div>
+ <div class="actions"><button class="btn light" onclick="exportData()" data-i18n="export_backup"></button></div>
 </section>
 <section id="sync" class="screen">
-<div class="head"><div><h1 data-i18n="sync_title"></h1><div class="muted" data-i18n="sync_sub"></div></div></div>
-<div id="syncBody"></div>
+ <div class="head"><div><h1 data-i18n="sync_title"></h1><div class="muted" data-i18n="sync_sub"></div></div></div>
+ <div id="syncBody"></div>
 </section>
 <section id="settings" class="screen">
-<div class="head"><div><h1 data-i18n="nav_settings"></h1><div class="muted" data-i18n="settings_sub"></div></div></div>
-<div class="panel"><h2 data-i18n="appearance"></h2>
-<div class="setrow"><label data-i18n="theme"></label><div class="seg"><button id="thLight" onclick="setTheme('light')" data-i18n="light"></button><button id="thDark" onclick="setTheme('dark')" data-i18n="dark"></button></div></div>
-<div class="setrow"><label data-i18n="language"></label><div class="seg"><button id="lgAr" onclick="setLang('ar')">العربية</button><button id="lgEn" onclick="setLang('en')">English</button></div></div>
-</div>
-<div class="panel"><h2 data-i18n="data_saving"></h2><p class="muted" data-i18n="data_saving_txt"></p><button class="btn" onclick="go('sync')" data-i18n="open_sync"></button> <button class="btn light" onclick="exportData()" data-i18n="download_backup"></button> <label class="btn light" for="importFile" data-i18n="restore"></label><input id="importFile" type="file" accept="application/json" style="display:none" onchange="importData(event)"></div>
-<div class="panel"><h2 data-i18n="wa_title"></h2><p class="muted" data-i18n="wa_txt"></p></div>
-<div class="panel"><h2 data-i18n="about"></h2><p class="muted" data-i18n="about_txt"></p></div>
+ <div class="head"><div><h1 data-i18n="nav_settings"></h1><div class="muted" data-i18n="settings_sub"></div></div></div>
+ <div class="panel"><h2 data-i18n="appearance"></h2>
+  <div class="setrow"><label data-i18n="theme"></label><div class="seg"><button id="thLight" onclick="setTheme('light')" data-i18n="light"></button><button id="thDark" onclick="setTheme('dark')" data-i18n="dark"></button></div></div>
+  <div class="setrow"><label data-i18n="language"></label><div class="seg"><button id="lgAr" onclick="setLang('ar')">العربية</button><button id="lgEn" onclick="setLang('en')">English</button></div></div>
+ </div>
+ <div class="panel"><h2 data-i18n="data_saving"></h2><p class="muted" data-i18n="data_saving_txt"></p><button class="btn" onclick="go('sync')" data-i18n="open_sync"></button> <button class="btn light" onclick="exportData()" data-i18n="download_backup"></button> <label class="btn light" for="importFile" data-i18n="restore"></label><input id="importFile" type="file" accept="application/json" style="display:none" onchange="importData(event)"></div>
+ <div class="panel"><h2 data-i18n="wa_title"></h2><p class="muted" data-i18n="wa_txt"></p></div>
+ <div class="panel"><h2 data-i18n="about"></h2><p class="muted" data-i18n="about_txt"></p></div>
 </section>
 </main>
 <nav>
@@ -97,89 +97,89 @@ nav button{flex:1;max-width:150px;background:transparent;color:var(--muted);padd
 const $=id=>document.getElementById(id),KEY='daftar_deyoun_clean_v2',LKEY='daftar_lang',TKEY='daftar_theme',CKEY='daftar_sync_cfg',DKEY='daftar_dbx_tok';
 /* ---------- i18n ---------- */
 const I18N={
-  ar:{brand:'دفتر الديون',tagline:'حساباتك واضحة… وحقوقك محفوظة',nav_home:'الرئيسية',nav_customers:'الزبائن',nav_debts:'الديون',nav_payments:'الدفعات',nav_history:'السجل',nav_reports:'التقارير',nav_settings:'الإعدادات',
-      home_sub:'ملخص سريع لحساباتك',add_debt:'＋ إضافة دين',total_balance:'إجمالي الرصيد المتبقي',customers_count:'عدد الزبائن',new_customer:'＋ زبون جديد',record_payment:'تسجيل دفعة',recent:'آخر العمليات',
-      customers_sub:'إدارة بيانات الزبائن وحساباتهم',add_customer:'＋ إضافة زبون',search_cust_ph:'ابحث بالاسم أو الهاتف…',debts_sub:'كل الديون المسجلة',search_debt_ph:'ابحث باسم الزبون…',
-      payments_sub:'الدفعات المستلمة من الزبائن',add_payment:'＋ تسجيل دفعة',history_title:'سجل العمليات',history_sub:'تسلسل الديون والدفعات',reports_sub:'ملخص حركة الحسابات',
-      total_debts:'إجمالي الديون',total_payments:'إجمالي الدفعات',remaining:'الرصيد المتبقي',cust_balances:'أرصدة الزبائن',export_backup:'تصدير نسخة احتياطية JSON',settings_sub:'إعدادات النسخة التجريبية',
-      appearance:'المظهر واللغة',theme:'السمة',light:'☀ فاتح',dark:'🌙 داكن',language:'اللغة',
-      data_saving:'حفظ البيانات',data_saving_txt:'تُحفظ بياناتك محليًا داخل المتصفح. لحفظها في السحابة ومزامنتها بين أجهزتك افتح صفحة المزامنة (☁).',open_sync:'فتح المزامنة',download_backup:'تنزيل نسخة احتياطية',restore:'استعادة نسخة',
-      wa_title:'تذكيرات واتساب',wa_txt:'عند إضافة دين أو تسجيل دفعة، يمكن فتح واتساب برسالة جاهزة لمراجعتها وإرسالها يدويًا. لا يتم الإرسال تلقائيًا.',
-      about:'حول التطبيق',about_txt:'دفتر الديون — نموذج تجريبي للويب. تطبيق APK غير مفعّل في هذه النسخة.',close:'إغلاق',
-      debt_on:'تم تسجيل دين على',pay_from:'تم تسديد دفعة من',customer:'زبون',no_tx:'لا توجد عمليات حتى الآن',no_payments:'لا توجد دفعات مسجلة',history_empty:'السجل فارغ',no_customers:'لا يوجد زبائن',no_customers_add:'لا يوجد زبائن. أضف زبونًا جديدًا.',no_debts:'لا توجد ديون مسجلة',
-      no_phone:'لا يوجد هاتف',has_balance:'عليه رصيد',settled:'مسدد',details:'تفاصيل',edit_name:'تعديل الاسم',del:'حذف',
-      add_cust_title:'إضافة زبون',cust_name:'اسم الزبون',full_name_ph:'الاسم الكامل',phone_cc:'رقم الهاتف مع رمز الدولة',phone_ph:'مثال: 9639xxxxxxxx',pick_contact:'＋ إضافة من جهات الاتصال',contact_hint:'إذا لم يظهر اختيار جهات الاتصال على جهازك، اكتب الاسم والرقم يدويًا.',save_customer:'حفظ الزبون',
-      new_debt_title:'إضافة دين جديد',pay_title:'تسجيل دفعة',search_name:'البحث عن اسم الزبون',type_name_ph:'اكتب اسم الزبون...',selected:'تم اختيار: ',amount:'المبلغ',currency:'العملة',due:'تاريخ الاستحقاق',notes:'ملاحظات',optional:'اختياري',
-      wa_debt:'فتح واتساب برسالة تسجيل الدين',wa_pay:'فتح واتساب لتأكيد استلام الدفعة',save:'حفظ',cur_USD:'دولار أمريكي ($)',cur_TRY:'ليرة تركية (₺)',cur_SYP:'ليرة سورية (ل.س)',sym_SYP:'ل.س',
-      edit_title:'تعديل بيانات الزبون',phone:'رقم الهاتف',save_edit:'حفظ التعديل',type_to_search:'اكتب اسم الزبون لعرض النتائج',no_match:'لا يوجد زبون بهذا الاسم',
-      profile:'ملف الزبون',no_phone_reg:'لا يوجد هاتف مسجل',edit_cust_data:'تعديل بيانات الزبون',add_debt_for:'＋ إضافة دين لهذا الزبون',pay_for:'تسجيل دفعة لهذا الزبون',acct_move:'حركة حساب {n}',no_tx_cust:'لا توجد عمليات مسجلة لهذا الزبون',close_profile:'إغلاق الملف',
-      t_add_first:'أضف زبونًا أولًا',t_enter_name:'اكتب اسم الزبون',t_saved_cust:'تم حفظ الزبون',t_edited:'تم تعديل بيانات الزبون',t_no_contacts:'اختيار جهات الاتصال غير مدعوم في هذا المتصفح؛ أدخل البيانات يدويًا',t_contact_fail:'تعذر قراءة جهة الاتصال؛ أدخل البيانات يدويًا',t_contact_ok:'تم جلب بيانات جهة الاتصال',
-      t_choose:'اختر الزبون أولًا',t_not_found:'الزبون المحدد غير موجود',t_bad_amount:'أدخل مبلغًا صحيحًا أكبر من صفر',t_over:'المبلغ أكبر من الرصيد المتبقي بهذه العملة',t_debt_saved:'تم تسجيل دين باسم الزبون: {n}',t_pay_saved:'تم تسجيل دفعة باسم الزبون: {n}',
-      confirm_del:'حذف الزبون وكل عملياته؟ لا يمكن التراجع.',t_deleted:'تم الحذف',t_restored:'تمت استعادة البيانات والتحقق منها',t_bad_backup:'النسخة غير صالحة أو تحتوي على عمليات غير مرتبطة بزبون',t_no_wa_phone:'لا يوجد رقم هاتف مسجل لهذا الزبون',
-      wam_debt:'مرحبًا {n}، تم تسجيل دين بقيمة {a}. يرجى مراجعة الحساب.',wam_pay:'مرحبًا {n}، تم تأكيد استلام دفعة بقيمة {a}. شكرًا لك.',pageTitle:'دفتر الديون',
-      /* sync */
-      sync_title:'المزامنة والنسخ الاحتياطي',sync_sub:'احفظ بياناتك في خدمة تخزين تختارها',choose_provider:'اختر مكان الحفظ',
-      prov_local:'هذا الجهاز (ملف)',prov_local_d:'نزّل ملف النسخة الاحتياطية واستعده يدويًا. لا يحتاج إعدادًا.',
-      prov_gdrive_d:'مجلد مخفي خاص بالتطبيق داخل حسابك. يحتاج Client ID من Google.',prov_dropbox_d:'مجلد خاص بالتطبيق داخل حسابك. يحتاج App key من Dropbox.',
-      prov_mega_d:'غير متاح في المتصفح حاليًا: MEGA لا يوفّر تسجيل دخول آمن للمواقع.',soon:'قريبًا',ready:'جاهز',needs_setup:'يحتاج إعدادًا',
-      connect:'اتصال',use_local:'استخدام الملفات',cancel:'إلغاء',google_cid:'Google Client ID',dropbox_key:'Dropbox App key',
-      g_hint:'أنشئ OAuth Client من نوع Web في Google Cloud وأضف عنوان موقعك كـ Authorized JavaScript origin:',
-      d_hint:'أنشئ تطبيقًا في Dropbox بصلاحية App folder، وفعّل الصلاحيات files.metadata.read وfiles.content.read وfiles.content.write، ثم سجّل هذا العنوان كـ Redirect URI:',
-      need_id:'أدخل المعرّف أولًا',need_https:'تسجيل الدخول السحابي لا يعمل عند فتح الملف مباشرة. شغّل التطبيق عبر https:// أو http://localhost (مثل GitHub Pages).',
-      connected_to:'متصل بـ {p}',change_provider:'تغيير الخدمة',disconnect:'قطع الاتصال',sync_now:'مزامنة الآن',backup_now:'نسخ احتياطي الآن',
-      last_sync:'آخر مزامنة: {t}',never:'لم تتم مزامنة بعد',syncing:'جارٍ المزامنة…',s_err:'فشلت المزامنة: {e}',sync_done:'تمت المزامنة',backup_done:'تم رفع النسخة الاحتياطية',up_to_date:'كل شيء محدّث',
-      sync_hint:'«مزامنة» تدمج بيانات هذا الجهاز مع آخر نسخة في السحابة ثم ترفع النتيجة. «نسخ احتياطي» يرفع نسخة من هذا الجهاز فقط.',
-      schedule:'متى ننسخ وكم نحتفظ',auto_mode:'المزامنة التلقائية',am_manual:'يدويًا فقط',am_open:'عند فتح التطبيق',am_live:'تلقائي كامل (موصى به)',am_interval:'كل فترة زمنية',every_min:'كل (دقيقة)',keep_n:'عدد النسخ المحفوظة',keep_hint:'تُحذف النسخ الأقدم تلقائيًا. الخيارات التلقائية تزامن أيضًا عند فتح التطبيق أو العودة إليه.',
-      history:'النسخ المحفوظة',refresh:'تحديث',loading:'جارٍ التحميل…',restore_btn:'استعادة',no_backups:'لا توجد نسخ في السحابة بعد',confirm_restore:'استبدال بيانات هذا الجهاز بهذه النسخة؟',restored_ok:'تمت استعادة النسخة',
-      confirm_del_backup:'حذف هذه النسخة من السحابة؟',backup_deleted:'تم حذف النسخة',connect_fail:'تعذر الاتصال: {e}',google_blocked:'تعذر تحميل تسجيل الدخول من Google',cloud_title:'المزامنة',pulled:'تم استلام {n} تغيير من أجهزتك الأخرى',live_hint:'الوضع التلقائي الكامل: يفحص السحابة كل 30 ثانية أثناء فتح التطبيق، وينزّل تغييرات أجهزتك الأخرى مباشرة، ويرفع تغييراتك بعد ثوانٍ من التعديل. تسجيل دخول Google يدوم نحو ساعة؛ عند انتهائه اضغط في أي مكان مرة واحدة ليتجدد.',need_auth:'انتهى تسجيل دخول Google. اضغط في أي مكان في الصفحة مرة واحدة لتجديده وستكمل المزامنة تلقائيًا.',need_auth_short:'بانتظار تجديد تسجيل الدخول (اضغط في أي مكان)'},
-  en:{brand:'Debt Ledger',tagline:'Clear accounts… protected rights',nav_home:'Home',nav_customers:'Customers',nav_debts:'Debts',nav_payments:'Payments',nav_history:'History',nav_reports:'Reports',nav_settings:'Settings',
-      home_sub:'A quick summary of your accounts',add_debt:'＋ Add debt',total_balance:'Total remaining balance',customers_count:'Number of customers',new_customer:'＋ New customer',record_payment:'Record payment',recent:'Recent activity',
-      customers_sub:'Manage customers and their accounts',add_customer:'＋ Add customer',search_cust_ph:'Search by name or phone…',debts_sub:'All recorded debts',search_debt_ph:'Search by customer name…',
-      payments_sub:'Payments received from customers',add_payment:'＋ Record payment',history_title:'Transaction history',history_sub:'Chronological debts and payments',reports_sub:'Account activity summary',
-      total_debts:'Total debts',total_payments:'Total payments',remaining:'Remaining balance',cust_balances:'Customer balances',export_backup:'Export JSON backup',settings_sub:'Demo version settings',
-      appearance:'Appearance & language',theme:'Theme',light:'☀ Light',dark:'🌙 Dark',language:'Language',
-      data_saving:'Data storage',data_saving_txt:'Your data is stored locally in this browser. To save it in the cloud and sync it between your devices, open the Sync page (☁).',open_sync:'Open sync',download_backup:'Download backup',restore:'Restore backup',
-      wa_title:'WhatsApp reminders',wa_txt:'When you add a debt or record a payment, WhatsApp can open with a ready message for you to review and send manually. Nothing is sent automatically.',
-      about:'About',about_txt:'Debt Ledger — web demo. The APK app is not enabled in this version.',close:'Close',
-      debt_on:'Debt recorded for',pay_from:'Payment received from',customer:'Customer',no_tx:'No transactions yet',no_payments:'No payments recorded',history_empty:'History is empty',no_customers:'No customers',no_customers_add:'No customers. Add a new customer.',no_debts:'No debts recorded',
-      no_phone:'No phone',has_balance:'Has balance',settled:'Settled',details:'Details',edit_name:'Edit',del:'Delete',
-      add_cust_title:'Add customer',cust_name:'Customer name',full_name_ph:'Full name',phone_cc:'Phone number with country code',phone_ph:'e.g. 9639xxxxxxxx',pick_contact:'＋ Add from contacts',contact_hint:"If the contact picker doesn't appear on your device, type the name and number manually.",save_customer:'Save customer',
-      new_debt_title:'Add new debt',pay_title:'Record payment',search_name:'Search customer name',type_name_ph:'Type customer name...',selected:'Selected: ',amount:'Amount',currency:'Currency',due:'Due date',notes:'Notes',optional:'Optional',
-      wa_debt:'Open WhatsApp with a debt message',wa_pay:'Open WhatsApp to confirm the payment',save:'Save',cur_USD:'US Dollar ($)',cur_TRY:'Turkish Lira (₺)',cur_SYP:'Syrian Pound (SYP)',sym_SYP:'SYP',
-      edit_title:'Edit customer',phone:'Phone number',save_edit:'Save changes',type_to_search:'Type a customer name to see results',no_match:'No customer with this name',
-      profile:'Customer profile',no_phone_reg:'No phone number saved',edit_cust_data:'Edit customer',add_debt_for:'＋ Add debt for this customer',pay_for:'Record payment for this customer',acct_move:'{n} — account activity',no_tx_cust:'No transactions for this customer',close_profile:'Close profile',
-      t_add_first:'Add a customer first',t_enter_name:'Enter the customer name',t_saved_cust:'Customer saved',t_edited:'Customer updated',t_no_contacts:'Contact picker is not supported in this browser; enter details manually',t_contact_fail:'Could not read the contact; enter details manually',t_contact_ok:'Contact details loaded',
-      t_choose:'Choose a customer first',t_not_found:'Selected customer not found',t_bad_amount:'Enter a valid amount greater than zero',t_over:'Amount exceeds the remaining balance in this currency',t_debt_saved:'Debt recorded for customer: {n}',t_pay_saved:'Payment recorded for customer: {n}',
-      confirm_del:'Delete this customer and all their transactions? This cannot be undone.',t_deleted:'Deleted',t_restored:'Data restored and verified',t_bad_backup:'Invalid backup, or it contains transactions not linked to a customer',t_no_wa_phone:'No phone number saved for this customer',
-      wam_debt:'Hello {n}, a debt of {a} has been recorded. Please review your account.',wam_pay:'Hello {n}, we confirm receipt of a payment of {a}. Thank you.',pageTitle:'Debt Ledger',
-      /* sync */
-      sync_title:'Sync & backup',sync_sub:'Keep your data in a storage service you choose',choose_provider:'Choose where to save',
-      prov_local:'This device (file)',prov_local_d:'Download backup files and restore them manually. No setup needed.',
-      prov_gdrive_d:'A hidden app folder inside your Drive. Needs a Google Client ID.',prov_dropbox_d:'A private app folder inside your account. Needs a Dropbox App key.',
-      prov_mega_d:'Not available in the browser yet: MEGA has no safe sign-in for websites.',soon:'Soon',ready:'Ready',needs_setup:'Needs setup',
-      connect:'Connect',use_local:'Use files',cancel:'Cancel',google_cid:'Google Client ID',dropbox_key:'Dropbox App key',
-      g_hint:'Create a Web OAuth client in Google Cloud and add this site as an Authorized JavaScript origin:',
-      d_hint:'Create a Dropbox app with App folder access, enable files.metadata.read, files.content.read and files.content.write, then register this as a Redirect URI:',
-      need_id:'Enter the ID first',need_https:"Cloud sign-in doesn't work when the file is opened directly. Run the app from https:// or http://localhost (e.g. GitHub Pages).",
-      connected_to:'Connected to {p}',change_provider:'Change provider',disconnect:'Disconnect',sync_now:'Sync now',backup_now:'Back up now',
-      last_sync:'Last sync: {t}',never:'Not synced yet',syncing:'Syncing…',s_err:'Sync failed: {e}',sync_done:'Synced',backup_done:'Backup uploaded',up_to_date:'Everything is up to date',
-      sync_hint:'"Sync" merges this device with the latest cloud copy, then uploads the result. "Back up" uploads a copy of this device only.',
-      schedule:'When to back up & how many to keep',auto_mode:'Automatic sync',am_manual:'Manual only',am_open:'When the app opens',am_live:'Fully automatic (recommended)',am_interval:'Every set interval',every_min:'Every (minutes)',keep_n:'Backups to keep',keep_hint:'Older backups are deleted automatically. Automatic modes also sync when the app opens or you return to it.',
-      history:'Saved backups',refresh:'Refresh',loading:'Loading…',restore_btn:'Restore',no_backups:'No backups in the cloud yet',confirm_restore:'Replace this device’s data with this backup?',restored_ok:'Backup restored',
-      confirm_del_backup:'Delete this backup from the cloud?',backup_deleted:'Backup deleted',connect_fail:'Could not connect: {e}',google_blocked:'Could not load Google sign-in',cloud_title:'Sync',pulled:'Received {n} change(s) from your other devices',live_hint:'Fully automatic: checks the cloud every 30 seconds while the app is open, downloads changes from your other devices right away, and uploads yours a few seconds after you edit. Google sign-in lasts about an hour; when it expires, tap anywhere once to renew it.',need_auth:'Your Google sign-in expired. Tap anywhere on the page once to renew it and syncing will continue automatically.',need_auth_short:'Waiting to renew sign-in (tap anywhere)'}
-  };
-  let lang='ar',theme='light';
-  try{lang=localStorage.getItem(LKEY)==='en'?'en':'ar'}catch{}
-  try{const s=localStorage.getItem(TKEY);theme=s||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{}
-  const t=(k,v)=>{let s=I18N[lang][k]??k;if(v)for(const x in v)s=s.replace('{'+x+'}',v[x]);return s};
+ar:{brand:'دفتر الديون',tagline:'حساباتك واضحة… وحقوقك محفوظة',nav_home:'الرئيسية',nav_customers:'الزبائن',nav_debts:'الديون',nav_payments:'الدفعات',nav_history:'السجل',nav_reports:'التقارير',nav_settings:'الإعدادات',
+home_sub:'ملخص سريع لحساباتك',add_debt:'＋ إضافة دين',total_balance:'إجمالي الرصيد المتبقي',customers_count:'عدد الزبائن',new_customer:'＋ زبون جديد',record_payment:'تسجيل دفعة',recent:'آخر العمليات',
+customers_sub:'إدارة بيانات الزبائن وحساباتهم',add_customer:'＋ إضافة زبون',search_cust_ph:'ابحث بالاسم أو الهاتف…',debts_sub:'كل الديون المسجلة',search_debt_ph:'ابحث باسم الزبون…',
+payments_sub:'الدفعات المستلمة من الزبائن',add_payment:'＋ تسجيل دفعة',history_title:'سجل العمليات',history_sub:'تسلسل الديون والدفعات',reports_sub:'ملخص حركة الحسابات',
+total_debts:'إجمالي الديون',total_payments:'إجمالي الدفعات',remaining:'الرصيد المتبقي',cust_balances:'أرصدة الزبائن',export_backup:'تصدير نسخة احتياطية JSON',settings_sub:'إعدادات النسخة التجريبية',
+appearance:'المظهر واللغة',theme:'السمة',light:'☀ فاتح',dark:'🌙 داكن',language:'اللغة',
+data_saving:'حفظ البيانات',data_saving_txt:'تُحفظ بياناتك محليًا داخل المتصفح. لحفظها في السحابة ومزامنتها بين أجهزتك افتح صفحة المزامنة (☁).',open_sync:'فتح المزامنة',download_backup:'تنزيل نسخة احتياطية',restore:'استعادة نسخة',
+wa_title:'تذكيرات واتساب',wa_txt:'عند إضافة دين أو تسجيل دفعة، يمكن فتح واتساب برسالة جاهزة لمراجعتها وإرسالها يدويًا. لا يتم الإرسال تلقائيًا.',
+about:'حول التطبيق',about_txt:'دفتر الديون — نموذج تجريبي للويب. تطبيق APK غير مفعّل في هذه النسخة.',close:'إغلاق',
+debt_on:'تم تسجيل دين على',pay_from:'تم تسديد دفعة من',customer:'زبون',no_tx:'لا توجد عمليات حتى الآن',no_payments:'لا توجد دفعات مسجلة',history_empty:'السجل فارغ',no_customers:'لا يوجد زبائن',no_customers_add:'لا يوجد زبائن. أضف زبونًا جديدًا.',no_debts:'لا توجد ديون مسجلة',
+no_phone:'لا يوجد هاتف',has_balance:'عليه رصيد',settled:'مسدد',details:'تفاصيل',edit_name:'تعديل الاسم',del:'حذف',
+add_cust_title:'إضافة زبون',cust_name:'اسم الزبون',full_name_ph:'الاسم الكامل',phone_cc:'رقم الهاتف مع رمز الدولة',phone_ph:'مثال: 9639xxxxxxxx',pick_contact:'＋ إضافة من جهات الاتصال',contact_hint:'إذا لم يظهر اختيار جهات الاتصال على جهازك، اكتب الاسم والرقم يدويًا.',save_customer:'حفظ الزبون',
+new_debt_title:'إضافة دين جديد',pay_title:'تسجيل دفعة',search_name:'البحث عن اسم الزبون',type_name_ph:'اكتب اسم الزبون...',selected:'تم اختيار: ',amount:'المبلغ',currency:'العملة',due:'تاريخ الاستحقاق',notes:'ملاحظات',optional:'اختياري',
+wa_debt:'فتح واتساب برسالة تسجيل الدين',wa_pay:'فتح واتساب لتأكيد استلام الدفعة',save:'حفظ',cur_USD:'دولار أمريكي ($)',cur_TRY:'ليرة تركية (₺)',cur_SYP:'ليرة سورية (ل.س)',sym_SYP:'ل.س',
+edit_title:'تعديل بيانات الزبون',phone:'رقم الهاتف',save_edit:'حفظ التعديل',type_to_search:'اكتب اسم الزبون لعرض النتائج',no_match:'لا يوجد زبون بهذا الاسم',
+profile:'ملف الزبون',no_phone_reg:'لا يوجد هاتف مسجل',edit_cust_data:'تعديل بيانات الزبون',add_debt_for:'＋ إضافة دين لهذا الزبون',pay_for:'تسجيل دفعة لهذا الزبون',acct_move:'حركة حساب {n}',no_tx_cust:'لا توجد عمليات مسجلة لهذا الزبون',close_profile:'إغلاق الملف',
+t_add_first:'أضف زبونًا أولًا',t_enter_name:'اكتب اسم الزبون',t_saved_cust:'تم حفظ الزبون',t_edited:'تم تعديل بيانات الزبون',t_no_contacts:'اختيار جهات الاتصال غير مدعوم في هذا المتصفح؛ أدخل البيانات يدويًا',t_contact_fail:'تعذر قراءة جهة الاتصال؛ أدخل البيانات يدويًا',t_contact_ok:'تم جلب بيانات جهة الاتصال',
+t_choose:'اختر الزبون أولًا',t_not_found:'الزبون المحدد غير موجود',t_bad_amount:'أدخل مبلغًا صحيحًا أكبر من صفر',t_over:'المبلغ أكبر من الرصيد المتبقي بهذه العملة',t_debt_saved:'تم تسجيل دين باسم الزبون: {n}',t_pay_saved:'تم تسجيل دفعة باسم الزبون: {n}',
+confirm_del:'حذف الزبون وكل عملياته؟ لا يمكن التراجع.',t_deleted:'تم الحذف',t_restored:'تمت استعادة البيانات والتحقق منها',t_bad_backup:'النسخة غير صالحة أو تحتوي على عمليات غير مرتبطة بزبون',t_no_wa_phone:'لا يوجد رقم هاتف مسجل لهذا الزبون',
+wam_debt:'مرحبًا {n}، تم تسجيل دين بقيمة {a}. يرجى مراجعة الحساب.',wam_pay:'مرحبًا {n}، تم تأكيد استلام دفعة بقيمة {a}. شكرًا لك.',pageTitle:'دفتر الديون',
+/* sync */
+sync_title:'المزامنة والنسخ الاحتياطي',sync_sub:'احفظ بياناتك في خدمة تخزين تختارها',choose_provider:'اختر مكان الحفظ',
+prov_local:'هذا الجهاز (ملف)',prov_local_d:'نزّل ملف النسخة الاحتياطية واستعده يدويًا. لا يحتاج إعدادًا.',
+prov_gdrive_d:'مجلد مخفي خاص بالتطبيق داخل حسابك. يحتاج Client ID من Google.',prov_dropbox_d:'مجلد خاص بالتطبيق داخل حسابك. يحتاج App key من Dropbox.',
+prov_mega_d:'غير متاح في المتصفح حاليًا: MEGA لا يوفّر تسجيل دخول آمن للمواقع.',soon:'قريبًا',ready:'جاهز',needs_setup:'يحتاج إعدادًا',
+connect:'اتصال',use_local:'استخدام الملفات',cancel:'إلغاء',google_cid:'Google Client ID',dropbox_key:'Dropbox App key',
+g_hint:'أنشئ OAuth Client من نوع Web في Google Cloud وأضف عنوان موقعك كـ Authorized JavaScript origin:',
+d_hint:'أنشئ تطبيقًا في Dropbox بصلاحية App folder، وفعّل الصلاحيات files.metadata.read وfiles.content.read وfiles.content.write، ثم سجّل هذا العنوان كـ Redirect URI:',
+need_id:'أدخل المعرّف أولًا',need_https:'تسجيل الدخول السحابي لا يعمل عند فتح الملف مباشرة. شغّل التطبيق عبر https:// أو http://localhost (مثل GitHub Pages).',
+connected_to:'متصل بـ {p}',switch_account:'تبديل الحساب',disconnect_msg:'سيتم تسجيل الخروج، وستُخفى بيانات هذا الحساب من هذا الجهاز. تبقى محفوظة في Google Drive وتعود عند تسجيل الدخول بنفس الحساب.',acct_hint:'لكل حساب بياناته الخاصة: عند تبديل الحساب تختفي بيانات الحساب الحالي وتُحمَّل بيانات الحساب الجديد فقط.',wrong_account:'سجّلت الدخول بحساب مختلف. المطلوب: {a}',no_email:'تعذّر قراءة بريد الحساب',change_provider:'تغيير الخدمة',disconnect:'قطع الاتصال',sync_now:'مزامنة الآن',backup_now:'نسخ احتياطي الآن',
+last_sync:'آخر مزامنة: {t}',never:'لم تتم مزامنة بعد',syncing:'جارٍ المزامنة…',s_err:'فشلت المزامنة: {e}',sync_done:'تمت المزامنة',backup_done:'تم رفع النسخة الاحتياطية',up_to_date:'كل شيء محدّث',
+sync_hint:'«مزامنة» تدمج بيانات هذا الجهاز مع آخر نسخة في السحابة ثم ترفع النتيجة. «نسخ احتياطي» يرفع نسخة من هذا الجهاز فقط.',
+schedule:'متى ننسخ وكم نحتفظ',auto_mode:'المزامنة التلقائية',am_manual:'يدويًا فقط',am_open:'عند فتح التطبيق',am_live:'تلقائي كامل (موصى به)',am_interval:'كل فترة زمنية',every_min:'كل (دقيقة)',keep_n:'عدد النسخ المحفوظة',keep_hint:'تُحذف النسخ الأقدم تلقائيًا. الخيارات التلقائية تزامن أيضًا عند فتح التطبيق أو العودة إليه.',
+history:'النسخ المحفوظة',refresh:'تحديث',loading:'جارٍ التحميل…',restore_btn:'استعادة',no_backups:'لا توجد نسخ في السحابة بعد',confirm_restore:'استبدال بيانات هذا الجهاز بهذه النسخة؟',restored_ok:'تمت استعادة النسخة',
+confirm_del_backup:'حذف هذه النسخة من السحابة؟',backup_deleted:'تم حذف النسخة',connect_fail:'تعذر الاتصال: {e}',google_blocked:'تعذر تحميل تسجيل الدخول من Google',cloud_title:'المزامنة',pulled:'تم استلام {n} تغيير من أجهزتك الأخرى',live_hint:'الوضع التلقائي الكامل: يفحص السحابة كل 30 ثانية أثناء فتح التطبيق، وينزّل تغييرات أجهزتك الأخرى مباشرة، ويرفع تغييراتك بعد ثوانٍ من التعديل. تسجيل دخول Google يدوم نحو ساعة؛ عند انتهائه اضغط في أي مكان مرة واحدة ليتجدد.',need_auth:'انتهى تسجيل دخول Google. اضغط في أي مكان في الصفحة مرة واحدة لتجديده وستكمل المزامنة تلقائيًا.',need_auth_short:'بانتظار تجديد تسجيل الدخول (اضغط في أي مكان)'},
+en:{brand:'Debt Ledger',tagline:'Clear accounts… protected rights',nav_home:'Home',nav_customers:'Customers',nav_debts:'Debts',nav_payments:'Payments',nav_history:'History',nav_reports:'Reports',nav_settings:'Settings',
+home_sub:'A quick summary of your accounts',add_debt:'＋ Add debt',total_balance:'Total remaining balance',customers_count:'Number of customers',new_customer:'＋ New customer',record_payment:'Record payment',recent:'Recent activity',
+customers_sub:'Manage customers and their accounts',add_customer:'＋ Add customer',search_cust_ph:'Search by name or phone…',debts_sub:'All recorded debts',search_debt_ph:'Search by customer name…',
+payments_sub:'Payments received from customers',add_payment:'＋ Record payment',history_title:'Transaction history',history_sub:'Chronological debts and payments',reports_sub:'Account activity summary',
+total_debts:'Total debts',total_payments:'Total payments',remaining:'Remaining balance',cust_balances:'Customer balances',export_backup:'Export JSON backup',settings_sub:'Demo version settings',
+appearance:'Appearance & language',theme:'Theme',light:'☀ Light',dark:'🌙 Dark',language:'Language',
+data_saving:'Data storage',data_saving_txt:'Your data is stored locally in this browser. To save it in the cloud and sync it between your devices, open the Sync page (☁).',open_sync:'Open sync',download_backup:'Download backup',restore:'Restore backup',
+wa_title:'WhatsApp reminders',wa_txt:'When you add a debt or record a payment, WhatsApp can open with a ready message for you to review and send manually. Nothing is sent automatically.',
+about:'About',about_txt:'Debt Ledger — web demo. The APK app is not enabled in this version.',close:'Close',
+debt_on:'Debt recorded for',pay_from:'Payment received from',customer:'Customer',no_tx:'No transactions yet',no_payments:'No payments recorded',history_empty:'History is empty',no_customers:'No customers',no_customers_add:'No customers. Add a new customer.',no_debts:'No debts recorded',
+no_phone:'No phone',has_balance:'Has balance',settled:'Settled',details:'Details',edit_name:'Edit',del:'Delete',
+add_cust_title:'Add customer',cust_name:'Customer name',full_name_ph:'Full name',phone_cc:'Phone number with country code',phone_ph:'e.g. 9639xxxxxxxx',pick_contact:'＋ Add from contacts',contact_hint:"If the contact picker doesn't appear on your device, type the name and number manually.",save_customer:'Save customer',
+new_debt_title:'Add new debt',pay_title:'Record payment',search_name:'Search customer name',type_name_ph:'Type customer name...',selected:'Selected: ',amount:'Amount',currency:'Currency',due:'Due date',notes:'Notes',optional:'Optional',
+wa_debt:'Open WhatsApp with a debt message',wa_pay:'Open WhatsApp to confirm the payment',save:'Save',cur_USD:'US Dollar ($)',cur_TRY:'Turkish Lira (₺)',cur_SYP:'Syrian Pound (SYP)',sym_SYP:'SYP',
+edit_title:'Edit customer',phone:'Phone number',save_edit:'Save changes',type_to_search:'Type a customer name to see results',no_match:'No customer with this name',
+profile:'Customer profile',no_phone_reg:'No phone number saved',edit_cust_data:'Edit customer',add_debt_for:'＋ Add debt for this customer',pay_for:'Record payment for this customer',acct_move:'{n} — account activity',no_tx_cust:'No transactions for this customer',close_profile:'Close profile',
+t_add_first:'Add a customer first',t_enter_name:'Enter the customer name',t_saved_cust:'Customer saved',t_edited:'Customer updated',t_no_contacts:'Contact picker is not supported in this browser; enter details manually',t_contact_fail:'Could not read the contact; enter details manually',t_contact_ok:'Contact details loaded',
+t_choose:'Choose a customer first',t_not_found:'Selected customer not found',t_bad_amount:'Enter a valid amount greater than zero',t_over:'Amount exceeds the remaining balance in this currency',t_debt_saved:'Debt recorded for customer: {n}',t_pay_saved:'Payment recorded for customer: {n}',
+confirm_del:'Delete this customer and all their transactions? This cannot be undone.',t_deleted:'Deleted',t_restored:'Data restored and verified',t_bad_backup:'Invalid backup, or it contains transactions not linked to a customer',t_no_wa_phone:'No phone number saved for this customer',
+wam_debt:'Hello {n}, a debt of {a} has been recorded. Please review your account.',wam_pay:'Hello {n}, we confirm receipt of a payment of {a}. Thank you.',pageTitle:'Debt Ledger',
+/* sync */
+sync_title:'Sync & backup',sync_sub:'Keep your data in a storage service you choose',choose_provider:'Choose where to save',
+prov_local:'This device (file)',prov_local_d:'Download backup files and restore them manually. No setup needed.',
+prov_gdrive_d:'A hidden app folder inside your Drive. Needs a Google Client ID.',prov_dropbox_d:'A private app folder inside your account. Needs a Dropbox App key.',
+prov_mega_d:'Not available in the browser yet: MEGA has no safe sign-in for websites.',soon:'Soon',ready:'Ready',needs_setup:'Needs setup',
+connect:'Connect',use_local:'Use files',cancel:'Cancel',google_cid:'Google Client ID',dropbox_key:'Dropbox App key',
+g_hint:'Create a Web OAuth client in Google Cloud and add this site as an Authorized JavaScript origin:',
+d_hint:'Create a Dropbox app with App folder access, enable files.metadata.read, files.content.read and files.content.write, then register this as a Redirect URI:',
+need_id:'Enter the ID first',need_https:"Cloud sign-in doesn't work when the file is opened directly. Run the app from https:// or http://localhost (e.g. GitHub Pages).",
+connected_to:'Connected to {p}',switch_account:'Switch account',disconnect_msg:'You will be signed out and this account\'s data will be hidden on this device. It stays safe in Google Drive and comes back when you sign in with the same account.',acct_hint:"Every account has its own data: when you switch accounts, the current account's data disappears and only the new account's data is loaded.",wrong_account:'You signed in with a different account. Expected: {a}',no_email:'Could not read the account email',change_provider:'Change provider',disconnect:'Disconnect',sync_now:'Sync now',backup_now:'Back up now',
+last_sync:'Last sync: {t}',never:'Not synced yet',syncing:'Syncing…',s_err:'Sync failed: {e}',sync_done:'Synced',backup_done:'Backup uploaded',up_to_date:'Everything is up to date',
+sync_hint:'"Sync" merges this device with the latest cloud copy, then uploads the result. "Back up" uploads a copy of this device only.',
+schedule:'When to back up & how many to keep',auto_mode:'Automatic sync',am_manual:'Manual only',am_open:'When the app opens',am_live:'Fully automatic (recommended)',am_interval:'Every set interval',every_min:'Every (minutes)',keep_n:'Backups to keep',keep_hint:'Older backups are deleted automatically. Automatic modes also sync when the app opens or you return to it.',
+history:'Saved backups',refresh:'Refresh',loading:'Loading…',restore_btn:'Restore',no_backups:'No backups in the cloud yet',confirm_restore:'Replace this device’s data with this backup?',restored_ok:'Backup restored',
+confirm_del_backup:'Delete this backup from the cloud?',backup_deleted:'Backup deleted',connect_fail:'Could not connect: {e}',google_blocked:'Could not load Google sign-in',cloud_title:'Sync',pulled:'Received {n} change(s) from your other devices',live_hint:'Fully automatic: checks the cloud every 30 seconds while the app is open, downloads changes from your other devices right away, and uploads yours a few seconds after you edit. Google sign-in lasts about an hour; when it expires, tap anywhere once to renew it.',need_auth:'Your Google sign-in expired. Tap anywhere on the page once to renew it and syncing will continue automatically.',need_auth_short:'Waiting to renew sign-in (tap anywhere)'}
+};
+let lang='ar',theme='light';
+try{lang=localStorage.getItem(LKEY)==='en'?'en':'ar'}catch{}
+try{const s=localStorage.getItem(TKEY);theme=s||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{}
+const t=(k,v)=>{let s=I18N[lang][k]??k;if(v)for(const x in v)s=s.replace('{'+x+'}',v[x]);return s};
 function applyTheme(){document.documentElement.dataset.theme=theme;document.querySelector('meta[name=theme-color]').content=theme==='dark'?'#4e241a':'#a6533d';$('themeBtn').textContent=theme==='dark'?'☀':'🌙';$('thLight').classList.toggle('on',theme==='light');$('thDark').classList.toggle('on',theme==='dark')}
 function setTheme(x){theme=x;try{localStorage.setItem(TKEY,x)}catch{}applyTheme()}
 function toggleTheme(){setTheme(theme==='dark'?'light':'dark')}
 function applyStatic(){const h=document.documentElement;h.lang=lang;h.dir=lang==='ar'?'rtl':'ltr';document.title=t('pageTitle');
-                       document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=t(e.dataset.i18n));
-                       document.querySelectorAll('[data-i18n-ph]').forEach(e=>e.placeholder=t(e.dataset.i18nPh));
-                       $('date').textContent=new Date().toLocaleDateString(lang==='ar'?'ar':'en-US');$('langBtn').textContent=lang==='ar'?'EN':'عربي';$('cloudBtn').title=t('cloud_title');
-                       $('lgAr').classList.toggle('on',lang==='ar');$('lgEn').classList.toggle('on',lang==='en')}
+ document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=t(e.dataset.i18n));
+ document.querySelectorAll('[data-i18n-ph]').forEach(e=>e.placeholder=t(e.dataset.i18nPh));
+ $('date').textContent=new Date().toLocaleDateString(lang==='ar'?'ar':'en-US');$('langBtn').textContent=lang==='ar'?'EN':'عربي';$('cloudBtn').title=t('cloud_title');
+ $('lgAr').classList.toggle('on',lang==='ar');$('lgEn').classList.toggle('on',lang==='en')}
 function setLang(x){lang=x;try{localStorage.setItem(LKEY,x)}catch{}closeModal();applyStatic();render();renderSync(true)}
 function toggleLang(){setLang(lang==='ar'?'en':'ar')}
 /* ---------- data ---------- */
@@ -189,17 +189,20 @@ document.addEventListener('focusin',e=>{if(e.target.matches('input,select,textar
 const cents=n=>{const v=Number(n);return Number.isFinite(v)?Math.round((v+Number.EPSILON)*100):0};
 const money=n=>cents(n)/100;
 function sanitize(d){
-  const people=(Array.isArray(d?.people)?d.people:[]).filter(p=>p&&p.id!=null&&String(p.name||'').trim()).map(p=>({...p,id:String(p.id),name:String(p.name).trim(),phone:String(p.phone||''),u:Number(p.u)||0}));
-  const ids=new Set(people.map(p=>p.id));
-  const tx=(Array.isArray(d?.tx)?d.tx:[]).filter(x=>x&&x.id!=null&&ids.has(String(x.person))&&['debt','payment'].includes(x.kind)&&cents(x.amount)>0).map(x=>({...x,id:String(x.id),person:String(x.person),amount:money(Math.abs(Number(x.amount))),currency:['USD','TRY','SYP'].includes(x.currency)?x.currency:'SYP',date:String(x.date||new Date().toISOString().slice(0,10)),u:Number(x.u)||0}));
-  const del=(Array.isArray(d?.del)?d.del:[]).filter(x=>x&&x.id!=null).map(x=>({id:String(x.id),u:Number(x.u)||0}));
-  return{people,tx,del};
+ const people=(Array.isArray(d?.people)?d.people:[]).filter(p=>p&&p.id!=null&&String(p.name||'').trim()).map(p=>({...p,id:String(p.id),name:String(p.name).trim(),phone:String(p.phone||''),u:Number(p.u)||0}));
+ const ids=new Set(people.map(p=>p.id));
+ const tx=(Array.isArray(d?.tx)?d.tx:[]).filter(x=>x&&x.id!=null&&ids.has(String(x.person))&&['debt','payment'].includes(x.kind)&&cents(x.amount)>0).map(x=>({...x,id:String(x.id),person:String(x.person),amount:money(Math.abs(Number(x.amount))),currency:['USD','TRY','SYP'].includes(x.currency)?x.currency:'SYP',date:String(x.date||new Date().toISOString().slice(0,10)),u:Number(x.u)||0}));
+ const del=(Array.isArray(d?.del)?d.del:[]).filter(x=>x&&x.id!=null).map(x=>({id:String(x.id),u:Number(x.u)||0}));
+ return{people,tx,del};
 }
-let db;
-try{db=JSON.parse(localStorage.getItem(KEY)||'null')}catch{db=null}
-db=sanitize(db);
+/* Every Google account has its own data set (its own localStorage key); without an account the "guest" set (KEY) is used. */
+const ACCP='daftar_acct_',accKey=e=>ACCP+String(e).trim().toLowerCase();
+let curKey=KEY;
+try{const c0=JSON.parse(localStorage.getItem(CKEY)||'{}');if(c0.provider==='gdrive'&&c0.acct)curKey=accKey(c0.acct)}catch{}
+const readSlot=k=>{try{return sanitize(JSON.parse(localStorage.getItem(k)||'null'))}catch{return sanitize(null)}};
+let db=readSlot(curKey);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const persist=()=>localStorage.setItem(KEY,JSON.stringify(db));
+const persist=()=>localStorage.setItem(curKey,JSON.stringify(db));
 let dirty=false;
 const save=()=>{persist();dirty=true;scheduleAuto()};
 const person=id=>db.people.find(p=>String(p.id)===String(id));
@@ -218,22 +221,22 @@ function toast(s){let e=$('toast');e.textContent=s;e.style.display='block';clear
 function go(id,btn){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));(btn||document.querySelector(`nav button[data-screen="${id}"]`))?.classList.add('active');window.scrollTo(0,0);render();if(id==='sync'){renderSync(true);if(cloudP()&&hist===null)loadHistory()}}
 function item(x){let p=person(x.person);return `<div class="item"><div><strong>${x.kind==='debt'?t('debt_on'):t('pay_from')} ${esc(p?.name||t('customer'))}</strong><div class="muted">${esc(x.date)}${x.note?' · '+esc(x.note):''}</div></div><div class="amount" style="color:${x.kind==='debt'?'var(--red)':'var(--green)'}">${x.kind==='debt'?'+':'−'} ${fmt(x.amount,currencyOf(x))}</div></div>`}
 function render(){
-  $('sumDebt').textContent=formatTotals(c=>db.people.reduce((sum,p)=>sum+Math.max(0,balanceCents(p.id,c)),0)/100);$('sumCustomers').textContent=db.people.length.toLocaleString(lang==='ar'?'ar':'en-US');
-  $('recent').innerHTML=db.tx.length?[...db.tx].reverse().map(item).join(''):`<div class="empty">${t('no_tx')}</div>`;
-  renderCustomers();renderDebts();
-  $('paymentList').innerHTML=db.tx.filter(x=>x.kind==='payment').reverse().map(item).join('')||`<div class="empty">${t('no_payments')}</div>`;
-  $('historyList').innerHTML=[...db.tx].reverse().map(item).join('')||`<div class="empty">${t('history_empty')}</div>`;
-  $('rDebt').textContent=formatTotals(c=>total('debt',c));$('rPaid').textContent=formatTotals(c=>total('payment',c));$('rBalance').textContent=formatTotals(c=>db.people.reduce((sum,p)=>sum+Math.max(0,balanceCents(p.id,c)),0)/100);
-  $('reportPeople').innerHTML=db.people.map(p=>`<div class="item row-item"><div><strong>${esc(p.name)}</strong><div class="muted">${esc(p.phone||t('no_phone'))}</div></div><b>${balanceSummary(p.id)}</b></div>`).join('')||`<div class="empty">${t('no_customers')}</div>`;
-  }
+ $('sumDebt').textContent=formatTotals(c=>db.people.reduce((sum,p)=>sum+Math.max(0,balanceCents(p.id,c)),0)/100);$('sumCustomers').textContent=db.people.length.toLocaleString(lang==='ar'?'ar':'en-US');
+ $('recent').innerHTML=db.tx.length?[...db.tx].reverse().map(item).join(''):`<div class="empty">${t('no_tx')}</div>`;
+ renderCustomers();renderDebts();
+ $('paymentList').innerHTML=db.tx.filter(x=>x.kind==='payment').reverse().map(item).join('')||`<div class="empty">${t('no_payments')}</div>`;
+ $('historyList').innerHTML=[...db.tx].reverse().map(item).join('')||`<div class="empty">${t('history_empty')}</div>`;
+ $('rDebt').textContent=formatTotals(c=>total('debt',c));$('rPaid').textContent=formatTotals(c=>total('payment',c));$('rBalance').textContent=formatTotals(c=>db.people.reduce((sum,p)=>sum+Math.max(0,balanceCents(p.id,c)),0)/100);
+ $('reportPeople').innerHTML=db.people.map(p=>`<div class="item row-item"><div><strong>${esc(p.name)}</strong><div class="muted">${esc(p.phone||t('no_phone'))}</div></div><b>${balanceSummary(p.id)}</b></div>`).join('')||`<div class="empty">${t('no_customers')}</div>`;
+}
 function renderCustomers(){let q=($('customerSearch')?.value||'').toLowerCase();let a=db.people.filter(p=>(p.name+' '+p.phone).toLowerCase().includes(q));$('customerList').innerHTML=a.map(p=>`<div class="item row-item"><div><strong>${esc(p.name)}</strong><div class="muted">${esc(p.phone||t('no_phone'))}</div><span class="badge ${hasBalance(p.id)?'':'green'}">${hasBalance(p.id)?t('has_balance'):t('settled')}</span></div><div style="text-align:end"><b class="amount">${balanceSummary(p.id)}</b><div style="margin-top:7px"><button class="btn small light" onclick="details('${p.id}')">${t('details')}</button> <button class="btn small soft" onclick="editPerson('${p.id}')">${t('edit_name')}</button> <button class="btn small red" onclick="deletePerson('${p.id}')">${t('del')}</button></div></div></div>`).join('')||`<div class="empty">${t('no_customers_add')}</div>`}
 function renderDebts(){let q=($('debtSearch')?.value||'').toLowerCase();let a=db.tx.filter(x=>x.kind==='debt'&&(person(x.person)?.name||'').toLowerCase().includes(q));$('debtList').innerHTML=[...a].reverse().map(item).join('')||`<div class="empty">${t('no_debts')}</div>`}
 function openModal(title,body){$('modal').querySelector('.dialog').classList.remove('profile-page');$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modal').classList.add('show')}
 function closeModal(){$('modal').classList.remove('show')}
 function openForm(type,selectedId=''){if((type==='debt'||type==='payment')&&!db.people.length){toast(t('t_add_first'));openForm('person');return}
-                                      if(type==='person')openModal(t('add_cust_title'),`<div class="field"><label>${t('cust_name')}</label><input id="name" placeholder="${t('full_name_ph')}"></div><div class="field"><label>${t('phone_cc')}</label><input id="phone" dir="ltr" placeholder="${t('phone_ph')}"></div><div class="actions"><button type="button" class="btn light" onclick="pickContact()">${t('pick_contact')}</button></div><div class="muted">${t('contact_hint')}</div><div class="row"><button class="btn" onclick="addPerson()">${t('save_customer')}</button></div>`);
-                                      if(type==='debt'||type==='payment'){let debt=type==='debt';openModal(debt?t('new_debt_title'):t('pay_title'),`<div class="field"><label>${t('search_name')}</label><input id="personSearch" type="search" autocomplete="off" value="${selectedId?esc(person(selectedId)?.name||''):''}" placeholder="${t('type_name_ph')}" oninput="filterPeopleOptions()"><input id="who" type="hidden" value="${selectedId}"><div id="personSearchResults" class="list" style="margin-top:8px"></div><div id="selectedPerson" class="muted" style="margin-top:6px">${selectedId?t('selected')+esc(person(selectedId)?.name||''):''}</div></div><div class="field"><label>${t('amount')}</label><input id="amount" type="number" min="0.01" step="0.01" placeholder="0"></div><div class="field"><label>${t('currency')}</label><select id="currency"><option value="USD">${t('cur_USD')}</option><option value="TRY">${t('cur_TRY')}</option><option value="SYP" selected>${t('cur_SYP')}</option></select></div>${debt?`<div class="field"><label>${t('due')}</label><input id="due" type="date"></div>`:''}<div class="field"><label>${t('notes')}</label><input id="note" placeholder="${t('optional')}"></div><label class="check"><input id="wa" type="checkbox" checked> ${debt?t('wa_debt'):t('wa_pay')}</label><div class="row"><button class="btn ${debt?'':'green'}" onclick="saveTx('${type}')">${t('save')}</button></div>`)}
-                                      }
+ if(type==='person')openModal(t('add_cust_title'),`<div class="field"><label>${t('cust_name')}</label><input id="name" placeholder="${t('full_name_ph')}"></div><div class="field"><label>${t('phone_cc')}</label><input id="phone" dir="ltr" placeholder="${t('phone_ph')}"></div><div class="actions"><button type="button" class="btn light" onclick="pickContact()">${t('pick_contact')}</button></div><div class="muted">${t('contact_hint')}</div><div class="row"><button class="btn" onclick="addPerson()">${t('save_customer')}</button></div>`);
+ if(type==='debt'||type==='payment'){let debt=type==='debt';openModal(debt?t('new_debt_title'):t('pay_title'),`<div class="field"><label>${t('search_name')}</label><input id="personSearch" type="search" autocomplete="off" value="${selectedId?esc(person(selectedId)?.name||''):''}" placeholder="${t('type_name_ph')}" oninput="filterPeopleOptions()"><input id="who" type="hidden" value="${selectedId}"><div id="personSearchResults" class="list" style="margin-top:8px"></div><div id="selectedPerson" class="muted" style="margin-top:6px">${selectedId?t('selected')+esc(person(selectedId)?.name||''):''}</div></div><div class="field"><label>${t('amount')}</label><input id="amount" type="number" min="0.01" step="0.01" placeholder="0"></div><div class="field"><label>${t('currency')}</label><select id="currency"><option value="USD">${t('cur_USD')}</option><option value="TRY">${t('cur_TRY')}</option><option value="SYP" selected>${t('cur_SYP')}</option></select></div>${debt?`<div class="field"><label>${t('due')}</label><input id="due" type="date"></div>`:''}<div class="field"><label>${t('notes')}</label><input id="note" placeholder="${t('optional')}"></div><label class="check"><input id="wa" type="checkbox" checked> ${debt?t('wa_debt'):t('wa_pay')}</label><div class="row"><button class="btn ${debt?'':'green'}" onclick="saveTx('${type}')">${t('save')}</button></div>`)}
+}
 function editPerson(id){let p=person(id);if(!p)return;openModal(t('edit_title'),`<div class="field"><label>${t('cust_name')}</label><input id="editName" value="${esc(p.name)}"></div><div class="field"><label>${t('phone')}</label><input id="editPhone" dir="ltr" value="${esc(p.phone||'')}"></div><div class="row"><button class="btn" onclick="savePersonEdit('${id}')">${t('save_edit')}</button></div>`)}
 function savePersonEdit(id){let p=person(id);if(!p)return;let name=$('editName').value.trim();if(!name)return toast(t('t_enter_name'));p.name=name;p.phone=$('editPhone').value.trim();p.u=Date.now();save();closeModal();render();toast(t('t_edited'))}
 async function pickContact(){if(!('contacts' in navigator)||!navigator.contacts?.select){toast(t('t_no_contacts'));return}try{let rows=await navigator.contacts.select(['name','tel'],{multiple:false});if(!rows.length)return;let c=rows[0];$('name').value=(c.name||[])[0]||'';$('phone').value=(c.tel||[])[0]||'';toast(t('t_contact_ok'))}catch(e){if(e.name!=='AbortError')toast(t('t_contact_fail'))}}
@@ -251,27 +254,29 @@ const stable=x=>JSON.stringify(x,(k,v)=>v&&typeof v==='object'&&!Array.isArray(v
 const byId=(a,b)=>a.id<b.id?-1:a.id>b.id?1:0;
 const canon=d=>({people:[...d.people].sort(byId),tx:[...d.tx].sort(byId),del:[...d.del].sort(byId)});
 function mergeDB(a,b){
-  const tomb=new Map();
-  for(const d of [...a.del,...b.del]){if((tomb.get(d.id)??-1)<d.u)tomb.set(d.id,d.u)}
-  const pick=list=>{const m=new Map();for(const r of list){const o=m.get(r.id);if(!o||r.u>o.u)m.set(r.id,r)}return [...m.values()].filter(r=>!(tomb.has(r.id)&&tomb.get(r.id)>=r.u))};
-const people=pick([...a.people,...b.people]);const ids=new Set(people.map(p=>p.id));
-const tx=pick([...a.tx,...b.tx]).filter(x=>ids.has(x.person));
-const cut=Date.now()-180*864e5;
-return{people,tx,del:[...tomb].map(([id,u])=>({id,u})).filter(d=>d.u>cut)};
+ const tomb=new Map();
+ for(const d of [...a.del,...b.del]){if((tomb.get(d.id)??-1)<d.u)tomb.set(d.id,d.u)}
+ const pick=list=>{const m=new Map();for(const r of list){const o=m.get(r.id);if(!o||r.u>o.u)m.set(r.id,r)}return [...m.values()].filter(r=>!(tomb.has(r.id)&&tomb.get(r.id)>=r.u))};
+ const people=pick([...a.people,...b.people]);const ids=new Set(people.map(p=>p.id));
+ const tx=pick([...a.tx,...b.tx]).filter(x=>ids.has(x.person));
+ const cut=Date.now()-180*864e5;
+ return{people,tx,del:[...tomb].map(([id,u])=>({id,u})).filter(d=>d.u>cut)};
 }
 function replaceWith(snap){
-  const now=Date.now(),kp=new Set(snap.people.map(p=>p.id)),kt=new Set(snap.tx.map(x=>x.id));
-  const del=[...snap.del,...db.del];
-  for(const p of db.people)if(!kp.has(p.id))del.push({id:p.id,u:now});
-  for(const x of db.tx)if(!kt.has(x.id))del.push({id:x.id,u:now});
-  db={people:snap.people.map(p=>({...p,u:now})),tx:snap.tx.map(x=>({...x,u:now})),del:del.filter(d=>!kp.has(d.id)&&!kt.has(d.id))};
-  save();render();
-  }
+ const now=Date.now(),kp=new Set(snap.people.map(p=>p.id)),kt=new Set(snap.tx.map(x=>x.id));
+ const del=[...snap.del,...db.del];
+ for(const p of db.people)if(!kp.has(p.id))del.push({id:p.id,u:now});
+ for(const x of db.tx)if(!kt.has(x.id))del.push({id:x.id,u:now});
+ db={people:snap.people.map(p=>({...p,u:now})),tx:snap.tx.map(x=>({...x,u:now})),del:del.filter(d=>!kp.has(d.id)&&!kt.has(d.id))};
+ save();render();
+}
 /* ---------- sync config & state ---------- */
-let cfg={provider:null,auto:'live',every:15,keep:10,last:0,gid:'',dkey:'',top:'',v:0};
+let cfg={provider:null,auto:'live',every:15,keep:10,last:0,gid:'',dkey:'',top:'',acct:'',v:0};
 try{Object.assign(cfg,JSON.parse(localStorage.getItem(CKEY)||'{}'))}catch{}
 const saveCfg=()=>{try{localStorage.setItem(CKEY,JSON.stringify(cfg))}catch{}};
 if(cfg.v<3){if(cfg.auto==='manual'||cfg.auto==='change')cfg.auto='live';cfg.v=3;saveCfg()}
+/* an older version signed in without remembering which account: treat it as signed out (the data stays and the first account you connect adopts it) */
+if(cfg.provider==='gdrive'&&!cfg.acct){cfg.provider=null;cfg.top='';cfg.last=0;saveCfg();try{localStorage.removeItem('daftar_g_tok')}catch{}}
 let sync={state:'idle',msg:''},busy=false,picker=false,hist=null,autoT=null,intT=null,lastVis=0,needAuth=false;
 const cloudP=()=>cfg.provider==='gdrive'||cfg.provider==='dropbox';
 const fmtTime=ms=>new Date(ms).toLocaleString(lang==='ar'?'ar':'en-US');
@@ -281,38 +286,50 @@ const chk=async r=>{if(!r.ok){const m=await r.text();throw new Error(r.status+' 
 const b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 /* Google Drive (hidden appDataFolder) */
 let gTok={t:'',e:0};
-try{const sv=JSON.parse(localStorage.getItem('daftar_g_tok')||'null');if(sv&&sv.t&&sv.e>Date.now())gTok=sv}catch{}
+try{const sv=JSON.parse(localStorage.getItem('daftar_g_tok')||'null');if(sv&&sv.t&&sv.e>Date.now()&&cfg.acct&&String(sv.em).toLowerCase()===cfg.acct.toLowerCase())gTok=sv}catch{}
 const gOK=()=>!!gTok.t&&Date.now()<gTok.e;
 function loadGIS(){return new Promise((res,rej)=>{if(window.google?.accounts?.oauth2)return res();const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=res;s.onerror=()=>rej(new Error(t('google_blocked')));document.head.appendChild(s)})}
+/* Ask Google for a token. any=true: let the user pick ANY account (used when connecting/switching); the token is returned, not stored. */
+async function gAuth(prompt,any){
+ await loadGIS();
+ const r=await new Promise((res,rej)=>{
+  const c=google.accounts.oauth2.initTokenClient({client_id:cfg.gid,scope:'https://www.googleapis.com/auth/drive.appdata openid email',
+   callback:r=>{if(r.error)return rej(new Error(r.error));res(r)},
+   error_callback:e=>rej(new Error(e.type||'popup'))});
+  const o={prompt};if(!any&&cfg.acct)o.hint=cfg.acct;
+  c.requestAccessToken(o);
+ });
+ let em='';
+ try{const u=await(await fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+r.access_token}})).json();em=String(u.email||'').toLowerCase()}catch{}
+ if(!em)throw new Error(t('no_email'));
+ if(!any&&cfg.acct&&em!==cfg.acct.toLowerCase())throw new Error(t('wrong_account',{a:cfg.acct}));
+ return{t:r.access_token,e:Date.now()+(r.expires_in-60)*1000,em};
+}
 async function gToken(prompt){
-  if(gTok.t&&Date.now()<gTok.e)return gTok.t;
-await loadGIS();
-return new Promise((res,rej)=>{
-  const c=google.accounts.oauth2.initTokenClient({client_id:cfg.gid,scope:'https://www.googleapis.com/auth/drive.appdata',
-                                                  callback:r=>{if(r.error)return rej(new Error(r.error));gTok={t:r.access_token,e:Date.now()+(r.expires_in-60)*1000};try{localStorage.setItem('daftar_g_tok',JSON.stringify(gTok))}catch{}res(gTok.t)},
-                                                error_callback:e=>rej(new Error(e.type||'popup'))});
-  c.requestAccessToken({prompt});
-  })}
-  const gdrive={
-    async h(){return{Authorization:'Bearer '+await gToken('')}},
-  async list(){const r=await fetch('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&pageSize=1000&fields='+encodeURIComponent('files(id,name,size)'),{headers:await this.h(),cache:'no-store'});return (await chk(r)).files.map(f=>({id:f.id,name:f.name,size:+f.size||0}))},
-async read(id){const r=await fetch('https://www.googleapis.com/drive/v3/files/'+encodeURIComponent(id)+'?alt=media',{headers:await this.h(),cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.text()},
-async write(name,text){const bd='daftar'+Math.random().toString(36).slice(2);const body=`--${bd}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify({name,parents:['appDataFolder'],mimeType:'application/json'})}\r\n--${bd}\r\nContent-Type: application/json\r\n\r\n${text}\r\n--${bd}--`;const h=await this.h();h['Content-Type']='multipart/related; boundary='+bd;await chk(await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:h,body}))},
-async del(id){const r=await fetch('https://www.googleapis.com/drive/v3/files/'+encodeURIComponent(id),{method:'DELETE',headers:await this.h()});if(!r.ok&&r.status!==404)throw new Error(r.status)}
+ if(gTok.t&&Date.now()<gTok.e)return gTok.t;
+ const k=await gAuth(prompt,false);gTok=k;try{localStorage.setItem('daftar_g_tok',JSON.stringify(gTok))}catch{}
+ return gTok.t;
+}
+const gdrive={
+ async h(){return{Authorization:'Bearer '+await gToken('')}},
+ async list(){const r=await fetch('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&pageSize=1000&fields='+encodeURIComponent('files(id,name,size)'),{headers:await this.h(),cache:'no-store'});return (await chk(r)).files.map(f=>({id:f.id,name:f.name,size:+f.size||0}))},
+ async read(id){const r=await fetch('https://www.googleapis.com/drive/v3/files/'+encodeURIComponent(id)+'?alt=media',{headers:await this.h(),cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.text()},
+ async write(name,text){const bd='daftar'+Math.random().toString(36).slice(2);const body=`--${bd}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify({name,parents:['appDataFolder'],mimeType:'application/json'})}\r\n--${bd}\r\nContent-Type: application/json\r\n\r\n${text}\r\n--${bd}--`;const h=await this.h();h['Content-Type']='multipart/related; boundary='+bd;await chk(await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:h,body}))},
+ async del(id){const r=await fetch('https://www.googleapis.com/drive/v3/files/'+encodeURIComponent(id),{method:'DELETE',headers:await this.h()});if(!r.ok&&r.status!==404)throw new Error(r.status)}
 };
-  /* Dropbox (app folder, OAuth PKCE) */
-  const dbxTok=()=>{try{return JSON.parse(localStorage.getItem(DKEY)||'null')}catch{return null}};
+/* Dropbox (app folder, OAuth PKCE) */
+const dbxTok=()=>{try{return JSON.parse(localStorage.getItem(DKEY)||'null')}catch{return null}};
 const dbxRedirect=()=>location.origin+location.pathname;
 async function dbxStart(){const v=b64u(crypto.getRandomValues(new Uint8Array(32)));const ch=b64u(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v)));sessionStorage.setItem('dbx_v',v);location.href='https://www.dropbox.com/oauth2/authorize?'+new URLSearchParams({client_id:cfg.dkey,response_type:'code',code_challenge:ch,code_challenge_method:'S256',token_access_type:'offline',redirect_uri:dbxRedirect()})}
 async function dbxExchange(params){const r=await fetch('https://api.dropboxapi.com/oauth2/token',{method:'POST',body:new URLSearchParams(params)});const j=await r.json();if(!r.ok)throw new Error(j.error_description||j.error||r.status);return j}
 async function dbxReturn(){const q=new URLSearchParams(location.search);const code=q.get('code'),v=sessionStorage.getItem('dbx_v');if(q.get('error'))history_replace();if(!code||!v)return false;history_replace();try{const j=await dbxExchange({code,grant_type:'authorization_code',code_verifier:v,client_id:cfg.dkey,redirect_uri:dbxRedirect()});sessionStorage.removeItem('dbx_v');localStorage.setItem(DKEY,JSON.stringify({a:j.access_token,r:j.refresh_token,e:Date.now()+j.expires_in*1000-60000}));cfg.provider='dropbox';saveCfg();return true}catch(e){toast(t('connect_fail',{e:e.message}));return false}}
 function history_replace(){window.history.replaceState(null,'',location.pathname)}
 const dropbox={
-  async tok(){let k=dbxTok();if(!k)throw new Error('not signed in');if(Date.now()<k.e)return k.a;const j=await dbxExchange({grant_type:'refresh_token',refresh_token:k.r,client_id:cfg.dkey});k={a:j.access_token,r:k.r,e:Date.now()+j.expires_in*1000-60000};localStorage.setItem(DKEY,JSON.stringify(k));return k.a},
-async list(){const T=await this.tok();const j=await chk(await fetch('https://api.dropboxapi.com/2/files/list_folder',{method:'POST',headers:{Authorization:'Bearer '+T,'Content-Type':'application/json'},body:JSON.stringify({path:'',limit:2000})}));return j.entries.filter(e=>e['.tag']==='file').map(e=>({id:e.id,name:e.name,size:e.size||0}))},
-async read(id){const T=await this.tok();const r=await fetch('https://content.dropboxapi.com/2/files/download',{method:'POST',headers:{Authorization:'Bearer '+T,'Dropbox-API-Arg':JSON.stringify({path:id})}});if(!r.ok)throw new Error(r.status);return r.text()},
-async write(name,text){const T=await this.tok();const r=await fetch('https://content.dropboxapi.com/2/files/upload',{method:'POST',headers:{Authorization:'Bearer '+T,'Content-Type':'application/octet-stream','Dropbox-API-Arg':JSON.stringify({path:'/'+name,mode:'add',autorename:true,mute:true})},body:text});if(!r.ok)throw new Error(r.status+' '+(await r.text()).slice(0,120))},
-async del(id){const T=await this.tok();const r=await fetch('https://api.dropboxapi.com/2/files/delete_v2',{method:'POST',headers:{Authorization:'Bearer '+T,'Content-Type':'application/json'},body:JSON.stringify({path:id})});if(!r.ok&&r.status!==409)throw new Error(r.status)}
+ async tok(){let k=dbxTok();if(!k)throw new Error('not signed in');if(Date.now()<k.e)return k.a;const j=await dbxExchange({grant_type:'refresh_token',refresh_token:k.r,client_id:cfg.dkey});k={a:j.access_token,r:k.r,e:Date.now()+j.expires_in*1000-60000};localStorage.setItem(DKEY,JSON.stringify(k));return k.a},
+ async list(){const T=await this.tok();const j=await chk(await fetch('https://api.dropboxapi.com/2/files/list_folder',{method:'POST',headers:{Authorization:'Bearer '+T,'Content-Type':'application/json'},body:JSON.stringify({path:'',limit:2000})}));return j.entries.filter(e=>e['.tag']==='file').map(e=>({id:e.id,name:e.name,size:e.size||0}))},
+ async read(id){const T=await this.tok();const r=await fetch('https://content.dropboxapi.com/2/files/download',{method:'POST',headers:{Authorization:'Bearer '+T,'Dropbox-API-Arg':JSON.stringify({path:id})}});if(!r.ok)throw new Error(r.status);return r.text()},
+ async write(name,text){const T=await this.tok();const r=await fetch('https://content.dropboxapi.com/2/files/upload',{method:'POST',headers:{Authorization:'Bearer '+T,'Content-Type':'application/octet-stream','Dropbox-API-Arg':JSON.stringify({path:'/'+name,mode:'add',autorename:true,mute:true})},body:text});if(!r.ok)throw new Error(r.status+' '+(await r.text()).slice(0,120))},
+ async del(id){const T=await this.tok();const r=await fetch('https://api.dropboxapi.com/2/files/delete_v2',{method:'POST',headers:{Authorization:'Bearer '+T,'Content-Type':'application/json'},body:JSON.stringify({path:id})});if(!r.ok&&r.status!==409)throw new Error(r.status)}
 };
 const prov=()=>cfg.provider==='gdrive'?gdrive:cfg.provider==='dropbox'?dropbox:null;
 /* ---------- backup files ---------- */
@@ -325,36 +342,36 @@ function parseBackup(text){const o=JSON.parse(text);const d=o?.data||o;if(!d||!A
 /* ---------- sync engine ---------- */
 function diffCount(a,b){const k=d=>new Map([...d.people,...d.tx].map(r=>[r.id,r.u]));const A=k(a),B=k(b);let n=0;for(const[id,u]of B)if(!A.has(id)||A.get(id)!==u)n++;for(const id of A.keys())if(!B.has(id))n++;return n}
 async function runSync(mode,silent,gesture){
-  const P=prov();if(!P||busy)return;
-if(silent&&!gesture&&cfg.provider==='gdrive'&&!gOK()){needAuth=true;setSync('auth');return}
-busy=true;dirty=false;setSync('busy');
-try{
+ const P=prov();if(!P||busy)return;
+ if(silent&&!gesture&&cfg.provider==='gdrive'&&!gOK()){needAuth=true;setSync('auth');return}
+ busy=true;dirty=false;setSync('busy');
+ try{
   let files=await listBackups(P),remote=null,pulled=0;
   if(mode==='sync'&&files.length){
-    remote=parseBackup(await P.read(files[0].id));
-    const m=mergeDB(db,remote);
-    if(stable(canon(m))!==stable(canon(db))){pulled=diffCount(db,m);db=m;persist();render()}
-    }
+   remote=parseBackup(await P.read(files[0].id));
+   const m=mergeDB(db,remote);
+   if(stable(canon(m))!==stable(canon(db))){pulled=diffCount(db,m);db=m;persist();render()}
+  }
   let uploaded=false;
   if(mode==='backup'||!remote||stable(canon(db))!==stable(canon(remote))){
-    await P.write(bname(),JSON.stringify({app:'daftar',v:2,savedAt:Date.now(),data:db}));uploaded=true;
-    files=await listBackups(P);
-    for(const f of files.slice(Math.max(1,cfg.keep)))await P.del(f.id);
-    files=files.slice(0,Math.max(1,cfg.keep));
-    }
+   await P.write(bname(),JSON.stringify({app:'daftar',v:2,savedAt:Date.now(),data:db}));uploaded=true;
+   files=await listBackups(P);
+   for(const f of files.slice(Math.max(1,cfg.keep)))await P.del(f.id);
+   files=files.slice(0,Math.max(1,cfg.keep));
+  }
   cfg.top=files[0]?.name||'';cfg.last=Date.now();saveCfg();needAuth=false;hist=null;busy=false;setSync('ok');
   if(pulled)toast(t('pulled',{n:pulled}));
   else if(!silent)toast(t(mode==='backup'?'backup_done':uploaded?'sync_done':'up_to_date'));
   if(document.querySelector('#sync.active'))loadHistory();
-  }catch(e){busy=false;dirty=true;if(silent&&cfg.provider==='gdrive'&&!gOK())needAuth=true;setSync(needAuth?'auth':'err',e.message);if(!silent)toast(t('s_err',{e:e.message}))}
-  }
-  function scheduleAuto(){if(cloudP()&&cfg.auto==='live'){clearTimeout(autoT);autoT=setTimeout(()=>runSync('sync',true),3000)}}
-  function setupInterval(){clearInterval(intT);if(!cloudP())return;if(cfg.auto==='interval')intT=setInterval(()=>runSync('sync',true),Math.max(1,cfg.every)*60000);else if(cfg.auto==='live')intT=setInterval(liveTick,30000)}
+ }catch(e){busy=false;dirty=true;if(silent&&cfg.provider==='gdrive'&&!gOK())needAuth=true;setSync(needAuth?'auth':'err',e.message);if(!silent)toast(t('s_err',{e:e.message}))}
+}
+function scheduleAuto(){if(cloudP()&&cfg.auto==='live'){clearTimeout(autoT);autoT=setTimeout(()=>runSync('sync',true),3000)}}
+function setupInterval(){clearInterval(intT);if(!cloudP())return;if(cfg.auto==='interval')intT=setInterval(()=>runSync('sync',true),Math.max(1,cfg.every)*60000);else if(cfg.auto==='live')intT=setInterval(liveTick,30000)}
 async function liveTick(){
-  if(!cloudP()||busy||needAuth||cfg.auto!=='live'||document.visibilityState!=='visible'||!navigator.onLine)return;
-if(dirty)return runSync('sync',true);
-if(cfg.provider==='gdrive'&&!gOK()){needAuth=true;setSync('auth');return}
-try{const f=await listBackups(prov());if((f[0]?.name||'')!==cfg.top)runSync('sync',true)}catch{}
+ if(!cloudP()||busy||needAuth||cfg.auto!=='live'||document.visibilityState!=='visible'||!navigator.onLine)return;
+ if(dirty)return runSync('sync',true);
+ if(cfg.provider==='gdrive'&&!gOK()){needAuth=true;setSync('auth');return}
+ try{const f=await listBackups(prov());if((f[0]?.name||'')!==cfg.top)runSync('sync',true)}catch{}
 }
 const wake=()=>{if(document.visibilityState==='visible'&&cloudP()&&cfg.auto!=='manual'&&Date.now()-lastVis>15000){lastVis=Date.now();runSync('sync',true)}};
 document.addEventListener('visibilitychange',wake);window.addEventListener('online',wake);window.addEventListener('focus',wake);
@@ -363,42 +380,75 @@ function setCfg(k,v){if(k==='keep')v=Math.min(100,Math.max(1,Math.round(v)||10))
 async function loadHistory(){const P=prov();if(!P)return;hist=null;renderSync(true);try{hist=await listBackups(P)}catch(e){hist=[];toast(t('s_err',{e:e.message}))}renderSync(true)}
 async function restoreBackup(id){const P=prov();if(!P||!confirm(t('confirm_restore')))return;try{replaceWith(parseBackup(await P.read(id)));toast(t('restored_ok'))}catch(e){toast(t('s_err',{e:e.message}))}}
 async function deleteBackup(id){const P=prov();if(!P||!confirm(t('confirm_del_backup')))return;try{await P.del(id);toast(t('backup_deleted'));loadHistory()}catch(e){toast(t('s_err',{e:e.message}))}}
-async function connectProvider(id){
-  if(id==='local'){cfg.provider='local';saveCfg();picker=false;renderSync(true);return}
-if(location.protocol==='file:')return toast(t('need_https'));
-if(id==='gdrive'){const v=$('gid')?.value.trim();if(!v)return toast(t('need_id'));cfg.gid=v;saveCfg();try{gTok={t:'',e:0};await gToken('select_account');cfg.provider='gdrive';saveCfg();picker=false;hist=null;renderSync(true);runSync('sync')}catch(e){toast(t('connect_fail',{e:e.message}))}}
-if(id==='dropbox'){const v=$('dkey')?.value.trim();if(!v)return toast(t('need_id'));cfg.dkey=v;saveCfg();dbxStart()}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+/* Pick (or switch to) a Google account, then open THAT account's own data. */
+async function pickGoogleAccount(){
+ if(location.protocol==='file:')return toast(t('need_https'));
+ if(!cfg.gid)return toast(t('need_id'));
+ try{
+  const k=await gAuth('select_account',true);            /* Google's account chooser: always asked */
+  while(busy)await sleep(100);                           /* let a running sync finish first */
+  clearTimeout(autoT);
+  const same=cfg.provider==='gdrive'&&String(cfg.acct).toLowerCase()===k.em;
+  if(!same){
+   const guest=curKey===KEY,nk=accKey(k.em);
+   if(guest&&localStorage.getItem(nk)===null&&(db.people.length||db.tx.length)){
+    /* first account: it adopts what you typed as a guest; the guest set is emptied so no second account can receive it */
+    localStorage.setItem(nk,JSON.stringify(db));localStorage.setItem(KEY,JSON.stringify(sanitize(null)));curKey=nk;dirty=true;
+   }else{
+    persist();curKey=nk;db=readSlot(nk);dirty=false;     /* the screen shows ONLY this account's data */
+   }
+   cfg.top='';cfg.last=0;
+  }
+  gTok=k;try{localStorage.setItem('daftar_g_tok',JSON.stringify(gTok))}catch{}
+  cfg.provider='gdrive';cfg.acct=k.em;saveCfg();needAuth=false;hist=null;picker=false;
+  render();setupInterval();setSync('idle');renderSync(true);runSync('sync');
+ }catch(e){toast(t('connect_fail',{e:e.message}))}
 }
-function disconnect(){try{if(gTok.t&&window.google)google.accounts.oauth2.revoke(gTok.t)}catch{}gTok={t:'',e:0};localStorage.removeItem(DKEY);try{localStorage.removeItem('daftar_g_tok')}catch{}needAuth=false;cfg.provider=null;cfg.top='';saveCfg();clearTimeout(autoT);clearInterval(intT);hist=null;picker=false;setSync('idle')}
+/* Leave the account: the screen goes back to the guest data; the account's data stays in its own slot and in its Google Drive. */
+function leaveAccount(newProv){
+ try{if(gTok.t&&window.google)google.accounts.oauth2.revoke(gTok.t)}catch{}
+ gTok={t:'',e:0};try{localStorage.removeItem('daftar_g_tok')}catch{}localStorage.removeItem(DKEY);
+ clearTimeout(autoT);clearInterval(intT);
+ if(curKey!==KEY){persist();curKey=KEY;db=readSlot(KEY);render()}
+ needAuth=false;dirty=false;cfg.provider=newProv;cfg.acct='';cfg.top='';cfg.last=0;saveCfg();hist=null;picker=false;setSync('idle');renderSync(true);
+}
+async function connectProvider(id){
+ if(id==='local'){leaveAccount('local');return}
+ if(location.protocol==='file:')return toast(t('need_https'));
+ if(id==='gdrive'){const v=$('gid')?.value.trim();if(v){cfg.gid=v;saveCfg()}return pickGoogleAccount()}
+ if(id==='dropbox'){const v=$('dkey')?.value.trim();if(!v)return toast(t('need_id'));cfg.dkey=v;saveCfg();dbxStart()}
+}
+function disconnect(){if(!confirm(t('disconnect_msg')))return;leaveAccount(null)}
 /* ---------- sync UI ---------- */
 function pcard(logo,color,name,desc,pill,warn,body,btn){return `<div class="pcard ${btn===null?'dis':''}"><div class="ptop"><span class="plogo" style="background:${color}">${logo}</span><b>${name}</b><span class="pill ${warn?'warn':''}">${pill}</span></div><div class="muted">${desc}</div>${body}${btn||''}</div>`}
 function pickerHTML(){
-  const file=location.protocol==='file:';
-  return `${file?`<div class="warnbox">${t('need_https')}</div>`:''}<h2>${t('choose_provider')}</h2><div class="pgrid">`+
-pcard('💾','#6b7280',t('prov_local'),t('prov_local_d'),t('ready'),false,'',`<button class="btn" onclick="connectProvider('local')">${t('use_local')}</button>`)+
-pcard('G','#1a73e8','Google Drive',t('prov_gdrive_d'),cfg.gid?t('ready'):t('needs_setup'),!cfg.gid,`<div class="field" style="margin:0"><label>${t('google_cid')}</label><input id="gid" dir="ltr" value="${esc(cfg.gid)}" placeholder="xxxx.apps.googleusercontent.com"></div><div class="muted">${t('g_hint')}</div><div class="code">${esc(location.origin)}</div>`,`<button class="btn" ${file?'disabled':''} onclick="connectProvider('gdrive')">${t('connect')}</button>`)+
-pcard('D','#0061ff','Dropbox',t('prov_dropbox_d'),cfg.dkey?t('ready'):t('needs_setup'),!cfg.dkey,`<div class="field" style="margin:0"><label>${t('dropbox_key')}</label><input id="dkey" dir="ltr" value="${esc(cfg.dkey)}" placeholder="App key"></div><div class="muted">${t('d_hint')}</div><div class="code">${esc(dbxRedirect())}</div>`,`<button class="btn" ${file?'disabled':''} onclick="connectProvider('dropbox')">${t('connect')}</button>`)+
-pcard('M','#d9272e','MEGA',t('prov_mega_d'),t('soon'),true,'',null)+
-`</div>${cfg.provider?`<div class="actions"><button class="btn light" onclick="picker=false;renderSync(true)">${t('cancel')}</button></div>`:''}`;
+ const file=location.protocol==='file:';
+ return `${file?`<div class="warnbox">${t('need_https')}</div>`:''}<h2>${t('choose_provider')}</h2><div class="pgrid">`+
+ pcard('💾','#6b7280',t('prov_local'),t('prov_local_d'),t('ready'),false,'',`<button class="btn" onclick="connectProvider('local')">${t('use_local')}</button>`)+
+ pcard('G','#1a73e8','Google Drive',t('prov_gdrive_d'),cfg.gid?t('ready'):t('needs_setup'),!cfg.gid,`<div class="field" style="margin:0"><label>${t('google_cid')}</label><input id="gid" dir="ltr" value="${esc(cfg.gid)}" placeholder="xxxx.apps.googleusercontent.com"></div><div class="muted">${t('g_hint')}</div><div class="code">${esc(location.origin)}</div>`,`<button class="btn" ${file?'disabled':''} onclick="connectProvider('gdrive')">${t('connect')}</button>`)+
+ pcard('D','#0061ff','Dropbox',t('prov_dropbox_d'),cfg.dkey?t('ready'):t('needs_setup'),!cfg.dkey,`<div class="field" style="margin:0"><label>${t('dropbox_key')}</label><input id="dkey" dir="ltr" value="${esc(cfg.dkey)}" placeholder="App key"></div><div class="muted">${t('d_hint')}</div><div class="code">${esc(dbxRedirect())}</div>`,`<button class="btn" ${file?'disabled':''} onclick="connectProvider('dropbox')">${t('connect')}</button>`)+
+ pcard('M','#d9272e','MEGA',t('prov_mega_d'),t('soon'),true,'',null)+
+ `</div>${cfg.provider?`<div class="actions"><button class="btn light" onclick="picker=false;renderSync(true)">${t('cancel')}</button></div>`:''}`;
 }
 function renderSync(force){
-  const box=$('syncBody');if(!box)return;
-if(!force&&box.contains(document.activeElement)&&document.activeElement.matches('input,select'))return;
-const P=cfg.provider,cloud=cloudP();
-if(!P||picker){box.innerHTML=pickerHTML();return}
-const names={local:t('prov_local'),gdrive:'Google Drive',dropbox:'Dropbox'};
-const dot=sync.state==='busy'?'busy':(sync.state==='err'||sync.state==='auth')?'err':cfg.last?'ok':'';
-const st=sync.state==='busy'?t('syncing'):sync.state==='auth'?t('need_auth_short'):sync.state==='err'?t('s_err',{e:esc(sync.msg)}):cfg.last?t('last_sync',{t:fmtTime(cfg.last)}):t('never');
-let h=(needAuth&&cloud?`<div class="warnbox">${t('need_auth')}</div>`:'')+`<div class="panel"><div class="status"><span class="dot ${cloud?dot:'ok'}"></span><div><strong>${t('connected_to',{p:names[P]})}</strong>${cloud?`<div class="muted">${st}</div>`:''}</div></div><div class="actions">`+
-(cloud?`<button class="btn" ${busy?'disabled':''} onclick="runSync('sync')">${t('sync_now')}</button><button class="btn light" ${busy?'disabled':''} onclick="runSync('backup')">${t('backup_now')}</button>`:`<button class="btn" onclick="exportData()">${t('download_backup')}</button><label class="btn light" for="importFile">${t('restore')}</label>`)+
-`<button class="btn soft" onclick="picker=true;renderSync(true)">${t('change_provider')}</button><button class="btn red" onclick="disconnect()">${t('disconnect')}</button></div>${cloud?`<div class="muted">${t('sync_hint')}</div>`:''}</div>`;
-if(cloud){
+ const box=$('syncBody');if(!box)return;
+ if(!force&&box.contains(document.activeElement)&&document.activeElement.matches('input,select'))return;
+ const P=cfg.provider,cloud=cloudP();
+ if(!P||picker){box.innerHTML=pickerHTML();return}
+ const names={local:t('prov_local'),gdrive:'Google Drive',dropbox:'Dropbox'};
+ const dot=sync.state==='busy'?'busy':(sync.state==='err'||sync.state==='auth')?'err':cfg.last?'ok':'';
+ const st=sync.state==='busy'?t('syncing'):sync.state==='auth'?t('need_auth_short'):sync.state==='err'?t('s_err',{e:esc(sync.msg)}):cfg.last?t('last_sync',{t:fmtTime(cfg.last)}):t('never');
+ let h=(needAuth&&cloud?`<div class="warnbox">${t('need_auth')}</div>`:'')+`<div class="panel"><div class="status"><span class="dot ${cloud?dot:'ok'}"></span><div><strong>${t('connected_to',{p:names[P]})}</strong>${P==='gdrive'&&cfg.acct?`<div dir="ltr" style="font-weight:700;font-size:13px">${esc(cfg.acct)}</div>`:''}${cloud?`<div class="muted">${st}</div>`:''}</div></div><div class="actions">`+
+  (cloud?`<button class="btn" ${busy?'disabled':''} onclick="runSync('sync')">${t('sync_now')}</button><button class="btn light" ${busy?'disabled':''} onclick="runSync('backup')">${t('backup_now')}</button>`:`<button class="btn" onclick="exportData()">${t('download_backup')}</button><label class="btn light" for="importFile">${t('restore')}</label>`)+
+  (P==='gdrive'?`<button class="btn soft" ${busy?'disabled':''} onclick="pickGoogleAccount()">${t('switch_account')}</button>`:`<button class="btn soft" onclick="picker=true;renderSync(true)">${t('change_provider')}</button>`)+`<button class="btn red" onclick="disconnect()">${t('disconnect')}</button></div>${cloud?`<div class="muted">${t('sync_hint')}</div>${P==='gdrive'?`<div class="muted" style="margin-top:6px">${t('acct_hint')}</div>`:''}`:''}</div>`;
+ if(cloud){
   const opt=(v,k)=>`<option value="${v}" ${cfg.auto===v?'selected':''}>${t(k)}</option>`;
   h+=`<div class="panel"><h2>${t('schedule')}</h2><div class="frow"><div class="field"><label>${t('auto_mode')}</label><select onchange="setCfg('auto',this.value)">${opt('live','am_live')}${opt('open','am_open')}${opt('interval','am_interval')}${opt('manual','am_manual')}</select></div>${cfg.auto==='interval'?`<div class="field"><label>${t('every_min')}</label><input type="number" min="1" max="1440" value="${cfg.every}" onchange="setCfg('every',+this.value)"></div>`:''}<div class="field"><label>${t('keep_n')}</label><input type="number" min="1" max="100" value="${cfg.keep}" onchange="setCfg('keep',+this.value)"></div></div><div class="muted">${t('live_hint')}</div><div class="muted" style="margin-top:6px">${t('keep_hint')}</div></div>`;
   h+=`<div class="panel"><div class="head" style="margin-bottom:12px"><h2 style="margin:0">${t('history')}</h2><button class="btn small light" onclick="loadHistory()">${t('refresh')}</button></div><div class="list">`+
-  (hist===null?`<div class="empty">${t('loading')}</div>`:hist.length?hist.map(f=>`<div class="item row-item"><div><strong>${fmtTime(nameDate(f.name))}</strong><div class="muted">${Math.max(1,Math.round(f.size/1024))} KB</div></div><div><button class="btn small light" onclick="restoreBackup('${esc(f.id)}')">${t('restore_btn')}</button> <button class="btn small red" onclick="deleteBackup('${esc(f.id)}')">${t('del')}</button></div></div>`).join(''):`<div class="empty">${t('no_backups')}</div>`)+`</div></div>`;
-  }
-box.innerHTML=h;
+   (hist===null?`<div class="empty">${t('loading')}</div>`:hist.length?hist.map(f=>`<div class="item row-item"><div><strong>${fmtTime(nameDate(f.name))}</strong><div class="muted">${Math.max(1,Math.round(f.size/1024))} KB</div></div><div><button class="btn small light" onclick="restoreBackup('${esc(f.id)}')">${t('restore_btn')}</button> <button class="btn small red" onclick="deleteBackup('${esc(f.id)}')">${t('del')}</button></div></div>`).join(''):`<div class="empty">${t('no_backups')}</div>`)+`</div></div>`;
+ }
+ box.innerHTML=h;
 }
 /* ---------- init ---------- */
 applyTheme();applyStatic();render();renderSync(true);

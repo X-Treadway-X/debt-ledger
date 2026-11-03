@@ -34,11 +34,15 @@ nav button{flex:1;max-width:150px;background:transparent;color:var(--muted);padd
 .code{direction:ltr;text-align:left;font-family:monospace;font-size:11px;background:var(--sunken);padding:6px 8px;border-radius:8px;word-break:break-all;user-select:all}
 .status{display:flex;align-items:center;gap:10px}.dot{width:11px;height:11px;border-radius:50%;background:var(--muted);flex:none}.dot.ok{background:var(--green)}.dot.err{background:var(--red)}.dot.busy{background:#e0a030;animation:pulse 1s infinite}
 .frow{display:flex;gap:10px;flex-wrap:wrap}.frow .field{flex:1;min-width:150px}.warnbox{background:var(--warn-bg);color:var(--warn-ink);border-radius:12px;padding:11px 13px;font-size:12px;margin-bottom:12px}
+
+.acctwrap{max-width:1100px;margin:12px auto 0;padding:0 15px}.acct{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:10px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.av{width:38px;height:38px;border-radius:50%;background:var(--btn);color:#fff;display:grid;place-items:center;font-weight:bold;flex:none}.acct .who{flex:1;min-width:150px}.acct .who b{display:block;font-size:14px}.acct .who>span{display:block;font-size:11px;color:var(--muted)}.btn.small{padding:7px 11px;font-size:12px}
+.lockscr{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;align-items:center;justify-content:center;padding:20px;overflow:auto}.lkbox{width:min(320px,100%);text-align:center}.lkt{font-size:20px;font-weight:bold}.dots{display:flex;gap:10px;justify-content:center;margin:18px 0}.dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--accent)}.dots i.f{background:var(--accent)}.keys{direction:ltr;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.keys button{padding:15px 0;font-size:22px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink)}.lkmsg{min-height:20px;color:var(--red);font-size:13px}
 @media(max-width:650px){header{padding:15px}.wrap{margin:16px auto}.stat strong{font-size:19px}.kpis{grid-template-columns:1fr 1fr}.item{align-items:flex-start}.brand{font-size:19px}}
 </style></head>
 <body>
 <header><div class="brand"><span data-i18n="brand"></span><small data-i18n="tagline"></small></div>
 <div class="hright"><div id="date" style="font-size:11px"></div><button class="hbtn" id="cloudBtn" onclick="go('sync')">☁</button><button class="hbtn" id="themeBtn" onclick="toggleTheme()" aria-label="Theme"></button><button class="hbtn" id="langBtn" onclick="toggleLang()" aria-label="Language"></button></div></header>
+<div class="acctwrap"><div id="acctBar"></div></div>
 <main class="wrap">
 <section id="home" class="screen active">
  <div class="head"><div><h1 data-i18n="nav_home"></h1><div class="muted" data-i18n="home_sub"></div></div><button class="btn" onclick="openForm('debt')" data-i18n="add_debt"></button></div>
@@ -72,6 +76,14 @@ nav button{flex:1;max-width:150px;background:transparent;color:var(--muted);padd
  <div class="head"><div><h1 data-i18n="sync_title"></h1><div class="muted" data-i18n="sync_sub"></div></div></div>
  <div id="syncBody"></div>
 </section>
+<section id="sessions" class="screen">
+ <div class="head"><div><h1 data-i18n="sessions_title"></h1><div class="muted" data-i18n="sessions_sub"></div></div></div>
+ <div id="sessBody"></div>
+</section>
+<section id="members" class="screen">
+ <div class="head"><div><h1 data-i18n="members_title"></h1><div class="muted" data-i18n="members_sub"></div></div><button class="btn light" onclick="go('sessions')" data-i18n="sessions"></button></div>
+ <div id="memBody"></div>
+</section>
 <section id="settings" class="screen">
  <div class="head"><div><h1 data-i18n="nav_settings"></h1><div class="muted" data-i18n="settings_sub"></div></div></div>
  <div class="panel"><h2 data-i18n="appearance"></h2>
@@ -79,6 +91,7 @@ nav button{flex:1;max-width:150px;background:transparent;color:var(--muted);padd
   <div class="setrow"><label data-i18n="language"></label><div class="seg"><button id="lgAr" onclick="setLang('ar')">العربية</button><button id="lgEn" onclick="setLang('en')">English</button></div></div>
  </div>
  <div class="panel"><h2 data-i18n="data_saving"></h2><p class="muted" data-i18n="data_saving_txt"></p><button class="btn" onclick="go('sync')" data-i18n="open_sync"></button> <button class="btn light" onclick="exportData()" data-i18n="download_backup"></button> <label class="btn light" for="importFile" data-i18n="restore"></label><input id="importFile" type="file" accept="application/json" style="display:none" onchange="importData(event)"></div>
+ <div class="panel" id="secPanel"></div>
  <div class="panel"><h2 data-i18n="wa_title"></h2><p class="muted" data-i18n="wa_txt"></p></div>
  <div class="panel"><h2 data-i18n="about"></h2><p class="muted" data-i18n="about_txt"></p></div>
 </section>
@@ -92,12 +105,12 @@ nav button{flex:1;max-width:150px;background:transparent;color:var(--muted);padd
 <button data-screen="reports" onclick="go('reports',this)"><span>▥</span><em data-i18n="nav_reports"></em></button>
 <button data-screen="settings" onclick="go('settings',this)"><span>⚙</span><em data-i18n="nav_settings"></em></button>
 </nav>
-<div class="modal" id="modal"><div class="dialog"><div class="head"><h2 id="modalTitle"></h2><button class="btn light" onclick="closeModal()" data-i18n="close"></button></div><div id="modalBody"></div></div></div><div class="toast" id="toast"></div>
+<div class="modal" id="modal"><div class="dialog"><div class="head"><h2 id="modalTitle"></h2><button class="btn light" onclick="closeModal()" data-i18n="close"></button></div><div id="modalBody"></div></div></div><div class="toast" id="toast"></div><div class="lockscr" id="lockScr"></div>
 <script>
 const $=id=>document.getElementById(id),KEY='daftar_deyoun_clean_v2',LKEY='daftar_lang',TKEY='daftar_theme',CKEY='daftar_sync_cfg',DKEY='daftar_dbx_tok';
 /* ---------- i18n ---------- */
 const I18N={
-ar:{brand:'دفتر الديون',tagline:'حساباتك واضحة… وحقوقك محفوظة',nav_home:'الرئيسية',nav_customers:'الزبائن',nav_debts:'الديون',nav_payments:'الدفعات',nav_history:'السجل',nav_reports:'التقارير',nav_settings:'الإعدادات',
+ar:{sign_in_google:"تسجيل الدخول بـ Google",sessions:"الجلسات",sign_out:"خروج",signout_msg:"تسجيل الخروج من الحساب؟ تبقى جلساتك محفوظة في Google Drive وتعود عند تسجيل الدخول من جديد.",no_session:"لا توجد جلسة مفتوحة",no_session_txt:"أنت مسجّل الدخول لكن لا توجد جلسة مفتوحة. أنشئ جلستك أو افتح جلسة دعاك إليها أحد.",create_session_btn:"إنشاء جلسة",diag_btn:"تفاصيل",viewer_banner:"وضع المشاهدة فقط: لا يمكنك التعديل أو الحذف في هذه الجلسة",viewer_sync_hint:"«مزامنة» تُنزّل آخر نسخة من مالك الجلسة. لا يمكنك رفع تغييرات لأنك زائر.",role_owner:"المالك",role_admin:"مدير",role_viewer:"زائر",role_admin_d:"يرى ويضيف ويعدّل ويحذف",role_viewer_d:"يرى فقط، لا يعدّل ولا يحذف",t_readonly:"هذه الجلسة للمشاهدة فقط",create_title:"أنشئ جلستك",create_txt:"الجلسة هي دفترك في السحابة وتبقى بياناتها في حساب Google الخاص بك. يمكنك لاحقاً دعوة أشخاص إليها كمدير أو كزائر.",session_name:"اسم الجلسة",session_default:"دفتر {n}",create_btn:"إنشاء",later:"لاحقاً",session_created:"تم إنشاء الجلسة",sessions_title:"الجلسات",sessions_sub:"جلساتك والجلسات التي دعاك إليها الآخرون",sessions_signin:"سجّل الدخول بحساب Google لإنشاء جلستك أو لفتح جلسة دعاك إليها أحد (مثلاً جلسة أخيك).",my_sessions:"جلساتي",shared_sessions:"مشتركة معي",no_own_session:"ليست لديك جلسة بعد",no_shared:"لم يدعُك أحد إلى جلسته بعد. اطلب من صاحب الجلسة إضافة بريدك.",new_session:"جلسة جديدة",open_btn:"فتح",open_now:"مفتوحة الآن",members_btn:"الأعضاء",owner_is:"المالك: {o}",session_gone:"لم تعد الجلسة متاحة (حُذفت أو أُزلتَ منها). تم الانتقال إلى جلسة أخرى.",role_changed:"تغيّرت صلاحياتك في هذه الجلسة",members_title:"الأعضاء",members_sub:"من يستطيع الوصول إلى هذه الجلسة",your_role:"صلاحيتك:",members_owner_only:"المالك فقط يستطيع إضافة الأعضاء أو تغيير صلاحياتهم.",add_member:"إضافة عضو",member_email:"بريد Google للعضو",add_btn:"إضافة",test_user_hint:"ملاحظة: ما دام التطبيق في وضع الاختبار يجب أيضاً إضافة بريد العضو ضمن Test users في Google Cloud.",members_list:"الأعضاء الحاليون",you:"أنت",remove:"إزالة",make_admin:"اجعله مديراً",make_viewer:"اجعله زائراً",confirm_remove_member:"إزالة {m} من الجلسة؟",delete_session:"حذف الجلسة",confirm_delete_session:"حذف هذه الجلسة لجميع الأعضاء؟ تنتقل إلى سلة مهملات Google Drive.",session_deleted:"تم حذف الجلسة",bad_email:"البريد الإلكتروني غير صحيح",add_self:"لا يمكنك إضافة نفسك",member_added:"تمت إضافة العضو وأُرسلت له دعوة",role_saved:"تم حفظ الصلاحية",member_removed:"تمت إزالة العضو",signin_card_title:"الحفظ في السحابة والمشاركة",signin_card_txt:"سجّل الدخول بحساب Google لحفظ بياناتك في Google Drive ومزامنتها بين أجهزتك، ولمشاركتها مع أشخاص آخرين كمدير أو كزائر.",local_backup:"نسخة احتياطية في ملف",local_backup_txt:"احفظ نسخة من بياناتك في ملف على جهازك أو استعد نسخة من ملف.",tab_tx:"العمليات",tab_log:"سجل النشاط",log_all:"الكل",log_session:"الجلسة",log_device:"هذا الجهاز",log_empty:"لا يوجد نشاط بعد",log_person_add:"أضاف الزبون {a}",log_person_edit:"عدّل بيانات الزبون {a}",log_person_del:"حذف الزبون {a}",log_debt_add:"سجّل دَيناً {b} على {a}",log_pay_add:"سجّل دفعة {b} من {a}",log_restore:"استعاد نسخة احتياطية ({a} زبون، {b} عملية)",log_session_create:"أنشأ الجلسة {a}",log_member_add:"أضاف {a} بصلاحية {r}",log_member_role:"غيّر صلاحية {a} إلى {r}",log_member_remove:"أزال {a} من الجلسة",log_sign_in:"سجّل الدخول ({a})",log_sign_out:"سجّل الخروج ({a})",log_session_open:"فتح الجلسة {a}",log_session_delete:"حذف الجلسة {a}",log_lock_on:"فعّل قفل التطبيق",log_lock_off:"أزال قفل التطبيق",log_pin_change:"غيّر رمز PIN",log_phrase_change:"غيّر عبارة الاسترجاع",log_bio_on:"فعّل الدخول بالبصمة",log_bio_off:"أوقف الدخول بالبصمة",log_lock_recovery:"أزال القفل بعبارة الاسترجاع",log_export:"صدّر نسخة احتياطية إلى ملف",lock_title:"أدخل رمز PIN",lock_wrong:"رمز خاطئ",lock_blocked:"محاولات كثيرة. انتظر {s} ثانية",forgot_pin:"نسيت الرمز؟",recovery_title:"عبارة الاسترجاع",recovery_txt:"اكتب العبارة التي حفظتها عند إعداد القفل. إذا كانت صحيحة يُزال القفل.",phrase_new_short:"عبارة الاسترجاع",recovery_wrong:"العبارة غير صحيحة",recovery_ok:"أُزيل القفل. يمكنك تفعيله من جديد من الإعدادات.",unlock:"فتح",back_to_pin:"العودة إلى الرمز",bio_title:"افتح دفتر الديون",bio_use_pin:"استخدم الرمز",bio_label:"الفتح بالبصمة / الوجه",bio_unavailable:"لا يتوفر فتح بالبصمة أو الوجه على هذا الجهاز",sec_title:"الأمان",sec_txt:"اقفل التطبيق برمز PIN أو بالبصمة. احفظ عبارة الاسترجاع في مكان آمن: هي الطريقة الوحيدة لإزالة القفل إذا نسيت الرمز.",lock_setup:"تفعيل قفل التطبيق",lock_on:"قفل التطبيق مفعّل",lock_after:"القفل بعد مغادرة التطبيق",t_now:"فوراً",t_30s:"بعد 30 ثانية",t_1m:"بعد دقيقة",t_5m:"بعد 5 دقائق",change_pin:"تغيير الرمز",change_phrase:"تغيير العبارة",remove_lock:"إزالة القفل",confirm_remove_lock:"اكتب رمز PIN الحالي لإزالة القفل.",setup_title:"إعداد القفل",pin_new:"رمز PIN (4 إلى 8 أرقام)",pin_confirm:"أعد كتابة الرمز",pin_cur:"رمز PIN الحالي",phrase_new:"عبارة الاسترجاع (6 أحرف على الأقل)",phrase_confirm:"أعد كتابة العبارة",phrase_hint:"اختر عبارة تتذكرها واحفظها في مكان آمن. لا تُحفظ العبارة نفسها في التطبيق، بل بصمتها المشفّرة فقط.",err_pin_len:"الرمز يجب أن يكون من 4 إلى 8 أرقام",err_pin_match:"الرمزان غير متطابقين",err_phrase_len:"العبارة قصيرة (6 أحرف على الأقل)",err_phrase_match:"العبارتان غير متطابقتين",err_pin_wrong:"رمز PIN الحالي خاطئ",lock_saved:"تم تفعيل القفل",lock_removed:"تمت إزالة القفل",pin_changed:"تم تغيير الرمز",phrase_changed:"تم تغيير العبارة",google_settings:"إعدادات Google",lock_web_note:"القفل يخفي الشاشة فقط؛ بيانات المتصفح نفسها غير مشفّرة.",brand:'دفتر الديون',tagline:'حساباتك واضحة… وحقوقك محفوظة',nav_home:'الرئيسية',nav_customers:'الزبائن',nav_debts:'الديون',nav_payments:'الدفعات',nav_history:'السجل',nav_reports:'التقارير',nav_settings:'الإعدادات',
 home_sub:'ملخص سريع لحساباتك',add_debt:'＋ إضافة دين',total_balance:'إجمالي الرصيد المتبقي',customers_count:'عدد الزبائن',new_customer:'＋ زبون جديد',record_payment:'تسجيل دفعة',recent:'آخر العمليات',
 customers_sub:'إدارة بيانات الزبائن وحساباتهم',add_customer:'＋ إضافة زبون',search_cust_ph:'ابحث بالاسم أو الهاتف…',debts_sub:'كل الديون المسجلة',search_debt_ph:'ابحث باسم الزبون…',
 payments_sub:'الدفعات المستلمة من الزبائن',add_payment:'＋ تسجيل دفعة',history_title:'سجل العمليات',history_sub:'تسلسل الديون والدفعات',reports_sub:'ملخص حركة الحسابات',
@@ -132,7 +145,7 @@ sync_hint:'«مزامنة» تدمج بيانات هذا الجهاز مع آخ�
 schedule:'متى ننسخ وكم نحتفظ',auto_mode:'المزامنة التلقائية',am_manual:'يدويًا فقط',am_open:'عند فتح التطبيق',am_live:'تلقائي كامل (موصى به)',am_interval:'كل فترة زمنية',every_min:'كل (دقيقة)',keep_n:'عدد النسخ المحفوظة',keep_hint:'تُحذف النسخ الأقدم تلقائيًا. الخيارات التلقائية تزامن أيضًا عند فتح التطبيق أو العودة إليه.',
 history:'النسخ المحفوظة',refresh:'تحديث',loading:'جارٍ التحميل…',restore_btn:'استعادة',no_backups:'لا توجد نسخ في السحابة بعد',confirm_restore:'استبدال بيانات هذا الجهاز بهذه النسخة؟',restored_ok:'تمت استعادة النسخة',
 confirm_del_backup:'حذف هذه النسخة من السحابة؟',backup_deleted:'تم حذف النسخة',connect_fail:'تعذر الاتصال: {e}',google_blocked:'تعذر تحميل تسجيل الدخول من Google',cloud_title:'المزامنة',pulled:'تم استلام {n} تغيير من أجهزتك الأخرى',live_hint:'الوضع التلقائي الكامل: يفحص السحابة كل 30 ثانية أثناء فتح التطبيق، وينزّل تغييرات أجهزتك الأخرى مباشرة، ويرفع تغييراتك بعد ثوانٍ من التعديل. تسجيل دخول Google يدوم نحو ساعة؛ عند انتهائه اضغط في أي مكان مرة واحدة ليتجدد.',need_auth:'انتهى تسجيل دخول Google. اضغط في أي مكان في الصفحة مرة واحدة لتجديده وستكمل المزامنة تلقائيًا.',need_auth_short:'بانتظار تجديد تسجيل الدخول (اضغط في أي مكان)'},
-en:{brand:'Debt Ledger',tagline:'Clear accounts… protected rights',nav_home:'Home',nav_customers:'Customers',nav_debts:'Debts',nav_payments:'Payments',nav_history:'History',nav_reports:'Reports',nav_settings:'Settings',
+en:{sign_in_google:"Sign in with Google",sessions:"Sessions",sign_out:"Sign out",signout_msg:"Sign out of this account? Your sessions stay safe in Google Drive and come back when you sign in again.",no_session:"No session open",no_session_txt:"You are signed in but no session is open. Create your own or open one someone invited you to.",create_session_btn:"Create session",diag_btn:"Details",viewer_banner:"View-only: you cannot edit or delete in this session",viewer_sync_hint:"\\\"Sync\\\" downloads the latest copy from the session owner. As a visitor you cannot upload changes.",role_owner:"Owner",role_admin:"Admin",role_viewer:"Visitor",role_admin_d:"can see, add, edit and delete",role_viewer_d:"can only look, never change or delete",t_readonly:"This session is view-only",create_title:"Create your session",create_txt:"A session is your ledger in the cloud and its data stays in your own Google account. Later you can invite people as admin or visitor.",session_name:"Session name",session_default:"{n}'s ledger",create_btn:"Create",later:"Later",session_created:"Session created",sessions_title:"Sessions",sessions_sub:"Your sessions and the ones others invited you to",sessions_signin:"Sign in with Google to create your session or open one someone invited you to (for example your brother's).",my_sessions:"My sessions",shared_sessions:"Shared with me",no_own_session:"You have no session yet",no_shared:"Nobody has invited you yet. Ask the session owner to add your email.",new_session:"New session",open_btn:"Open",open_now:"Open now",members_btn:"Members",owner_is:"Owner: {o}",session_gone:"That session is no longer available (deleted, or you were removed). Switched to another one.",role_changed:"Your access in this session changed",members_title:"Members",members_sub:"Who can access this session",your_role:"Your role:",members_owner_only:"Only the owner can add members or change their role.",add_member:"Add a member",member_email:"Member's Google email",add_btn:"Add",test_user_hint:"Note: while the app is in Testing mode, also add the member's email under Test users in Google Cloud.",members_list:"Current members",you:"You",remove:"Remove",make_admin:"Make admin",make_viewer:"Make visitor",confirm_remove_member:"Remove {m} from the session?",delete_session:"Delete session",confirm_delete_session:"Delete this session for all members? It moves to the Google Drive trash.",session_deleted:"Session deleted",bad_email:"That email address is not valid",add_self:"You cannot add yourself",member_added:"Member added and invited",role_saved:"Role saved",member_removed:"Member removed",signin_card_title:"Cloud saving and sharing",signin_card_txt:"Sign in with Google to save your data in Google Drive, sync it between your devices, and share it with other people as admin or visitor.",local_backup:"Backup file",local_backup_txt:"Save a copy of your data to a file on this device, or restore one from a file.",tab_tx:"Transactions",tab_log:"Activity log",log_all:"All",log_session:"Session",log_device:"This device",log_empty:"No activity yet",log_person_add:"added customer {a}",log_person_edit:"edited customer {a}",log_person_del:"deleted customer {a}",log_debt_add:"recorded a debt of {b} on {a}",log_pay_add:"recorded a payment of {b} from {a}",log_restore:"restored a backup ({a} customers, {b} transactions)",log_session_create:"created the session {a}",log_member_add:"added {a} as {r}",log_member_role:"changed {a} to {r}",log_member_remove:"removed {a} from the session",log_sign_in:"signed in ({a})",log_sign_out:"signed out ({a})",log_session_open:"opened the session {a}",log_session_delete:"deleted the session {a}",log_lock_on:"turned the app lock on",log_lock_off:"removed the app lock",log_pin_change:"changed the PIN",log_phrase_change:"changed the recovery phrase",log_bio_on:"turned biometric unlock on",log_bio_off:"turned biometric unlock off",log_lock_recovery:"removed the lock with the recovery phrase",log_export:"exported a backup file",lock_title:"Enter your PIN",lock_wrong:"Wrong PIN",lock_blocked:"Too many tries. Wait {s} s",forgot_pin:"Forgot your PIN?",recovery_title:"Recovery phrase",recovery_txt:"Type the phrase you saved when you set up the lock. If it is right, the lock is removed.",phrase_new_short:"Recovery phrase",recovery_wrong:"Wrong phrase",recovery_ok:"Lock removed. You can set it up again in Settings.",unlock:"Unlock",back_to_pin:"Back to PIN",bio_title:"Unlock Debt Ledger",bio_use_pin:"Use PIN",bio_label:"Unlock with fingerprint / face",bio_unavailable:"No fingerprint or face unlock is available on this device",sec_title:"Security",sec_txt:"Lock the app with a PIN or your fingerprint. Keep the recovery phrase somewhere safe: it is the only way to remove the lock if you forget the PIN.",lock_setup:"Set up app lock",lock_on:"App lock is on",lock_after:"Lock after leaving the app",t_now:"Immediately",t_30s:"After 30 seconds",t_1m:"After 1 minute",t_5m:"After 5 minutes",change_pin:"Change PIN",change_phrase:"Change phrase",remove_lock:"Remove lock",confirm_remove_lock:"Enter your current PIN to remove the lock.",setup_title:"Set up the lock",pin_new:"PIN (4 to 8 digits)",pin_confirm:"Repeat the PIN",pin_cur:"Current PIN",phrase_new:"Recovery phrase (at least 6 characters)",phrase_confirm:"Repeat the phrase",phrase_hint:"Choose a phrase you will remember and keep it safe. The app stores only a scrambled fingerprint of it, never the phrase.",err_pin_len:"The PIN must be 4 to 8 digits",err_pin_match:"The PINs do not match",err_phrase_len:"The phrase is too short (at least 6 characters)",err_phrase_match:"The phrases do not match",err_pin_wrong:"The current PIN is wrong",lock_saved:"Lock turned on",lock_removed:"Lock removed",pin_changed:"PIN changed",phrase_changed:"Phrase changed",google_settings:"Google settings",lock_web_note:"The lock hides the screen only; the data inside the browser itself is not encrypted.",brand:'Debt Ledger',tagline:'Clear accounts… protected rights',nav_home:'Home',nav_customers:'Customers',nav_debts:'Debts',nav_payments:'Payments',nav_history:'History',nav_reports:'Reports',nav_settings:'Settings',
 home_sub:'A quick summary of your accounts',add_debt:'＋ Add debt',total_balance:'Total remaining balance',customers_count:'Number of customers',new_customer:'＋ New customer',record_payment:'Record payment',recent:'Recent activity',
 customers_sub:'Manage customers and their accounts',add_customer:'＋ Add customer',search_cust_ph:'Search by name or phone…',debts_sub:'All recorded debts',search_debt_ph:'Search by customer name…',
 payments_sub:'Payments received from customers',add_payment:'＋ Record payment',history_title:'Transaction history',history_sub:'Chronological debts and payments',reports_sub:'Account activity summary',
@@ -180,7 +193,7 @@ function applyStatic(){const h=document.documentElement;h.lang=lang;h.dir=lang==
  document.querySelectorAll('[data-i18n-ph]').forEach(e=>e.placeholder=t(e.dataset.i18nPh));
  $('date').textContent=new Date().toLocaleDateString(lang==='ar'?'ar':'en-US');$('langBtn').textContent=lang==='ar'?'EN':'عربي';$('cloudBtn').title=t('cloud_title');
  $('lgAr').classList.toggle('on',lang==='ar');$('lgEn').classList.toggle('on',lang==='en')}
-function setLang(x){lang=x;try{localStorage.setItem(LKEY,x)}catch{}closeModal();applyStatic();render();renderSync(true)}
+function setLang(x){lang=x;try{localStorage.setItem(LKEY,x)}catch{}closeModal();applyStatic();render();renderAcct();renderSync(true);renderSessions();renderMembers();renderLock()}
 function toggleLang(){setLang(lang==='ar'?'en':'ar')}
 /* ---------- data ---------- */
 function updateAppHeight(){document.documentElement.style.setProperty('--app-height',(window.visualViewport?.height||window.innerHeight)+'px')}
@@ -188,19 +201,27 @@ updateAppHeight();window.addEventListener('resize',updateAppHeight);window.visua
 document.addEventListener('focusin',e=>{if(e.target.matches('input,select,textarea'))setTimeout(()=>e.target.scrollIntoView({block:'nearest',behavior:'smooth'}),180)});
 const cents=n=>{const v=Number(n);return Number.isFinite(v)?Math.round((v+Number.EPSILON)*100):0};
 const money=n=>cents(n)/100;
+const LOG_MAX=1000;
 function sanitize(d){
  const people=(Array.isArray(d?.people)?d.people:[]).filter(p=>p&&p.id!=null&&String(p.name||'').trim()).map(p=>({...p,id:String(p.id),name:String(p.name).trim(),phone:String(p.phone||''),u:Number(p.u)||0}));
  const ids=new Set(people.map(p=>p.id));
  const tx=(Array.isArray(d?.tx)?d.tx:[]).filter(x=>x&&x.id!=null&&ids.has(String(x.person))&&['debt','payment'].includes(x.kind)&&cents(x.amount)>0).map(x=>({...x,id:String(x.id),person:String(x.person),amount:money(Math.abs(Number(x.amount))),currency:['USD','TRY','SYP'].includes(x.currency)?x.currency:'SYP',date:String(x.date||new Date().toISOString().slice(0,10)),u:Number(x.u)||0}));
  const del=(Array.isArray(d?.del)?d.del:[]).filter(x=>x&&x.id!=null).map(x=>({id:String(x.id),u:Number(x.u)||0}));
- return{people,tx,del};
+ const log=(Array.isArray(d?.log)?d.log:[]).filter(x=>x&&x.id!=null&&x.act).map(x=>({id:String(x.id),u:Number(x.u)||0,who:String(x.who||''),mail:String(x.mail||''),act:String(x.act),a:String(x.a??''),b:String(x.b??'')})).sort((p,q)=>q.u-p.u).slice(0,LOG_MAX);
+ return{people,tx,del,log};
 }
-/* Every Google account has its own data set (its own localStorage key); without an account the "guest" set (KEY) is used. */
-const ACCP='daftar_acct_',accKey=e=>ACCP+String(e).trim().toLowerCase();
-let curKey=KEY;
-try{const c0=JSON.parse(localStorage.getItem(CKEY)||'{}');if(c0.provider==='gdrive'&&c0.acct)curKey=accKey(c0.acct)}catch{}
+/* Data slots: guest (KEY), one per session (daftar_s_<id>), and the legacy per-account slot (used while signed in without a session). */
+const ACCP='daftar_acct_',accKey=e=>ACCP+String(e).trim().toLowerCase(),sKey=id=>'daftar_s_'+id;
+let cfg={auto:'live',every:15,keep:10,last:0,gid:'',top:'',acct:'',name:'',sid:'',sname:'',role:'',sowner:'',by:{},done:[],v:0};
+try{Object.assign(cfg,JSON.parse(localStorage.getItem(CKEY)||'{}'))}catch{}
+const saveCfg=()=>{try{localStorage.setItem(CKEY,JSON.stringify(cfg))}catch{}};
+if(cfg.v<4){if(cfg.auto==='manual'||cfg.auto==='change')cfg.auto='live';cfg.v=4;if(cfg.provider!=='gdrive'||!cfg.acct){cfg.acct='';cfg.sid='';try{localStorage.removeItem('daftar_g_tok')}catch{}}delete cfg.provider;saveCfg()}
+if(!cfg.by||typeof cfg.by!=='object')cfg.by={};if(!Array.isArray(cfg.done))cfg.done=[];
+let curKey=cfg.acct?(cfg.sid?sKey(cfg.sid):accKey(cfg.acct)):KEY;
+let RO=!!(cfg.acct&&cfg.sid&&cfg.role==='viewer');
 const readSlot=k=>{try{return sanitize(JSON.parse(localStorage.getItem(k)||'null'))}catch{return sanitize(null)}};
 let db=readSlot(curKey);
+function logAct(act,a='',b=''){db.log.unshift({id:crypto.randomUUID(),u:Date.now(),who:cfg.name||'',mail:cfg.acct||'',act,a:String(a),b:String(b)});if(db.log.length>LOG_MAX)db.log.length=LOG_MAX}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const persist=()=>localStorage.setItem(curKey,JSON.stringify(db));
 let dirty=false;
@@ -218,14 +239,14 @@ const formatTotals=getter=>{const a=currenciesInUse().map(c=>fmt(getter(c),c));r
 const balanceSummary=id=>['USD','TRY','SYP'].filter(c=>txFor(id).some(x=>currencyOf(x)===c)).map(c=>fmt(Math.max(0,balanceCents(id,c))/100,c)).join(' · ')||fmt(0,'SYP');
 const hasBalance=id=>['USD','TRY','SYP'].some(c=>balanceCents(id,c)>0);
 function toast(s){let e=$('toast');e.textContent=s;e.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.display='none',2800)}
-function go(id,btn){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));(btn||document.querySelector(`nav button[data-screen="${id}"]`))?.classList.add('active');window.scrollTo(0,0);render();if(id==='sync'){renderSync(true);if(cloudP()&&hist===null)loadHistory()}}
+function go(id,btn){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));(btn||document.querySelector(`nav button[data-screen="${id}"]`))?.classList.add('active');window.scrollTo(0,0);render();if(id==='sync'){renderSync(true);if(cloudP()&&hist===null)loadHistory()}if(id==='sessions')openSessions();if(id==='members')openMembers()}
 function item(x){let p=person(x.person);return `<div class="item"><div><strong>${x.kind==='debt'?t('debt_on'):t('pay_from')} ${esc(p?.name||t('customer'))}</strong><div class="muted">${esc(x.date)}${x.note?' · '+esc(x.note):''}</div></div><div class="amount" style="color:${x.kind==='debt'?'var(--red)':'var(--green)'}">${x.kind==='debt'?'+':'−'} ${fmt(x.amount,currencyOf(x))}</div></div>`}
 function render(){
  $('sumDebt').textContent=formatTotals(c=>db.people.reduce((sum,p)=>sum+Math.max(0,balanceCents(p.id,c)),0)/100);$('sumCustomers').textContent=db.people.length.toLocaleString(lang==='ar'?'ar':'en-US');
  $('recent').innerHTML=db.tx.length?[...db.tx].reverse().map(item).join(''):`<div class="empty">${t('no_tx')}</div>`;
  renderCustomers();renderDebts();
  $('paymentList').innerHTML=db.tx.filter(x=>x.kind==='payment').reverse().map(item).join('')||`<div class="empty">${t('no_payments')}</div>`;
- $('historyList').innerHTML=[...db.tx].reverse().map(item).join('')||`<div class="empty">${t('history_empty')}</div>`;
+ renderHistory();renderSecurity();
  $('rDebt').textContent=formatTotals(c=>total('debt',c));$('rPaid').textContent=formatTotals(c=>total('payment',c));$('rBalance').textContent=formatTotals(c=>db.people.reduce((sum,p)=>sum+Math.max(0,balanceCents(p.id,c)),0)/100);
  $('reportPeople').innerHTML=db.people.map(p=>`<div class="item row-item"><div><strong>${esc(p.name)}</strong><div class="muted">${esc(p.phone||t('no_phone'))}</div></div><b>${balanceSummary(p.id)}</b></div>`).join('')||`<div class="empty">${t('no_customers')}</div>`;
 }
@@ -233,26 +254,26 @@ function renderCustomers(){let q=($('customerSearch')?.value||'').toLowerCase();
 function renderDebts(){let q=($('debtSearch')?.value||'').toLowerCase();let a=db.tx.filter(x=>x.kind==='debt'&&(person(x.person)?.name||'').toLowerCase().includes(q));$('debtList').innerHTML=[...a].reverse().map(item).join('')||`<div class="empty">${t('no_debts')}</div>`}
 function openModal(title,body){$('modal').querySelector('.dialog').classList.remove('profile-page');$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modal').classList.add('show')}
 function closeModal(){$('modal').classList.remove('show')}
-function openForm(type,selectedId=''){if((type==='debt'||type==='payment')&&!db.people.length){toast(t('t_add_first'));openForm('person');return}
+function openForm(type,selectedId=''){if(!guard())return;if((type==='debt'||type==='payment')&&!db.people.length){toast(t('t_add_first'));openForm('person');return}
  if(type==='person')openModal(t('add_cust_title'),`<div class="field"><label>${t('cust_name')}</label><input id="name" placeholder="${t('full_name_ph')}"></div><div class="field"><label>${t('phone_cc')}</label><input id="phone" dir="ltr" placeholder="${t('phone_ph')}"></div><div class="actions"><button type="button" class="btn light" onclick="pickContact()">${t('pick_contact')}</button></div><div class="muted">${t('contact_hint')}</div><div class="row"><button class="btn" onclick="addPerson()">${t('save_customer')}</button></div>`);
  if(type==='debt'||type==='payment'){let debt=type==='debt';openModal(debt?t('new_debt_title'):t('pay_title'),`<div class="field"><label>${t('search_name')}</label><input id="personSearch" type="search" autocomplete="off" value="${selectedId?esc(person(selectedId)?.name||''):''}" placeholder="${t('type_name_ph')}" oninput="filterPeopleOptions()"><input id="who" type="hidden" value="${selectedId}"><div id="personSearchResults" class="list" style="margin-top:8px"></div><div id="selectedPerson" class="muted" style="margin-top:6px">${selectedId?t('selected')+esc(person(selectedId)?.name||''):''}</div></div><div class="field"><label>${t('amount')}</label><input id="amount" type="number" min="0.01" step="0.01" placeholder="0"></div><div class="field"><label>${t('currency')}</label><select id="currency"><option value="USD">${t('cur_USD')}</option><option value="TRY">${t('cur_TRY')}</option><option value="SYP" selected>${t('cur_SYP')}</option></select></div>${debt?`<div class="field"><label>${t('due')}</label><input id="due" type="date"></div>`:''}<div class="field"><label>${t('notes')}</label><input id="note" placeholder="${t('optional')}"></div><label class="check"><input id="wa" type="checkbox" checked> ${debt?t('wa_debt'):t('wa_pay')}</label><div class="row"><button class="btn ${debt?'':'green'}" onclick="saveTx('${type}')">${t('save')}</button></div>`)}
 }
-function editPerson(id){let p=person(id);if(!p)return;openModal(t('edit_title'),`<div class="field"><label>${t('cust_name')}</label><input id="editName" value="${esc(p.name)}"></div><div class="field"><label>${t('phone')}</label><input id="editPhone" dir="ltr" value="${esc(p.phone||'')}"></div><div class="row"><button class="btn" onclick="savePersonEdit('${id}')">${t('save_edit')}</button></div>`)}
-function savePersonEdit(id){let p=person(id);if(!p)return;let name=$('editName').value.trim();if(!name)return toast(t('t_enter_name'));p.name=name;p.phone=$('editPhone').value.trim();p.u=Date.now();save();closeModal();render();toast(t('t_edited'))}
+function editPerson(id){if(!guard())return;let p=person(id);if(!p)return;openModal(t('edit_title'),`<div class="field"><label>${t('cust_name')}</label><input id="editName" value="${esc(p.name)}"></div><div class="field"><label>${t('phone')}</label><input id="editPhone" dir="ltr" value="${esc(p.phone||'')}"></div><div class="row"><button class="btn" onclick="savePersonEdit('${id}')">${t('save_edit')}</button></div>`)}
+function savePersonEdit(id){if(!guard())return;let p=person(id);if(!p)return;let name=$('editName').value.trim();if(!name)return toast(t('t_enter_name'));p.name=name;p.phone=$('editPhone').value.trim();p.u=Date.now();logAct('person_edit',name);save();closeModal();render();toast(t('t_edited'))}
 async function pickContact(){if(!('contacts' in navigator)||!navigator.contacts?.select){toast(t('t_no_contacts'));return}try{let rows=await navigator.contacts.select(['name','tel'],{multiple:false});if(!rows.length)return;let c=rows[0];$('name').value=(c.name||[])[0]||'';$('phone').value=(c.tel||[])[0]||'';toast(t('t_contact_ok'))}catch(e){if(e.name!=='AbortError')toast(t('t_contact_fail'))}}
-function addPerson(){let name=$('name').value.trim();if(!name)return toast(t('t_enter_name'));db.people.push({id:crypto.randomUUID(),name,phone:$('phone').value.trim(),u:Date.now()});save();closeModal();render();toast(t('t_saved_cust'))}
+function addPerson(){if(!guard())return;let name=$('name').value.trim();if(!name)return toast(t('t_enter_name'));db.people.push({id:crypto.randomUUID(),name,phone:$('phone').value.trim(),u:Date.now()});logAct('person_add',name);save();closeModal();render();toast(t('t_saved_cust'))}
 function filterPeopleOptions(){let q=($('personSearch')?.value||'').trim().toLocaleLowerCase(lang);let box=$('personSearchResults');let hidden=$('who');if(!box||!hidden)return;hidden.value='';$('selectedPerson').textContent='';if(!q){box.innerHTML=`<div class="empty">${t('type_to_search')}</div>`;return}let matches=db.people.filter(p=>(p.name||'').toLocaleLowerCase(lang).includes(q));box.innerHTML=matches.length?matches.map(p=>`<button type="button" class="item" style="width:100%" onclick="chooseTransactionPerson('${p.id}')"><strong>${esc(p.name)}</strong><span class="muted">${esc(p.phone||'')}</span></button>`).join(''):`<div class="empty">${t('no_match')}</div>`}
 function chooseTransactionPerson(id){let p=person(id);if(!p)return;$('who').value=String(id);$('personSearch').value=p.name;$('personSearchResults').innerHTML='';$('selectedPerson').textContent=t('selected')+p.name}
-function saveTx(type){let id=$('who').value,amount=money($('amount').value),p=person(id);if(!id)return toast(t('t_choose'));if(!p)return toast(t('t_not_found'));if(!Number.isFinite(Number($('amount').value))||cents(amount)<=0)return toast(t('t_bad_amount'));let currency=$('currency').value;if(type==='payment'&&cents(amount)>balanceCents(id,currency))return toast(t('t_over'));let x={id:crypto.randomUUID(),person:id,kind:type==='debt'?'debt':'payment',amount,currency,date:new Date().toISOString().slice(0,10),due:$('due')?.value||'',note:$('note').value.trim(),u:Date.now()};db.tx.push(x);save();let wa=$('wa').checked;closeModal();render();toast(t(type==='debt'?'t_debt_saved':'t_pay_saved',{n:p.name}));if(wa)whatsapp(p,t(type==='debt'?'wam_debt':'wam_pay',{n:p.name,a:fmt(amount,currency)}))}
+function saveTx(type){if(!guard())return;let id=$('who').value,amount=money($('amount').value),p=person(id);if(!id)return toast(t('t_choose'));if(!p)return toast(t('t_not_found'));if(!Number.isFinite(Number($('amount').value))||cents(amount)<=0)return toast(t('t_bad_amount'));let currency=$('currency').value;if(type==='payment'&&cents(amount)>balanceCents(id,currency))return toast(t('t_over'));let x={id:crypto.randomUUID(),person:id,kind:type==='debt'?'debt':'payment',amount,currency,date:new Date().toISOString().slice(0,10),due:$('due')?.value||'',note:$('note').value.trim(),u:Date.now()};db.tx.push(x);logAct(type==='debt'?'debt_add':'pay_add',p.name,fmt(amount,currency));save();let wa=$('wa').checked;closeModal();render();toast(t(type==='debt'?'t_debt_saved':'t_pay_saved',{n:p.name}));if(wa)whatsapp(p,t(type==='debt'?'wam_debt':'wam_pay',{n:p.name,a:fmt(amount,currency)}))}
 function whatsapp(p,msg){let phone=(p.phone||'').replace(/\D/g,'');if(!phone){toast(t('t_no_wa_phone'));return}window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(msg),'_blank')}
 function details(id){let p=person(id);if(!p)return;let ts=txFor(id);openModal(t('profile'),`<div class="head"><div><h2 style="margin:0">${esc(p.name)}</h2><div class="muted">${esc(p.phone||t('no_phone_reg'))}</div></div><span class="badge ${hasBalance(id)?'':'green'}">${hasBalance(id)?t('has_balance'):t('settled')}</span></div><div class="grid" style="margin:14px 0"><div class="stat"><label>${t('remaining')}</label><strong>${balanceSummary(id)}</strong></div><div class="stat green"><label>${t('total_payments')}</label><strong>${['USD','TRY','SYP'].filter(c=>ts.some(x=>x.kind==='payment'&&currencyOf(x)===c)).map(c=>fmt(ts.filter(x=>x.kind==='payment'&&currencyOf(x)===c).reduce((s,x)=>s+cents(x.amount),0)/100,c)).join(' · ')||fmt(0,'SYP')}</strong></div></div><div class="actions"><button class="btn light" onclick="editPerson('${id}')">${t('edit_cust_data')}</button><button class="btn" onclick="openForm('debt','${id}')">${t('add_debt_for')}</button><button class="btn green" onclick="openForm('payment','${id}')">${t('pay_for')}</button></div><div class="panel"><h2>${esc(t('acct_move',{n:p.name}))}</h2><div class="list">${[...ts].reverse().map(item).join('')||`<div class="empty">${t('no_tx_cust')}</div>`}</div></div><div class="row"><button class="btn light" onclick="closeModal()">${t('close_profile')}</button></div>`);$('modal').querySelector('.dialog').classList.add('profile-page')}
-function deletePerson(id){if(!confirm(t('confirm_del')))return;const now=Date.now();db.del.push({id,u:now},...txFor(id).map(x=>({id:x.id,u:now})));db.people=db.people.filter(p=>p.id!==id);db.tx=db.tx.filter(x=>x.person!==id);save();render();toast(t('t_deleted'))}
-function exportData(){let blob=new Blob([JSON.stringify({app:'daftar',v:2,savedAt:Date.now(),data:db},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='daftar-deyoun-backup.json';a.click();URL.revokeObjectURL(a.href)}
-function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);d=d?.data||d;if(!d||!Array.isArray(d.people)||!Array.isArray(d.tx))throw 0;let ids=new Set();for(const p of d.people){if(!p||p.id==null||!String(p.name||'').trim()||ids.has(String(p.id)))throw 0;ids.add(String(p.id))}for(const x of d.tx){if(!x||x.id==null||!ids.has(String(x.person))||!['debt','payment'].includes(x.kind)||cents(x.amount)<=0)throw 0}if(!confirm(t('confirm_restore')))return;replaceWith(sanitize(d));toast(t('t_restored'))}catch{toast(t('t_bad_backup'))}};r.readAsText(f);e.target.value=''}
+function deletePerson(id){if(!guard())return;if(!confirm(t('confirm_del')))return;const pp=person(id);const now=Date.now();db.del.push({id,u:now},...txFor(id).map(x=>({id:x.id,u:now})));db.people=db.people.filter(p=>p.id!==id);db.tx=db.tx.filter(x=>x.person!==id);logAct('person_del',pp?.name||'');save();render();toast(t('t_deleted'))}
+function exportData(){devLog('export');let blob=new Blob([JSON.stringify({app:'daftar',v:2,savedAt:Date.now(),data:db},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='daftar-deyoun-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(e){let f=e.target.files[0];if(!f)return;if(!guard()){e.target.value='';return}let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);d=d?.data||d;if(!d||!Array.isArray(d.people)||!Array.isArray(d.tx))throw 0;let ids=new Set();for(const p of d.people){if(!p||p.id==null||!String(p.name||'').trim()||ids.has(String(p.id)))throw 0;ids.add(String(p.id))}for(const x of d.tx){if(!x||x.id==null||!ids.has(String(x.person))||!['debt','payment'].includes(x.kind)||cents(x.amount)<=0)throw 0}if(!confirm(t('confirm_restore')))return;replaceWith(sanitize(d));toast(t('t_restored'))}catch{toast(t('t_bad_backup'))}};r.readAsText(f);e.target.value=''}
 /* ---------- merge / restore ---------- */
 const stable=x=>JSON.stringify(x,(k,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.keys(v).sort().reduce((o,key)=>(o[key]=v[key],o),{}):v);
 const byId=(a,b)=>a.id<b.id?-1:a.id>b.id?1:0;
-const canon=d=>({people:[...d.people].sort(byId),tx:[...d.tx].sort(byId),del:[...d.del].sort(byId)});
+const canon=d=>({people:[...d.people].sort(byId),tx:[...d.tx].sort(byId),del:[...d.del].sort(byId),log:[...d.log].sort(byId)});
 function mergeDB(a,b){
  const tomb=new Map();
  for(const d of [...a.del,...b.del]){if((tomb.get(d.id)??-1)<d.u)tomb.set(d.id,d.u)}
@@ -260,197 +281,467 @@ function mergeDB(a,b){
  const people=pick([...a.people,...b.people]);const ids=new Set(people.map(p=>p.id));
  const tx=pick([...a.tx,...b.tx]).filter(x=>ids.has(x.person));
  const cut=Date.now()-180*864e5;
- return{people,tx,del:[...tomb].map(([id,u])=>({id,u})).filter(d=>d.u>cut)};
+ const lm=new Map();for(const x of [...a.log,...b.log])lm.set(x.id,x);
+ const log=[...lm.values()].sort((p,q)=>q.u-p.u).slice(0,LOG_MAX);
+ return{people,tx,del:[...tomb].map(([id,u])=>({id,u})).filter(d=>d.u>cut),log};
 }
 function replaceWith(snap){
+ if(!guard())return;
  const now=Date.now(),kp=new Set(snap.people.map(p=>p.id)),kt=new Set(snap.tx.map(x=>x.id));
  const del=[...snap.del,...db.del];
  for(const p of db.people)if(!kp.has(p.id))del.push({id:p.id,u:now});
  for(const x of db.tx)if(!kt.has(x.id))del.push({id:x.id,u:now});
- db={people:snap.people.map(p=>({...p,u:now})),tx:snap.tx.map(x=>({...x,u:now})),del:del.filter(d=>!kp.has(d.id)&&!kt.has(d.id))};
+ const lm=new Map();for(const x of [...db.log,...(snap.log||[])])lm.set(x.id,x);
+ db={people:snap.people.map(p=>({...p,u:now})),tx:snap.tx.map(x=>({...x,u:now})),del:del.filter(d=>!kp.has(d.id)&&!kt.has(d.id)),log:[...lm.values()].sort((p,q)=>q.u-p.u).slice(0,LOG_MAX)};
+ logAct('restore',snap.people.length,snap.tx.length);
  save();render();
 }
-/* ---------- sync config & state ---------- */
-let cfg={provider:null,auto:'live',every:15,keep:10,last:0,gid:'',dkey:'',top:'',acct:'',v:0};
-try{Object.assign(cfg,JSON.parse(localStorage.getItem(CKEY)||'{}'))}catch{}
-const saveCfg=()=>{try{localStorage.setItem(CKEY,JSON.stringify(cfg))}catch{}};
-if(cfg.v<3){if(cfg.auto==='manual'||cfg.auto==='change')cfg.auto='live';cfg.v=3;saveCfg()}
-/* an older version signed in without remembering which account: treat it as signed out (the data stays and the first account you connect adopts it) */
-if(cfg.provider==='gdrive'&&!cfg.acct){cfg.provider=null;cfg.top='';cfg.last=0;saveCfg();try{localStorage.removeItem('daftar_g_tok')}catch{}}
-let sync={state:'idle',msg:''},busy=false,picker=false,hist=null,autoT=null,intT=null,lastVis=0,needAuth=false;
-const cloudP=()=>cfg.provider==='gdrive'||cfg.provider==='dropbox';
+/* ---------- sync state ---------- */
+let sync={state:'idle',msg:''},busy=false,hist=null,autoT=null,intT=null,lastVis=0,needAuth=false,sessList=null,sessErr='',members=null,memErr='',histTab='tx',logF='all',connErr='';
+const cloudP=()=>!!(cfg.acct&&cfg.sid);
+function guard(){if(RO){toast(t('t_readonly'));return false}return true}
 const fmtTime=ms=>new Date(ms).toLocaleString(lang==='ar'?'ar':'en-US');
-function setSync(state,msg=''){sync={state,msg};const b=$('cloudBtn');b.className='hbtn '+(state==='ok'?'ok':(state==='err'||state==='auth')?'err':state==='busy'?'busy':'');renderSync()}
-/* ---------- providers ---------- */
-const chk=async r=>{if(!r.ok){const m=await r.text();throw new Error(r.status+' '+m.slice(0,140))}return r.json()};
-const b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-/* Google Drive (hidden appDataFolder) */
+const roleLabel=r=>t('role_'+(r==='writer'?'admin':r==='reader'?'viewer':r));
+function setSync(state,msg=''){sync={state,msg};const b=$('cloudBtn');b.className='hbtn '+(state==='ok'?'ok':(state==='err'||state==='auth')?'err':state==='busy'?'busy':'');renderSync();renderAcct()}
+/* ---------- device log (this browser only) ---------- */
+const DLK='daftar_devlog';
+const devLogs=()=>{try{return JSON.parse(localStorage.getItem(DLK)||'[]')}catch{return[]}};
+function devLog(act,a=''){try{const l=devLogs();l.unshift({id:crypto.randomUUID(),u:Date.now(),who:cfg.name||'',mail:cfg.acct||'',act,a:String(a),b:''});l.length=Math.min(l.length,300);localStorage.setItem(DLK,JSON.stringify(l))}catch{}}
+/* ---------- Google sign-in ---------- */
+const chk=async r=>{const x=await r.text();if(!r.ok)throw new Error(r.status+' '+x.slice(0,140));return x?JSON.parse(x):null};
 let gTok={t:'',e:0};
 try{const sv=JSON.parse(localStorage.getItem('daftar_g_tok')||'null');if(sv&&sv.t&&sv.e>Date.now()&&cfg.acct&&String(sv.em).toLowerCase()===cfg.acct.toLowerCase())gTok=sv}catch{}
 const gOK=()=>!!gTok.t&&Date.now()<gTok.e;
 function loadGIS(){return new Promise((res,rej)=>{if(window.google?.accounts?.oauth2)return res();const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=res;s.onerror=()=>rej(new Error(t('google_blocked')));document.head.appendChild(s)})}
-/* Ask Google for a token. any=true: let the user pick ANY account (used when connecting/switching); the token is returned, not stored. */
+const SCOPES='https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.appdata openid email profile';
+/* any=true: let the user pick ANY account (sign in / switch). Otherwise the token must belong to the signed-in account. */
 async function gAuth(prompt,any){
  await loadGIS();
  const r=await new Promise((res,rej)=>{
-  const c=google.accounts.oauth2.initTokenClient({client_id:cfg.gid,scope:'https://www.googleapis.com/auth/drive.appdata openid email',
+  const c=google.accounts.oauth2.initTokenClient({client_id:cfg.gid,scope:SCOPES,
    callback:r=>{if(r.error)return rej(new Error(r.error));res(r)},
    error_callback:e=>rej(new Error(e.type||'popup'))});
   const o={prompt};if(!any&&cfg.acct)o.hint=cfg.acct;
   c.requestAccessToken(o);
  });
- let em='';
- try{const u=await(await fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+r.access_token}})).json();em=String(u.email||'').toLowerCase()}catch{}
+ let em='',name='';
+ try{const u=await(await fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+r.access_token}})).json();em=String(u.email||'').toLowerCase();name=String(u.name||'')}catch{}
  if(!em)throw new Error(t('no_email'));
  if(!any&&cfg.acct&&em!==cfg.acct.toLowerCase())throw new Error(t('wrong_account',{a:cfg.acct}));
- return{t:r.access_token,e:Date.now()+(r.expires_in-60)*1000,em};
+ return{t:r.access_token,e:Date.now()+(r.expires_in-60)*1000,em,name};
 }
 async function gToken(prompt){
  if(gTok.t&&Date.now()<gTok.e)return gTok.t;
  const k=await gAuth(prompt,false);gTok=k;try{localStorage.setItem('daftar_g_tok',JSON.stringify(gTok))}catch{}
  return gTok.t;
 }
-const gdrive={
- async h(){return{Authorization:'Bearer '+await gToken('')}},
- async list(){const r=await fetch('https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&pageSize=1000&fields='+encodeURIComponent('files(id,name,size)'),{headers:await this.h(),cache:'no-store'});return (await chk(r)).files.map(f=>({id:f.id,name:f.name,size:+f.size||0}))},
- async read(id){const r=await fetch('https://www.googleapis.com/drive/v3/files/'+encodeURIComponent(id)+'?alt=media',{headers:await this.h(),cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.text()},
- async write(name,text){const bd='daftar'+Math.random().toString(36).slice(2);const body=`--${bd}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify({name,parents:['appDataFolder'],mimeType:'application/json'})}\r\n--${bd}\r\nContent-Type: application/json\r\n\r\n${text}\r\n--${bd}--`;const h=await this.h();h['Content-Type']='multipart/related; boundary='+bd;await chk(await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:h,body}))},
- async del(id){const r=await fetch('https://www.googleapis.com/drive/v3/files/'+encodeURIComponent(id),{method:'DELETE',headers:await this.h()});if(!r.ok&&r.status!==404)throw new Error(r.status)}
-};
-/* Dropbox (app folder, OAuth PKCE) */
-const dbxTok=()=>{try{return JSON.parse(localStorage.getItem(DKEY)||'null')}catch{return null}};
-const dbxRedirect=()=>location.origin+location.pathname;
-async function dbxStart(){const v=b64u(crypto.getRandomValues(new Uint8Array(32)));const ch=b64u(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v)));sessionStorage.setItem('dbx_v',v);location.href='https://www.dropbox.com/oauth2/authorize?'+new URLSearchParams({client_id:cfg.dkey,response_type:'code',code_challenge:ch,code_challenge_method:'S256',token_access_type:'offline',redirect_uri:dbxRedirect()})}
-async function dbxExchange(params){const r=await fetch('https://api.dropboxapi.com/oauth2/token',{method:'POST',body:new URLSearchParams(params)});const j=await r.json();if(!r.ok)throw new Error(j.error_description||j.error||r.status);return j}
-async function dbxReturn(){const q=new URLSearchParams(location.search);const code=q.get('code'),v=sessionStorage.getItem('dbx_v');if(q.get('error'))history_replace();if(!code||!v)return false;history_replace();try{const j=await dbxExchange({code,grant_type:'authorization_code',code_verifier:v,client_id:cfg.dkey,redirect_uri:dbxRedirect()});sessionStorage.removeItem('dbx_v');localStorage.setItem(DKEY,JSON.stringify({a:j.access_token,r:j.refresh_token,e:Date.now()+j.expires_in*1000-60000}));cfg.provider='dropbox';saveCfg();return true}catch(e){toast(t('connect_fail',{e:e.message}));return false}}
-function history_replace(){window.history.replaceState(null,'',location.pathname)}
-const dropbox={
- async tok(){let k=dbxTok();if(!k)throw new Error('not signed in');if(Date.now()<k.e)return k.a;const j=await dbxExchange({grant_type:'refresh_token',refresh_token:k.r,client_id:cfg.dkey});k={a:j.access_token,r:k.r,e:Date.now()+j.expires_in*1000-60000};localStorage.setItem(DKEY,JSON.stringify(k));return k.a},
- async list(){const T=await this.tok();const j=await chk(await fetch('https://api.dropboxapi.com/2/files/list_folder',{method:'POST',headers:{Authorization:'Bearer '+T,'Content-Type':'application/json'},body:JSON.stringify({path:'',limit:2000})}));return j.entries.filter(e=>e['.tag']==='file').map(e=>({id:e.id,name:e.name,size:e.size||0}))},
- async read(id){const T=await this.tok();const r=await fetch('https://content.dropboxapi.com/2/files/download',{method:'POST',headers:{Authorization:'Bearer '+T,'Dropbox-API-Arg':JSON.stringify({path:id})}});if(!r.ok)throw new Error(r.status);return r.text()},
- async write(name,text){const T=await this.tok();const r=await fetch('https://content.dropboxapi.com/2/files/upload',{method:'POST',headers:{Authorization:'Bearer '+T,'Content-Type':'application/octet-stream','Dropbox-API-Arg':JSON.stringify({path:'/'+name,mode:'add',autorename:true,mute:true})},body:text});if(!r.ok)throw new Error(r.status+' '+(await r.text()).slice(0,120))},
- async del(id){const T=await this.tok();const r=await fetch('https://api.dropboxapi.com/2/files/delete_v2',{method:'POST',headers:{Authorization:'Bearer '+T,'Content-Type':'application/json'},body:JSON.stringify({path:id})});if(!r.ok&&r.status!==409)throw new Error(r.status)}
-};
-const prov=()=>cfg.provider==='gdrive'?gdrive:cfg.provider==='dropbox'?dropbox:null;
-/* ---------- backup files ---------- */
-const stamp=()=>new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
-const bname=()=>`daftar-${stamp()}.json`;
+/* ---------- Google Drive: a session is a folder; sharing the folder = inviting ---------- */
+const DV='https://www.googleapis.com/drive/v3',UP='https://www.googleapis.com/upload/drive/v3',FOLDER='application/vnd.google-apps.folder',CT={'Content-Type':'application/json'};
+const SF='id,name,ownedByMe,trashed,owners(emailAddress,displayName),capabilities(canAddChildren),properties';
+const fq=s=>encodeURIComponent(s);
+const roleOf=f=>f.ownedByMe?'owner':f.capabilities?.canAddChildren?'admin':'viewer';
+const toSess=f=>({id:f.id,name:f.properties?.sname||f.name,role:roleOf(f),owner:f.owners?.[0]?.displayName||f.owners?.[0]?.emailAddress||''});
+async function dj(path,opt={}){const h={Authorization:'Bearer '+await gToken(''),...(opt.headers||{})};return chk(await fetch(path.startsWith('http')?path:DV+path,{...opt,headers:h,cache:'no-store'}))}
 const isB=n=>/^daftar-\d{8}T\d{6}Z\.json$/.test(n);
 const nameDate=n=>{const m=n.match(/(\d{4})(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)Z/);return m?Date.UTC(m[1],m[2]-1,m[3],m[4],m[5],m[6]):0};
-const listBackups=async P=>(await P.list()).filter(f=>isB(f.name)).sort((a,b)=>a.name<b.name?1:a.name>b.name?-1:0);
+const stamp=()=>new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+const bname=()=>`daftar-${stamp()}.json`;
+const drive={
+ async sessions(){const q="mimeType='"+FOLDER+"' and trashed=false and properties has { key='daftar' and value='session' }";const j=await dj('/files?corpora=user&pageSize=200&fields='+fq('files('+SF+')')+'&q='+fq(q));return j.files.map(toSess)},
+ async get(id){const f=await dj('/files/'+encodeURIComponent(id)+'?fields='+fq(SF));if(f.trashed)throw new Error('404 trashed');return toSess(f)},
+ async create(name){return toSess(await dj('/files?fields='+fq(SF),{method:'POST',headers:CT,body:JSON.stringify({name:'Debt Ledger - '+name,mimeType:FOLDER,properties:{daftar:'session',sname:name},writersCanShare:false})}))},
+ async trash(id){await dj('/files/'+encodeURIComponent(id),{method:'PATCH',headers:CT,body:JSON.stringify({trashed:true})})},
+ async list(sid){const q="'"+sid+"' in parents and trashed=false";const j=await dj('/files?pageSize=1000&fields='+fq('files(id,name,size)')+'&q='+fq(q));return j.files.filter(f=>isB(f.name)).map(f=>({id:f.id,name:f.name,size:+f.size||0})).sort((a,b)=>a.name<b.name?1:a.name>b.name?-1:0)},
+ async read(id){const r=await fetch(DV+'/files/'+encodeURIComponent(id)+'?alt=media',{headers:{Authorization:'Bearer '+await gToken('')},cache:'no-store'});if(!r.ok)throw new Error(r.status+'');return r.text()},
+ async write(sid,name,text){const bd='daftar'+Math.random().toString(36).slice(2);const body=`--${bd}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify({name,parents:[sid],mimeType:'application/json'})}\r\n--${bd}\r\nContent-Type: application/json\r\n\r\n${text}\r\n--${bd}--`;await dj(UP+'/files?uploadType=multipart',{method:'POST',headers:{'Content-Type':'multipart/related; boundary='+bd},body})},
+ async members(sid){const j=await dj('/files/'+encodeURIComponent(sid)+'/permissions?pageSize=100&fields='+fq('permissions(id,type,role,emailAddress,displayName)'));return j.permissions.filter(p=>p.type==='user').map(p=>({id:p.id,email:String(p.emailAddress||'').toLowerCase(),name:p.displayName||'',role:p.role==='owner'?'owner':p.role==='writer'?'admin':'viewer'}))},
+ async addMember(sid,email,role){await dj('/files/'+encodeURIComponent(sid)+'/permissions?sendNotificationEmail=true',{method:'POST',headers:CT,body:JSON.stringify({type:'user',role:role==='admin'?'writer':'reader',emailAddress:email})})},
+ async setRole(sid,pid,role){await dj('/files/'+encodeURIComponent(sid)+'/permissions/'+encodeURIComponent(pid),{method:'PATCH',headers:CT,body:JSON.stringify({role:role==='admin'?'writer':'reader'})})},
+ async rmMember(sid,pid){await dj('/files/'+encodeURIComponent(sid)+'/permissions/'+encodeURIComponent(pid),{method:'DELETE'})},
+ /* backups written by older versions of the web app lived in the hidden appData folder */
+ async legacy(){const j=await dj('/files?spaces=appDataFolder&pageSize=1000&fields='+fq('files(id,name)'));const f=j.files.filter(f=>isB(f.name)).sort((a,b)=>a.name<b.name?1:-1)[0];if(!f)return null;const r=await fetch(DV+'/files/'+f.id+'?alt=media',{headers:{Authorization:'Bearer '+await gToken('')}});return r.ok?parseBackup(await r.text()):null}
+};
 function parseBackup(text){const o=JSON.parse(text);const d=o?.data||o;if(!d||!Array.isArray(d.people)||!Array.isArray(d.tx))throw new Error('bad file');return sanitize(d)}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+/* ---------- sign in / out, sessions ---------- */
+async function signIn(){
+ if(location.protocol==='file:')return toast(t('need_https'));
+ if(!cfg.gid){toast(t('need_id'));go('sync');return}
+ try{
+  const k=await gAuth('select_account',true);
+  while(busy)await sleep(100);
+  clearTimeout(autoT);
+  gTok=k;try{localStorage.setItem('daftar_g_tok',JSON.stringify(gTok))}catch{}
+  if(String(cfg.acct).toLowerCase()!==k.em){
+   persist();                                        /* keep what the screen shows in its own slot */
+   Object.assign(cfg,{acct:k.em,name:k.name||k.em.split('@')[0],sid:'',sname:'',role:'',sowner:'',top:'',last:0});
+   RO=false;curKey=accKey(k.em);db=readSlot(curKey);dirty=false;hist=null;members=null;
+   devLog('sign_in',k.em);
+  }else cfg.name=k.name||cfg.name;
+  saveCfg();needAuth=false;connErr='';render();renderAcct();renderSync(true);
+  await chooseSession(true);
+ }catch(e){toast(t('connect_fail',{e:e.message}))}
+}
+async function chooseSession(mayCreate){
+ try{
+  sessList=await drive.sessions();
+  const cur=sessList.find(s=>s.id===cfg.sid);
+  if(cur)return openSession(cur);
+  const pick=sessList.find(s=>s.id===cfg.by[cfg.acct])||sessList.find(s=>s.role==='owner');
+  if(pick)return openSession(pick);
+  if(!sessList.length&&mayCreate)return promptCreate();
+  renderAcct();go('sessions');
+ }catch(e){connErr=e.message;renderAcct();toast(t('s_err',{e:e.message}))}
+}
+async function openSession(s,toMembers){
+ while(busy)await sleep(100);
+ clearTimeout(autoT);persist();
+ Object.assign(cfg,{sid:s.id,sname:s.name,role:s.role,sowner:s.owner,top:'',last:0});cfg.by[cfg.acct]=s.id;saveCfg();
+ RO=s.role==='viewer';curKey=sKey(s.id);db=readSlot(curKey);dirty=false;hist=null;members=null;needAuth=false;
+ devLog('session_open',s.name);
+ setupInterval();render();renderAcct();renderSync(true);
+ if(toMembers)go('members');else if(document.querySelector('#sessions.active'))go('home');
+ await runSync('sync');
+}
+async function openSessionId(id,toMembers){
+ const s=(sessList||[]).find(x=>x.id===id);if(!s)return;
+ if(id===cfg.sid){if(toMembers)go('members');else go('home');return}
+ await openSession(s,toMembers);
+}
+function promptCreate(){
+ const n=(cfg.name||cfg.acct||'').split(' ')[0];
+ openModal(t('create_title'),`<p class="muted">${t('create_txt')}</p><div class="field"><label>${t('session_name')}</label><input id="newSess" value="${esc(t('session_default',{n}))}"></div><div class="row"><button class="btn" onclick="createSession($('newSess').value)">${t('create_btn')}</button> <button class="btn light" onclick="closeModal();go('sessions')">${t('later')}</button></div>`);
+}
+async function createSession(name){
+ name=String(name||'').trim();if(!name)return toast(t('t_enter_name'));
+ try{
+  const first=!cfg.done.includes(cfg.acct);
+  const s=await drive.create(name);
+  let seed=sanitize(null);
+  if(first){
+   /* the first session adopts what was typed before signing in (guest data), the old per-account data and any old appData backup */
+   seed=mergeDB(mergeDB(curKey===accKey(cfg.acct)?db:sanitize(null),readSlot(accKey(cfg.acct))),readSlot(KEY));
+   try{const lg=await drive.legacy();if(lg)seed=mergeDB(seed,lg)}catch{}
+   const empty=JSON.stringify(sanitize(null));
+   localStorage.setItem(KEY,empty);localStorage.setItem(accKey(cfg.acct),empty);
+   if(curKey===accKey(cfg.acct)||curKey===KEY)db=sanitize(null);
+   cfg.done.push(cfg.acct);
+  }
+  localStorage.setItem(sKey(s.id),JSON.stringify(seed));
+  closeModal();
+  sessList=[s,...(sessList||[])];
+  await openSession(s);
+  logAct('session_create',name);save();
+  toast(t('session_created'));
+ }catch(e){toast(t('s_err',{e:e.message}))}
+}
+function signOut(){
+ if(!confirm(t('signout_msg')))return;
+ devLog('sign_out',cfg.acct);
+ try{if(gTok.t&&window.google)google.accounts.oauth2.revoke(gTok.t)}catch{}
+ gTok={t:'',e:0};try{localStorage.removeItem('daftar_g_tok')}catch{}
+ clearTimeout(autoT);clearInterval(intT);persist();
+ Object.assign(cfg,{acct:'',name:'',sid:'',sname:'',role:'',sowner:'',top:'',last:0});saveCfg();
+ RO=false;curKey=KEY;db=readSlot(KEY);needAuth=false;dirty=false;hist=null;members=null;sessList=null;connErr='';
+ setSync('idle');render();renderAcct();renderSync(true);go('home');
+}
+async function sessionLost(){
+ toast(t('session_gone'));
+ Object.assign(cfg,{sid:'',sname:'',role:'',sowner:'',top:'',last:0});delete cfg.by[cfg.acct];saveCfg();
+ persist();RO=false;curKey=accKey(cfg.acct);db=readSlot(curKey);dirty=false;hist=null;members=null;
+ render();renderAcct();renderSync(true);
+ await chooseSession(false);
+}
+async function deleteSession(id){
+ const s=(sessList||[]).find(x=>x.id===id)||{id,name:cfg.sname};
+ if(!confirm(t('confirm_delete_session')))return;
+ try{
+  await drive.trash(id);devLog('session_delete',s.name);toast(t('session_deleted'));
+  sessList=(sessList||[]).filter(x=>x.id!==id);
+  if(id===cfg.sid){await sessionLostQuiet()}else openSessions();
+ }catch(e){toast(t('s_err',{e:e.message}))}
+}
+async function sessionLostQuiet(){
+ Object.assign(cfg,{sid:'',sname:'',role:'',sowner:'',top:'',last:0});delete cfg.by[cfg.acct];saveCfg();
+ RO=false;curKey=accKey(cfg.acct);db=readSlot(curKey);dirty=false;hist=null;members=null;
+ render();renderAcct();renderSync(true);go('sessions');
+}
+/* ---------- members ---------- */
+async function loadMembers(){
+ members=null;memErr='';renderMembers();
+ try{members=await drive.members(cfg.sid)}catch(e){members=[];memErr=e.message}
+ renderMembers();
+}
+async function addMember(){
+ const email=($('memEmail')?.value||'').trim().toLowerCase(),role=document.querySelector('#memRole .on')?.dataset.r||'viewer';
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return toast(t('bad_email'));
+ if(email===cfg.acct.toLowerCase())return toast(t('add_self'));
+ try{await drive.addMember(cfg.sid,email,role);logAct('member_add',email,role);save();toast(t('member_added'));await loadMembers()}catch(e){toast(t('s_err',{e:e.message}))}
+}
+async function setMemberRole(pid,email,role){try{await drive.setRole(cfg.sid,pid,role);logAct('member_role',email,role);save();toast(t('role_saved'));await loadMembers()}catch(e){toast(t('s_err',{e:e.message}))}}
+async function removeMember(pid,email){if(!confirm(t('confirm_remove_member',{m:email})))return;try{await drive.rmMember(cfg.sid,pid);logAct('member_remove',email);save();toast(t('member_removed'));await loadMembers()}catch(e){toast(t('s_err',{e:e.message}))}}
+function pickRole(r){document.querySelectorAll('#memRole button').forEach(b=>b.classList.toggle('on',b.dataset.r===r))}
 /* ---------- sync engine ---------- */
 function diffCount(a,b){const k=d=>new Map([...d.people,...d.tx].map(r=>[r.id,r.u]));const A=k(a),B=k(b);let n=0;for(const[id,u]of B)if(!A.has(id)||A.get(id)!==u)n++;for(const id of A.keys())if(!B.has(id))n++;return n}
 async function runSync(mode,silent,gesture){
- const P=prov();if(!P||busy)return;
- if(silent&&!gesture&&cfg.provider==='gdrive'&&!gOK()){needAuth=true;setSync('auth');return}
+ if(!cloudP()||busy)return;
+ if(silent&&!gesture&&!gOK()){needAuth=true;setSync('auth');return}
  busy=true;dirty=false;setSync('busy');
+ const sid=cfg.sid;
  try{
-  let files=await listBackups(P),remote=null,pulled=0;
-  if(mode==='sync'&&files.length){
-   remote=parseBackup(await P.read(files[0].id));
-   const m=mergeDB(db,remote);
-   if(stable(canon(m))!==stable(canon(db))){pulled=diffCount(db,m);db=m;persist();render()}
-  }
-  let uploaded=false;
-  if(mode==='backup'||!remote||stable(canon(db))!==stable(canon(remote))){
-   await P.write(bname(),JSON.stringify({app:'daftar',v:2,savedAt:Date.now(),data:db}));uploaded=true;
-   files=await listBackups(P);
-   for(const f of files.slice(Math.max(1,cfg.keep)))await P.del(f.id);
-   files=files.slice(0,Math.max(1,cfg.keep));
+  try{
+   const s=await drive.get(sid);
+   if(s.role!==cfg.role){cfg.role=s.role;RO=s.role==='viewer';toast(t('role_changed'));render()}
+   cfg.sname=s.name;cfg.sowner=s.owner;saveCfg();
+  }catch(e){if(/^(403|404)/.test(e.message)){busy=false;setSync('idle');return sessionLost()}throw e}
+  let files=await drive.list(sid),remote=null,pulled=0,uploaded=false;
+  if(RO){                                            /* a visitor only downloads: the screen becomes exactly the owner's copy */
+   if(files.length){remote=parseBackup(await drive.read(files[0].id));if(stable(canon(remote))!==stable(canon(db))){pulled=diffCount(db,remote);db=remote;persist();render()}}
+  }else{
+   if(mode==='sync'&&files.length){
+    remote=parseBackup(await drive.read(files[0].id));
+    const m=mergeDB(db,remote);
+    if(stable(canon(m))!==stable(canon(db))){pulled=diffCount(db,m);db=m;persist();render()}
+   }
+   if(mode==='backup'||!remote||stable(canon(db))!==stable(canon(remote))){
+    await drive.write(sid,bname(),JSON.stringify({app:'daftar',v:2,savedAt:Date.now(),data:db}));uploaded=true;
+    files=await drive.list(sid);
+    for(const f of files.slice(Math.max(1,cfg.keep)))await drive.trash(f.id);   /* trash, not delete: editors cannot delete the owner's files */
+    files=files.slice(0,Math.max(1,cfg.keep));
+   }
   }
   cfg.top=files[0]?.name||'';cfg.last=Date.now();saveCfg();needAuth=false;hist=null;busy=false;setSync('ok');
   if(pulled)toast(t('pulled',{n:pulled}));
   else if(!silent)toast(t(mode==='backup'?'backup_done':uploaded?'sync_done':'up_to_date'));
   if(document.querySelector('#sync.active'))loadHistory();
- }catch(e){busy=false;dirty=true;if(silent&&cfg.provider==='gdrive'&&!gOK())needAuth=true;setSync(needAuth?'auth':'err',e.message);if(!silent)toast(t('s_err',{e:e.message}))}
+ }catch(e){busy=false;dirty=!RO;if(silent&&!gOK())needAuth=true;setSync(needAuth?'auth':'err',e.message);if(!silent)toast(t('s_err',{e:e.message}))}
 }
-function scheduleAuto(){if(cloudP()&&cfg.auto==='live'){clearTimeout(autoT);autoT=setTimeout(()=>runSync('sync',true),3000)}}
+function scheduleAuto(){if(cloudP()&&!RO&&cfg.auto==='live'){clearTimeout(autoT);autoT=setTimeout(()=>runSync('sync',true),3000)}}
 function setupInterval(){clearInterval(intT);if(!cloudP())return;if(cfg.auto==='interval')intT=setInterval(()=>runSync('sync',true),Math.max(1,cfg.every)*60000);else if(cfg.auto==='live')intT=setInterval(liveTick,30000)}
 async function liveTick(){
  if(!cloudP()||busy||needAuth||cfg.auto!=='live'||document.visibilityState!=='visible'||!navigator.onLine)return;
  if(dirty)return runSync('sync',true);
- if(cfg.provider==='gdrive'&&!gOK()){needAuth=true;setSync('auth');return}
- try{const f=await listBackups(prov());if((f[0]?.name||'')!==cfg.top)runSync('sync',true)}catch{}
+ if(!gOK()){needAuth=true;setSync('auth');return}
+ try{const f=await drive.list(cfg.sid);if((f[0]?.name||'')!==cfg.top)runSync('sync',true)}catch{}
 }
 const wake=()=>{if(document.visibilityState==='visible'&&cloudP()&&cfg.auto!=='manual'&&Date.now()-lastVis>15000){lastVis=Date.now();runSync('sync',true)}};
 document.addEventListener('visibilitychange',wake);window.addEventListener('online',wake);window.addEventListener('focus',wake);
 document.addEventListener('click',()=>{if(needAuth&&!busy){needAuth=false;runSync('sync',true,true)}});
 function setCfg(k,v){if(k==='keep')v=Math.min(100,Math.max(1,Math.round(v)||10));if(k==='every')v=Math.min(1440,Math.max(1,Math.round(v)||15));cfg[k]=v;saveCfg();setupInterval();renderSync(true)}
-async function loadHistory(){const P=prov();if(!P)return;hist=null;renderSync(true);try{hist=await listBackups(P)}catch(e){hist=[];toast(t('s_err',{e:e.message}))}renderSync(true)}
-async function restoreBackup(id){const P=prov();if(!P||!confirm(t('confirm_restore')))return;try{replaceWith(parseBackup(await P.read(id)));toast(t('restored_ok'))}catch(e){toast(t('s_err',{e:e.message}))}}
-async function deleteBackup(id){const P=prov();if(!P||!confirm(t('confirm_del_backup')))return;try{await P.del(id);toast(t('backup_deleted'));loadHistory()}catch(e){toast(t('s_err',{e:e.message}))}}
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-/* Pick (or switch to) a Google account, then open THAT account's own data. */
-async function pickGoogleAccount(){
- if(location.protocol==='file:')return toast(t('need_https'));
- if(!cfg.gid)return toast(t('need_id'));
- try{
-  const k=await gAuth('select_account',true);            /* Google's account chooser: always asked */
-  while(busy)await sleep(100);                           /* let a running sync finish first */
-  clearTimeout(autoT);
-  const same=cfg.provider==='gdrive'&&String(cfg.acct).toLowerCase()===k.em;
-  if(!same){
-   const guest=curKey===KEY,nk=accKey(k.em);
-   if(guest&&localStorage.getItem(nk)===null&&(db.people.length||db.tx.length)){
-    /* first account: it adopts what you typed as a guest; the guest set is emptied so no second account can receive it */
-    localStorage.setItem(nk,JSON.stringify(db));localStorage.setItem(KEY,JSON.stringify(sanitize(null)));curKey=nk;dirty=true;
-   }else{
-    persist();curKey=nk;db=readSlot(nk);dirty=false;     /* the screen shows ONLY this account's data */
-   }
-   cfg.top='';cfg.last=0;
-  }
-  gTok=k;try{localStorage.setItem('daftar_g_tok',JSON.stringify(gTok))}catch{}
-  cfg.provider='gdrive';cfg.acct=k.em;saveCfg();needAuth=false;hist=null;picker=false;
-  render();setupInterval();setSync('idle');renderSync(true);runSync('sync');
- }catch(e){toast(t('connect_fail',{e:e.message}))}
+async function loadHistory(){if(!cloudP())return;hist=null;renderSync(true);try{hist=await drive.list(cfg.sid)}catch(e){hist=[];toast(t('s_err',{e:e.message}))}renderSync(true)}
+async function restoreBackup(id){if(!guard()||!cloudP()||!confirm(t('confirm_restore')))return;try{replaceWith(parseBackup(await drive.read(id)));toast(t('restored_ok'))}catch(e){toast(t('s_err',{e:e.message}))}}
+async function deleteBackup(id){if(!guard()||!cloudP()||!confirm(t('confirm_del_backup')))return;try{await drive.trash(id);toast(t('backup_deleted'));loadHistory()}catch(e){toast(t('s_err',{e:e.message}))}}
+/* ---------- account bar ---------- */
+const initial=s=>(String(s||'?').trim()[0]||'?').toUpperCase();
+function renderAcct(){
+ const box=$('acctBar');if(!box)return;
+ let h='';
+ if(!cfg.acct){
+  h=`<div class="acct"><div class="who"><b>${t('signin_card_title')}</b></div><button class="btn small" onclick="signIn()">${t('sign_in_google')}</button><button class="btn small light" onclick="go('sessions')">${t('sessions')}</button></div>`;
+ }else{
+  const badge=cfg.sid?`<span class="badge ${cfg.role==='owner'?'green':''}">${roleLabel(cfg.role)}</span>`:'';
+  h=`<div class="acct"><span class="av">${esc(initial(cfg.name||cfg.acct))}</span><div class="who"><b>${esc(cfg.name||cfg.acct)}</b><span dir="ltr">${esc(cfg.acct)}</span><div>${cfg.sid?`${esc(cfg.sname)} ${badge}`:`<span class="muted">${t('no_session')}</span>`}</div></div><button class="btn small light" onclick="go('sessions')">${t('sessions')}</button><button class="btn small soft" onclick="signOut()">${t('sign_out')}</button></div>`;
+  if(!cfg.sid)h+=`<div class="warnbox" style="margin-top:8px">${t('no_session_txt')} <button class="btn small" onclick="go('sessions')">${t('create_session_btn')}</button></div>`;
+  if(RO)h+=`<div class="warnbox" style="margin-top:8px">👁 ${t('viewer_banner')}</div>`;
+  if(needAuth)h+=`<div class="warnbox" style="margin-top:8px">${t('need_auth')}</div>`;
+  if(connErr)h+=`<div class="warnbox" style="margin-top:8px">${t('s_err',{e:esc(connErr)})}</div>`;
+ }
+ box.innerHTML=h;
 }
-/* Leave the account: the screen goes back to the guest data; the account's data stays in its own slot and in its Google Drive. */
-function leaveAccount(newProv){
- try{if(gTok.t&&window.google)google.accounts.oauth2.revoke(gTok.t)}catch{}
- gTok={t:'',e:0};try{localStorage.removeItem('daftar_g_tok')}catch{}localStorage.removeItem(DKEY);
- clearTimeout(autoT);clearInterval(intT);
- if(curKey!==KEY){persist();curKey=KEY;db=readSlot(KEY);render()}
- needAuth=false;dirty=false;cfg.provider=newProv;cfg.acct='';cfg.top='';cfg.last=0;saveCfg();hist=null;picker=false;setSync('idle');renderSync(true);
+/* ---------- sessions & members screens ---------- */
+async function openSessions(){
+ if(!cfg.acct){renderSessions();return}
+ renderSessions();
+ try{sessErr='';sessList=await drive.sessions()}catch(e){sessErr=e.message;sessList=sessList||[]}
+ renderSessions();
 }
-async function connectProvider(id){
- if(id==='local'){leaveAccount('local');return}
- if(location.protocol==='file:')return toast(t('need_https'));
- if(id==='gdrive'){const v=$('gid')?.value.trim();if(v){cfg.gid=v;saveCfg()}return pickGoogleAccount()}
- if(id==='dropbox'){const v=$('dkey')?.value.trim();if(!v)return toast(t('need_id'));cfg.dkey=v;saveCfg();dbxStart()}
+function sessCard(s){
+ const cur=cloudP()&&s.id===cfg.sid;
+ return `<div class="item row-item"><div><strong>${esc(s.name)}</strong><div class="muted">${t('owner_is',{o:esc(s.owner||'')})}</div><span class="badge ${s.role==='owner'?'green':''}">${roleLabel(s.role)}</span></div><div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">${cur?`<span class="pill">${t('open_now')}</span>`:`<button class="btn small" onclick="openSessionId('${s.id}')">${t('open_btn')}</button>`}<button class="btn small light" onclick="openSessionId('${s.id}',true)">${t('members_btn')}</button></div></div>`;
 }
-function disconnect(){if(!confirm(t('disconnect_msg')))return;leaveAccount(null)}
-/* ---------- sync UI ---------- */
-function pcard(logo,color,name,desc,pill,warn,body,btn){return `<div class="pcard ${btn===null?'dis':''}"><div class="ptop"><span class="plogo" style="background:${color}">${logo}</span><b>${name}</b><span class="pill ${warn?'warn':''}">${pill}</span></div><div class="muted">${desc}</div>${body}${btn||''}</div>`}
-function pickerHTML(){
- const file=location.protocol==='file:';
- return `${file?`<div class="warnbox">${t('need_https')}</div>`:''}<h2>${t('choose_provider')}</h2><div class="pgrid">`+
- pcard('💾','#6b7280',t('prov_local'),t('prov_local_d'),t('ready'),false,'',`<button class="btn" onclick="connectProvider('local')">${t('use_local')}</button>`)+
- pcard('G','#1a73e8','Google Drive',t('prov_gdrive_d'),cfg.gid?t('ready'):t('needs_setup'),!cfg.gid,`<div class="field" style="margin:0"><label>${t('google_cid')}</label><input id="gid" dir="ltr" value="${esc(cfg.gid)}" placeholder="xxxx.apps.googleusercontent.com"></div><div class="muted">${t('g_hint')}</div><div class="code">${esc(location.origin)}</div>`,`<button class="btn" ${file?'disabled':''} onclick="connectProvider('gdrive')">${t('connect')}</button>`)+
- pcard('D','#0061ff','Dropbox',t('prov_dropbox_d'),cfg.dkey?t('ready'):t('needs_setup'),!cfg.dkey,`<div class="field" style="margin:0"><label>${t('dropbox_key')}</label><input id="dkey" dir="ltr" value="${esc(cfg.dkey)}" placeholder="App key"></div><div class="muted">${t('d_hint')}</div><div class="code">${esc(dbxRedirect())}</div>`,`<button class="btn" ${file?'disabled':''} onclick="connectProvider('dropbox')">${t('connect')}</button>`)+
- pcard('M','#d9272e','MEGA',t('prov_mega_d'),t('soon'),true,'',null)+
- `</div>${cfg.provider?`<div class="actions"><button class="btn light" onclick="picker=false;renderSync(true)">${t('cancel')}</button></div>`:''}`;
+function renderSessions(){
+ const box=$('sessBody');if(!box)return;
+ if(!cfg.acct){box.innerHTML=`<div class="panel"><p class="muted">${t('sessions_signin')}</p><button class="btn" onclick="signIn()">${t('sign_in_google')}</button></div>`;return}
+ const L=sessList,mine=(L||[]).filter(s=>s.role==='owner'),sh=(L||[]).filter(s=>s.role!=='owner');
+ box.innerHTML=(sessErr?`<div class="warnbox">${t('s_err',{e:esc(sessErr)})}</div>`:'')+
+  `<div class="panel"><div class="head" style="margin-bottom:12px"><h2 style="margin:0">${t('my_sessions')}</h2><button class="btn small" onclick="promptCreate()">＋ ${t('new_session')}</button></div><div class="list">${L===null?`<div class="empty">${t('loading')}</div>`:mine.map(sessCard).join('')||`<div class="empty">${t('no_own_session')}</div>`}</div></div>`+
+  `<div class="panel"><h2>${t('shared_sessions')}</h2><div class="list">${L===null?`<div class="empty">${t('loading')}</div>`:sh.map(sessCard).join('')||`<div class="empty">${t('no_shared')}</div>`}</div></div>`;
 }
+function openMembers(){if(!cloudP()){go('sessions');return}loadMembers()}
+function renderMembers(){
+ const box=$('memBody');if(!box)return;
+ if(!cloudP()){box.innerHTML='';return}
+ const own=cfg.role==='owner';
+ let h=`<div class="panel"><strong>${esc(cfg.sname)}</strong><div class="muted">${t('owner_is',{o:esc(cfg.sowner||'')})}</div><div style="margin-top:6px">${t('your_role')} <span class="badge ${own?'green':''}">${roleLabel(cfg.role)}</span></div></div>`;
+ h+=`<div class="panel"><h2>${t('members_list')}</h2><div class="list">`+(members===null?`<div class="empty">${t('loading')}</div>`:members.map(m=>{
+  const me=m.email===cfg.acct.toLowerCase();
+  return `<div class="item row-item"><div><strong dir="ltr">${esc(m.email)}${me?' ('+t('you')+')':''}</strong><div class="muted">${esc(m.name)}</div><span class="badge ${m.role==='owner'?'green':''}">${roleLabel(m.role)}</span></div>${own&&m.role!=='owner'?`<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><button class="btn small light" onclick="setMemberRole('${esc(m.id)}','${esc(m.email)}','${m.role==='admin'?'viewer':'admin'}')">${m.role==='admin'?t('make_viewer'):t('make_admin')}</button><button class="btn small red" onclick="removeMember('${esc(m.id)}','${esc(m.email)}')">${t('remove')}</button></div>`:''}</div>`}).join('')||`<div class="empty">${t('log_empty')}</div>`)+`</div>${memErr?`<div class="muted" style="margin-top:8px">${esc(memErr)}</div>`:''}</div>`;
+ if(own){
+  h+=`<div class="panel"><h2>${t('add_member')}</h2><div class="field"><label>${t('member_email')}</label><input id="memEmail" type="email" dir="ltr" placeholder="name@gmail.com"></div><div class="seg" id="memRole"><button class="on" data-r="viewer" onclick="pickRole('viewer')">${t('role_viewer')}</button><button data-r="admin" onclick="pickRole('admin')">${t('role_admin')}</button></div><div class="muted" style="margin:8px 0">${t('role_admin')}: ${t('role_admin_d')} · ${t('role_viewer')}: ${t('role_viewer_d')}</div><div class="warnbox">${t('test_user_hint')}</div><button class="btn" onclick="addMember()">${t('add_btn')}</button></div>`;
+  h+=`<div class="panel"><button class="btn red" onclick="deleteSession('${cfg.sid}')">${t('delete_session')}</button></div>`;
+ }else h+=`<div class="muted">${t('members_owner_only')}</div>`;
+ box.innerHTML=h;
+}
+/* ---------- history screen: transactions + activity log ---------- */
+function setHistTab(x){histTab=x;renderHistory()}
+function setLogF(x){logF=x;renderHistory()}
+function logLine(e){
+ const r=e.act==='member_add'||e.act==='member_role'?roleLabel(e.b):'';
+ return `<strong>${esc(e.who||e.mail||t('you'))}</strong> ${esc(t('log_'+e.act,{a:e.a,b:e.b,r}))}`;
+}
+function renderHistory(){
+ const box=$('historyList');if(!box)return;
+ const seg=(v,cur,fn,k)=>`<button class="${cur===v?'on':''}" onclick="${fn}('${v}')">${t(k)}</button>`;
+ let h=`<div><div class="seg">${seg('tx',histTab,'setHistTab','tab_tx')}${seg('log',histTab,'setHistTab','tab_log')}</div></div>`;
+ if(histTab==='tx'){
+  h+=[...db.tx].reverse().map(item).join('')||`<div class="empty">${t('history_empty')}</div>`;
+ }else{
+  h+=`<div><div class="seg">${seg('all',logF,'setLogF','log_all')}${seg('session',logF,'setLogF','log_session')}${seg('device',logF,'setLogF','log_device')}</div></div>`;
+  const rows=[...(logF!=='device'?db.log:[]),...(logF!=='session'?devLogs():[])].sort((a,b)=>b.u-a.u).slice(0,300);
+  h+=rows.map(e=>`<div class="item"><div>${logLine(e)}<div class="muted">${fmtTime(e.u)}</div></div></div>`).join('')||`<div class="empty">${t('log_empty')}</div>`;
+ }
+ box.innerHTML=h;
+}
+/* ---------- sync screen ---------- */
 function renderSync(force){
  const box=$('syncBody');if(!box)return;
  if(!force&&box.contains(document.activeElement)&&document.activeElement.matches('input,select'))return;
- const P=cfg.provider,cloud=cloudP();
- if(!P||picker){box.innerHTML=pickerHTML();return}
- const names={local:t('prov_local'),gdrive:'Google Drive',dropbox:'Dropbox'};
- const dot=sync.state==='busy'?'busy':(sync.state==='err'||sync.state==='auth')?'err':cfg.last?'ok':'';
- const st=sync.state==='busy'?t('syncing'):sync.state==='auth'?t('need_auth_short'):sync.state==='err'?t('s_err',{e:esc(sync.msg)}):cfg.last?t('last_sync',{t:fmtTime(cfg.last)}):t('never');
- let h=(needAuth&&cloud?`<div class="warnbox">${t('need_auth')}</div>`:'')+`<div class="panel"><div class="status"><span class="dot ${cloud?dot:'ok'}"></span><div><strong>${t('connected_to',{p:names[P]})}</strong>${P==='gdrive'&&cfg.acct?`<div dir="ltr" style="font-weight:700;font-size:13px">${esc(cfg.acct)}</div>`:''}${cloud?`<div class="muted">${st}</div>`:''}</div></div><div class="actions">`+
-  (cloud?`<button class="btn" ${busy?'disabled':''} onclick="runSync('sync')">${t('sync_now')}</button><button class="btn light" ${busy?'disabled':''} onclick="runSync('backup')">${t('backup_now')}</button>`:`<button class="btn" onclick="exportData()">${t('download_backup')}</button><label class="btn light" for="importFile">${t('restore')}</label>`)+
-  (P==='gdrive'?`<button class="btn soft" ${busy?'disabled':''} onclick="pickGoogleAccount()">${t('switch_account')}</button>`:`<button class="btn soft" onclick="picker=true;renderSync(true)">${t('change_provider')}</button>`)+`<button class="btn red" onclick="disconnect()">${t('disconnect')}</button></div>${cloud?`<div class="muted">${t('sync_hint')}</div>${P==='gdrive'?`<div class="muted" style="margin-top:6px">${t('acct_hint')}</div>`:''}`:''}</div>`;
- if(cloud){
+ const cloud=cloudP(),file=location.protocol==='file:';
+ let h='';
+ if(!cfg.acct){
+  h+=`${file?`<div class="warnbox">${t('need_https')}</div>`:''}<div class="panel"><h2>${t('signin_card_title')}</h2><p class="muted">${t('signin_card_txt')}</p><button class="btn" ${file?'disabled':''} onclick="signIn()">${t('sign_in_google')}</button></div>`;
+ }else if(!cloud){
+  h+=`<div class="panel"><div class="status"><span class="dot"></span><div><strong>${t('no_session')}</strong><div class="muted">${t('no_session_txt')}</div></div></div><div class="actions"><button class="btn" onclick="go('sessions')">${t('sessions')}</button></div></div>`;
+ }else{
+  const dot=sync.state==='busy'?'busy':(sync.state==='err'||sync.state==='auth')?'err':cfg.last?'ok':'';
+  const st=sync.state==='busy'?t('syncing'):sync.state==='auth'?t('need_auth_short'):sync.state==='err'?t('s_err',{e:esc(sync.msg)}):cfg.last?t('last_sync',{t:fmtTime(cfg.last)}):t('never');
+  h+=(needAuth?`<div class="warnbox">${t('need_auth')}</div>`:'')+(RO?`<div class="warnbox">${t('viewer_sync_hint')}</div>`:'')+
+   `<div class="panel"><div class="status"><span class="dot ${dot}"></span><div><strong>${esc(cfg.sname)} · ${roleLabel(cfg.role)}</strong><div dir="ltr" style="font-weight:700;font-size:13px">${esc(cfg.acct)}</div><div class="muted">${st}</div></div></div><div class="actions"><button class="btn" ${busy?'disabled':''} onclick="runSync('sync',false,true)">${t('sync_now')}</button>${RO?'':`<button class="btn light" ${busy?'disabled':''} onclick="runSync('backup',false,true)">${t('backup_now')}</button>`}<button class="btn soft" onclick="go('sessions')">${t('sessions')}</button><button class="btn soft" onclick="signIn()">${t('switch_account')}</button></div><div class="muted">${t('sync_hint')}</div></div>`;
   const opt=(v,k)=>`<option value="${v}" ${cfg.auto===v?'selected':''}>${t(k)}</option>`;
   h+=`<div class="panel"><h2>${t('schedule')}</h2><div class="frow"><div class="field"><label>${t('auto_mode')}</label><select onchange="setCfg('auto',this.value)">${opt('live','am_live')}${opt('open','am_open')}${opt('interval','am_interval')}${opt('manual','am_manual')}</select></div>${cfg.auto==='interval'?`<div class="field"><label>${t('every_min')}</label><input type="number" min="1" max="1440" value="${cfg.every}" onchange="setCfg('every',+this.value)"></div>`:''}<div class="field"><label>${t('keep_n')}</label><input type="number" min="1" max="100" value="${cfg.keep}" onchange="setCfg('keep',+this.value)"></div></div><div class="muted">${t('live_hint')}</div><div class="muted" style="margin-top:6px">${t('keep_hint')}</div></div>`;
   h+=`<div class="panel"><div class="head" style="margin-bottom:12px"><h2 style="margin:0">${t('history')}</h2><button class="btn small light" onclick="loadHistory()">${t('refresh')}</button></div><div class="list">`+
-   (hist===null?`<div class="empty">${t('loading')}</div>`:hist.length?hist.map(f=>`<div class="item row-item"><div><strong>${fmtTime(nameDate(f.name))}</strong><div class="muted">${Math.max(1,Math.round(f.size/1024))} KB</div></div><div><button class="btn small light" onclick="restoreBackup('${esc(f.id)}')">${t('restore_btn')}</button> <button class="btn small red" onclick="deleteBackup('${esc(f.id)}')">${t('del')}</button></div></div>`).join(''):`<div class="empty">${t('no_backups')}</div>`)+`</div></div>`;
+   (hist===null?`<div class="empty">${t('loading')}</div>`:hist.length?hist.map(f=>`<div class="item row-item"><div><strong>${fmtTime(nameDate(f.name))}</strong><div class="muted">${Math.max(1,Math.round(f.size/1024))} KB</div></div>${RO?'':`<div><button class="btn small light" onclick="restoreBackup('${esc(f.id)}')">${t('restore_btn')}</button> <button class="btn small red" onclick="deleteBackup('${esc(f.id)}')">${t('del')}</button></div>`}</div>`).join(''):`<div class="empty">${t('no_backups')}</div>`)+`</div></div>`;
+ }
+ h+=`<div class="panel"><h2>${t('local_backup')}</h2><p class="muted">${t('local_backup_txt')}</p><button class="btn" onclick="exportData()">${t('download_backup')}</button> <label class="btn light" for="importFile">${t('restore')}</label></div>`;
+ h+=`<div class="panel"><h2>${t('google_settings')}</h2><div class="field" style="margin:0"><label>${t('google_cid')}</label><input id="gid" dir="ltr" value="${esc(cfg.gid)}" placeholder="xxxx.apps.googleusercontent.com" onchange="cfg.gid=this.value.trim();saveCfg()"></div><div class="muted" style="margin:8px 0">${t('g_hint')}</div><div class="code">${esc(location.origin)}</div></div>`;
+ box.innerHTML=h;
+}
+/* ---------- app lock (PIN / recovery phrase / optional biometric) ---------- */
+const LK='daftar_lock',LF='daftar_lock_fail',enc=new TextEncoder();
+const lk=()=>{try{return JSON.parse(localStorage.getItem(LK)||'null')}catch{return null}};
+const lkSave=o=>{try{o?localStorage.setItem(LK,JSON.stringify(o)):localStorage.removeItem(LK)}catch{}};
+const bb64=b=>btoa(String.fromCharCode(...new Uint8Array(b)));
+const ub64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const normPhrase=s=>String(s).trim().toLowerCase().replace(/\s+/g,' ');
+const newSalt=()=>bb64(crypto.getRandomValues(new Uint8Array(16)));
+async function pbk(secret,salt){const key=await crypto.subtle.importKey('raw',enc.encode(secret),'PBKDF2',false,['deriveBits']);return bb64(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:ub64(salt),iterations:100000},key,256))}
+const pinOK=async p=>{const L=lk();return !!L&&await pbk(String(p),L.salt)===L.hash};
+let locked=false,pinBuf='',hiddenAt=0,lockMode='pin',lockBusy=false;
+const failInfo=()=>{try{return JSON.parse(localStorage.getItem(LF)||'{"n":0,"until":0}')}catch{return{n:0,until:0}}};
+function lockNow(){if(!lk())return;locked=true;pinBuf='';lockMode='pin';renderLock()}
+function unlockApp(){locked=false;pinBuf='';try{localStorage.removeItem(LF)}catch{}renderLock()}
+function renderLock(msg){
+ const L=lk(),el=$('lockScr');
+ if(!locked||!L){el.style.display='none';el.innerHTML='';return}
+ el.style.display='flex';
+ if(lockMode==='rec'){
+  el.innerHTML=`<div class="lkbox"><div class="lkt">🔑 ${t('recovery_title')}</div><p class="muted">${t('recovery_txt')}</p><div class="field"><input id="recPhrase" type="password" autocomplete="off" placeholder="${t('phrase_new_short')}"></div><div class="lkmsg">${msg||''}</div><div class="actions" style="justify-content:center"><button class="btn" onclick="doRecover()">${t('unlock')}</button><button class="btn light" onclick="lockMode='pin';renderLock()">${t('back_to_pin')}</button></div></div>`;
+  return;
+ }
+ const dots=Array.from({length:L.len},(_,i)=>`<i class="${i<pinBuf.length?'f':''}"></i>`).join('');
+ const keys=[1,2,3,4,5,6,7,8,9].map(n=>`<button onclick="lockKey('${n}')">${n}</button>`).join('')+(L.bio?`<button onclick="bioUnlock()" aria-label="${t('bio_label')}">☝</button>`:'<span></span>')+`<button onclick="lockKey('0')">0</button><button onclick="lockKey('x')">⌫</button>`;
+ el.innerHTML=`<div class="lkbox"><div class="lkt">🔒 ${t('lock_title')}</div><div class="dots">${dots}</div><div class="lkmsg" id="lkmsg">${msg||''}</div><div class="keys">${keys}</div><button class="btn light" onclick="lockMode='rec';renderLock()">${t('forgot_pin')}</button></div>`;
+}
+async function lockKey(k){
+ const L=lk();if(!locked||!L||lockBusy)return;
+ if(k==='x'){pinBuf=pinBuf.slice(0,-1);return renderLock()}
+ if(pinBuf.length>=L.len)return;
+ pinBuf+=k;renderLock();
+ if(pinBuf.length<L.len)return;
+ const f=failInfo();
+ if(Date.now()<f.until){pinBuf='';return renderLock(t('lock_blocked',{s:Math.ceil((f.until-Date.now())/1000)}))}
+ lockBusy=true;const ok=await pinOK(pinBuf);lockBusy=false;
+ if(ok)return unlockApp();
+ const n=f.n+1;try{localStorage.setItem(LF,JSON.stringify({n,until:n%5===0?Date.now()+30000*(n/5):0}))}catch{}
+ pinBuf='';renderLock(n%5===0?t('lock_blocked',{s:30*(n/5)}):t('lock_wrong'));
+}
+async function doRecover(){
+ const L=lk(),v=$('recPhrase').value;if(!L)return;
+ const ok=normPhrase(v).length>0&&await pbk(normPhrase(v),L.pSalt)===L.pHash;
+ if(!ok)return renderLock(t('recovery_wrong'));
+ lkSave(null);devLog('lock_recovery');unlockApp();toast(t('recovery_ok'));render();
+}
+document.addEventListener('keydown',e=>{if(locked&&lockMode==='pin'){if(/^\d$/.test(e.key))lockKey(e.key);else if(e.key==='Backspace')lockKey('x')}});
+document.addEventListener('visibilitychange',()=>{
+ if(document.visibilityState==='hidden'){hiddenAt=Date.now();return}
+ const L=lk();if(L&&hiddenAt&&!locked&&Date.now()-hiddenAt>=(L.timeout||0)*1000)lockNow();hiddenAt=0;
+});
+const bioAvail=async()=>{try{return !!(window.PublicKeyCredential&&await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable())}catch{return false}};
+async function bioUnlock(){
+ const L=lk();if(!L?.bio)return;
+ try{await navigator.credentials.get({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),allowCredentials:[{type:'public-key',id:ub64(L.bio)}],userVerification:'required',timeout:60000}});unlockApp()}catch{}
+}
+async function toggleBio(){
+ const L=lk();if(!L)return;
+ if(L.bio){L.bio='';lkSave(L);devLog('bio_off');return renderSecurity()}
+ if(!await bioAvail())return toast(t('bio_unavailable'));
+ try{
+  const c=await navigator.credentials.create({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),rp:{name:t('brand')},user:{id:crypto.getRandomValues(new Uint8Array(16)),name:'daftar',displayName:t('brand')},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required'},timeout:60000}});
+  L.bio=bb64(c.rawId);lkSave(L);devLog('bio_on');renderSecurity();
+ }catch{toast(t('bio_unavailable'))}
+}
+function setLockTimeout(v){const L=lk();if(!L)return;L.timeout=+v;lkSave(L)}
+const pwField=(id,k)=>`<div class="field"><label>${t(k)}</label><input id="${id}" type="password" autocomplete="off"></div>`;
+const pinField=(id,k)=>`<div class="field"><label>${t(k)}</label><input id="${id}" type="password" inputmode="numeric" autocomplete="off" maxlength="8"></div>`;
+function lockSetup(){
+ if(!window.crypto?.subtle)return toast(t('need_https'));
+ openModal(t('setup_title'),pinField('pin1','pin_new')+pinField('pin2','pin_confirm')+pwField('ph1','phrase_new')+pwField('ph2','phrase_confirm')+`<div class="muted">${t('phrase_hint')}</div><div class="row"><button class="btn" onclick="doSetup()">${t('save')}</button></div>`);
+}
+async function doSetup(){
+ const p1=$('pin1').value,p2=$('pin2').value,h1=normPhrase($('ph1').value),h2=normPhrase($('ph2').value);
+ if(!/^\d{4,8}$/.test(p1))return toast(t('err_pin_len'));
+ if(p1!==p2)return toast(t('err_pin_match'));
+ if(h1.length<6)return toast(t('err_phrase_len'));
+ if(h1!==h2)return toast(t('err_phrase_match'));
+ const L={salt:newSalt(),pSalt:newSalt(),len:p1.length,timeout:60,bio:''};
+ L.hash=await pbk(p1,L.salt);L.pHash=await pbk(h1,L.pSalt);
+ lkSave(L);devLog('lock_on');closeModal();toast(t('lock_saved'));renderSecurity();
+}
+function lockChangePin(){openModal(t('change_pin'),pinField('pinC','pin_cur')+pinField('pin1','pin_new')+pinField('pin2','pin_confirm')+`<div class="row"><button class="btn" onclick="doChangePin()">${t('save')}</button></div>`)}
+async function doChangePin(){
+ const p1=$('pin1').value,p2=$('pin2').value;
+ if(!await pinOK($('pinC').value))return toast(t('err_pin_wrong'));
+ if(!/^\d{4,8}$/.test(p1))return toast(t('err_pin_len'));
+ if(p1!==p2)return toast(t('err_pin_match'));
+ const L=lk();L.salt=newSalt();L.len=p1.length;L.hash=await pbk(p1,L.salt);lkSave(L);devLog('pin_change');closeModal();toast(t('pin_changed'));
+}
+function lockChangePhrase(){openModal(t('change_phrase'),pinField('pinC','pin_cur')+pwField('ph1','phrase_new')+pwField('ph2','phrase_confirm')+`<div class="muted">${t('phrase_hint')}</div><div class="row"><button class="btn" onclick="doChangePhrase()">${t('save')}</button></div>`)}
+async function doChangePhrase(){
+ const h1=normPhrase($('ph1').value),h2=normPhrase($('ph2').value);
+ if(!await pinOK($('pinC').value))return toast(t('err_pin_wrong'));
+ if(h1.length<6)return toast(t('err_phrase_len'));
+ if(h1!==h2)return toast(t('err_phrase_match'));
+ const L=lk();L.pSalt=newSalt();L.pHash=await pbk(h1,L.pSalt);lkSave(L);devLog('phrase_change');closeModal();toast(t('phrase_changed'));
+}
+function lockRemove(){openModal(t('remove_lock'),`<p class="muted">${t('confirm_remove_lock')}</p>`+pinField('pinC','pin_cur')+`<div class="row"><button class="btn red" onclick="doRemove()">${t('remove_lock')}</button></div>`)}
+async function doRemove(){
+ if(!await pinOK($('pinC').value))return toast(t('err_pin_wrong'));
+ lkSave(null);devLog('lock_off');closeModal();toast(t('lock_removed'));renderSecurity();
+}
+async function renderSecurity(){
+ const box=$('secPanel');if(!box)return;
+ const L=lk();let h=`<h2>🔐 ${t('sec_title')}</h2><p class="muted">${t('sec_txt')}</p><p class="muted">${t('lock_web_note')}</p>`;
+ if(!L)h+=`<button class="btn" onclick="lockSetup()">${t('lock_setup')}</button>`;
+ else{
+  const to=[[0,'t_now'],[30,'t_30s'],[60,'t_1m'],[300,'t_5m']];
+  h+=`<div class="status" style="margin-bottom:10px"><span class="dot ok"></span><strong>${t('lock_on')}</strong></div><div class="setrow"><label>${t('lock_after')}</label><select style="max-width:240px" onchange="setLockTimeout(this.value)">${to.map(([v,k])=>`<option value="${v}" ${(L.timeout||0)===v?'selected':''}>${t(k)}</option>`).join('')}</select></div>`;
+  if(await bioAvail())h+=`<div class="setrow"><label>${t('bio_label')}</label><button class="btn ${L.bio?'green':'light'}" onclick="toggleBio()">${L.bio?'✓ ':''}${t('bio_label')}</button></div>`;
+  h+=`<div class="actions"><button class="btn light" onclick="lockChangePin()">${t('change_pin')}</button><button class="btn light" onclick="lockChangePhrase()">${t('change_phrase')}</button><button class="btn red" onclick="lockRemove()">${t('remove_lock')}</button></div>`;
  }
  box.innerHTML=h;
 }
 /* ---------- init ---------- */
-applyTheme();applyStatic();render();renderSync(true);
-(async()=>{const back=await dbxReturn();setupInterval();if(back){go('sync');runSync('sync')}else if(cloudP()&&cfg.auto!=='manual')setTimeout(()=>runSync('sync',true),1200)})();
+if(lk()){locked=true;renderLock()}
+applyTheme();applyStatic();render();renderAcct();renderSync(true);
+setupInterval();if(cloudP()&&cfg.auto!=='manual')setTimeout(()=>runSync('sync',true),1200);
 </script></body></html>
